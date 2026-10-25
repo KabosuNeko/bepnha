@@ -1,0 +1,131 @@
+/* Bang mau: chu #2B2B2B - chu phu #6B6B6B - nen kem #FAF7F2 - duong ke #E7E2DA - mau nhan #B4552D */
+
+body {
+    color: #2B2B2B;
+}
+
+a {
+    color: #2B2B2B;
+}
+
+a:hover {
+    color: #B4552D;
+}
+
+.text-muted {
+    color: #6B6B6B !important;
+}
+
+/* Thanh menu */
+.site-head {
+    background: #fff;
+    border-bottom: 1px solid #E7E2DA;
+}
+
+.site-head .navbar-brand {
+    font-family: "Times New Roman", serif;
+    font-size: 26px;
+}
+
+.site-head .nav-link {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #2B2B2B;
+}
+
+.site-head .nav-link:hover {
+    color: #B4552D;
+}
+
+/* Nut bam */
+.btn-primary {
+    background: #2B2B2B;
+    border-color: #2B2B2B;
+}
+
+.btn-primary:hover {
+    background: #B4552D;
+    border-color: #B4552D;
+}
+
+.btn-outline-primary {
+    color: #2B2B2B;
+    border-color: #2B2B2B;
+}
+
+.btn-outline-primary:hover {
+    background: #2B2B2B;
+    border-color: #2B2B2B;
+}
+
+/* Banner trang chu: slideshow anh nen */
+.hero-img {
+    height: 520px;
+    object-fit: cover;
+    filter: brightness(.5); /* lam toi anh de chu trang de doc */
+}
+
+.carousel-caption {
+    color: #fff;
+}
+
+/* Chu nam giua banner */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.hero h1 {
+    font-family: "Times New Roman", serif;
+    font-size: 52px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #f2ede6;
+}
+
+/* Anh mon an: cat cho deu khung (anh doc/ngang deu dep) */
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+}
+
+/* Mon ngon cua tuan */
+.featured {
+    background: #FAF7F2;
+}
+
+.featured img {
+    height: 420px;
+    object-fit: cover;
+}
+
+.featured h2 {
+    font-family: "Times New Roman", serif;
+    font-size: 34px;
+}
+
+.kicker {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    color: #B4552D;
+    margin-bottom: 6px;
+}
+
+/* Bang va footer */
+.table th {
+    border-bottom-color: #E7E2DA;
+}
+
+footer {
+    background: #FAF7F2;
+    border-top: 1px solid #E7E2DA;
+    color: #6B6B6B;
+}
