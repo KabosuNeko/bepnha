@@ -1,0 +1,13 @@
+﻿@model RecipeSharingWebsite.Models.Recipe
+
+<div class="col-md-4 mb-4">
+    <div class="card h-100">
+        <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" class="card-img-top" alt="@Model.Title" />
+        <div class="card-body">
+            <span class="badge bg-secondary">@Model.Category.CategoryName</span>
+            <h5 class="card-title mt-2">@Model.Title</h5>
+            <p class="card-text text-muted">@Model.TotalTimeMinutes phút - @Model.Servings người - @Model.Difficulty</p>
+            @Html.ActionLink("Xem công thức", "Details", "Recipes", new { id = Model.RecipeID }, new { @class = "btn btn-outline-primary btn-sm" })
+        </div>
+    </div>
+</div>

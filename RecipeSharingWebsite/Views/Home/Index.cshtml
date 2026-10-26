@@ -1,0 +1,90 @@
+﻿@model IEnumerable<RecipeSharingWebsite.Models.Recipe>
+
+@{
+    ViewBag.Title = "Trang chủ";
+}
+
+@section hero {
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
+        @{
+            // lay 4 mon moi nhat lam slide
+            var slides = Model.Take(4).ToList();
+        }
+
+        <div class="carousel-indicators">
+            @for (int i = 0; i < slides.Count; i++)
+            {
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Slide @(i + 1)"></button>
+            }
+        </div>
+
+        @* Moi slide la 1 mon an, bam vao thi mo trang chi tiet *@
+        <div class="carousel-inner">
+            @for (int i = 0; i < slides.Count; i++)
+            {
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <a href="@Url.Action("Details", "Recipes", new { id = slides[i].RecipeID })">
+                        <img src="@Url.Content(slides[i].ImagePath ?? "~/Content/Images/placeholder.svg")" class="d-block w-100 hero-img" alt="@slides[i].Title" />
+                        <div class="carousel-caption">
+                            <h4>@slides[i].Title</h4>
+                            <p>Bấm để xem công thức</p>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+
+        @* Chu dung yen o giua; pe-none de bam xuyen qua xuong slide *@
+        <div class="hero position-absolute top-0 start-0 w-100 h-100 z-1 pe-none">
+            <div class="container">
+                <h1>Công thức đơn giản cho bữa cơm ngon</h1>
+                <p>Chia sẻ món ăn của gia đình bạn và tìm công thức mình thích.</p>
+            </div>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Trước</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Sau</span>
+        </button>
+    </div>
+}
+
+<main>
+
+    <h3>Danh mục</h3>
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        @foreach (var c in (List<RecipeSharingWebsite.Models.Category>)ViewBag.Categories)
+        {
+            @Html.ActionLink(c.CategoryName, "Index", "Recipes", new { categoryID = c.CategoryID }, new { @class = "btn btn-outline-secondary btn-sm px-3" })
+        }
+    </div>
+
+    <h3>Món mới nhất</h3>
+    <div class="row">
+        @foreach (var recipe in Model)
+        {
+            @Html.Partial("_RecipeCard", recipe)
+        }
+    </div>
+
+    @if (ViewBag.Featured != null)
+    {
+        var featured = (RecipeSharingWebsite.Models.Recipe)ViewBag.Featured;
+        <div class="row g-0 featured mt-4">
+            <div class="col-md-6">
+                <img src="@Url.Content(featured.ImagePath ?? "~/Content/Images/placeholder.svg")" class="img-fluid w-100" alt="@featured.Title" />
+            </div>
+            <div class="col-md-6 p-5 align-self-center">
+                <span class="kicker">Món ngon của tuần</span>
+                <h2>@featured.Title</h2>
+                <p>@featured.Description</p>
+                <p class="text-muted">@featured.TotalTimeMinutes phút - @featured.Servings người - @featured.Difficulty</p>
+                @Html.ActionLink("Xem công thức", "Details", "Recipes", new { id = featured.RecipeID }, new { @class = "btn btn-primary px-4" })
+            </div>
+        </div>
+    }
+</main>
