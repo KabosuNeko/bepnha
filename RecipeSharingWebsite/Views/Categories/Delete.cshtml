@@ -1,0 +1,43 @@
+﻿@model RecipeSharingWebsite.Models.Category
+
+@{
+    ViewBag.Title = "Xóa danh mục";
+}
+
+<h2>Xóa danh mục</h2>
+
+@if (ViewBag.Err != null)
+{
+    <div class="alert alert-danger">@ViewBag.Err</div>
+}
+
+<h3>Bạn có chắc muốn xóa danh mục này?</h3>
+<div>
+    <h4>Danh mục</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay lại danh sách", "Index")
+        </div>
+    }
+</div>
