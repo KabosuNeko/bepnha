@@ -1,0 +1,88 @@
+﻿@model IEnumerable<RecipeSharingWebsite.Models.Recipe>
+
+@{
+    ViewBag.Title = "Công thức";
+}
+
+<h2>Danh sách công thức</h2>
+
+<p>
+    @Html.ActionLink("Đăng công thức mới", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
+{
+    <p>
+        Tìm kiếm: @Html.TextBox("searchString")
+        <input type="submit" value="Tìm" />
+    </p>
+}
+
+<p>
+    Danh mục:
+    @Html.ActionLink("Tất cả", "Index")
+    @foreach (var c in (List<RecipeSharingWebsite.Models.Category>)ViewBag.Categories)
+    {
+        <text> | </text>@Html.ActionLink(c.CategoryName, "Index", new { categoryID = c.CategoryID })
+    }
+</p>
+
+<p>
+    Sắp xếp:
+    @Html.ActionLink("Tên món", "Index", new { sortStyle = ViewBag.NameSort, searchString = ViewBag.SearchString }, new { @class = "btn btn-warning btn-sm" })
+    @Html.ActionLink("Thời gian nấu", "Index", new { sortStyle = ViewBag.TimeSort, searchString = ViewBag.SearchString }, new { @class = "btn btn-warning btn-sm" })
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ImagePath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalTimeMinutes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Difficulty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@Url.Content(item.ImagePath ?? "~/Content/Images/placeholder.svg")" width="80" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                @item.TotalTimeMinutes phút
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Difficulty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.ActionLink("Sửa", "Edit", new { id = item.RecipeID }) |
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.RecipeID }) |
+                @Html.ActionLink("Xóa", "Delete", new { id = item.RecipeID })
+            </td>
+        </tr>
+    }
+
+</table>
