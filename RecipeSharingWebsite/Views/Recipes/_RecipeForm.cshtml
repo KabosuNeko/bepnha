@@ -1,0 +1,83 @@
+﻿@model RecipeSharingWebsite.Models.Recipe
+
+@* Cac o nhap dung chung cho Create va Edit *@
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.CategoryID, (SelectList)ViewBag.CategoryList, "--Chọn danh mục--", htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.Ingredients, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Ingredients, new { htmlAttributes = new { @class = "form-control", rows = "6" } })
+        @Html.ValidationMessageFor(model => model.Ingredients, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control", rows = "6" } })
+        @Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.PrepTimeMinutes, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.PrepTimeMinutes, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.PrepTimeMinutes, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.CookTimeMinutes, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.CookTimeMinutes, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.CookTimeMinutes, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.Servings, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Servings, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Servings, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.Difficulty, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.Difficulty, new SelectList(new[] { "Dễ", "Trung bình", "Khó" }), "--Chọn độ khó--", htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Difficulty, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group row mb-3">
+    @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+    </div>
+</div>

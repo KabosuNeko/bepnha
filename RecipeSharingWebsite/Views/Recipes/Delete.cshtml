@@ -1,0 +1,45 @@
+﻿@model RecipeSharingWebsite.Models.Recipe
+
+@{
+    ViewBag.Title = "Xóa công thức";
+}
+
+<h2>Xóa công thức</h2>
+
+<h3>Bạn có chắc muốn xóa công thức này?</h3>
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CategoryID)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Xóa" class="btn btn-danger" /> |
+            @Html.ActionLink("Quay lại danh sách", "Index")
+        </div>
+    }
+</div>

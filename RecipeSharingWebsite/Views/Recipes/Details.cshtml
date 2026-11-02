@@ -1,0 +1,92 @@
+﻿@model RecipeSharingWebsite.Models.Recipe
+
+@{
+    ViewBag.Title = "Chi tiết";
+}
+
+<h2>Chi tiết công thức</h2>
+
+<div>
+    <h4>@Model.Title</h4>
+    <hr />
+    <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" width="300" class="mb-3" />
+
+    <dl class="row">
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CategoryID)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.PrepTimeMinutes)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.PrepTimeMinutes)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CookTimeMinutes)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.CookTimeMinutes)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Servings)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Servings)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Difficulty)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Difficulty)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class="col-sm-9">
+            @Model.CreatedAt.ToString("dd/MM/yyyy")
+        </dd>
+    </dl>
+
+    <h4>Nguyên liệu</h4>
+    <ul>
+        @foreach (var item in Model.Ingredients.Split('\n'))
+        {
+            <li>@item</li>
+        }
+    </ul>
+
+    <h4>Các bước làm</h4>
+    @foreach (var step in Model.Instructions.Split('\n'))
+    {
+        <p>@step</p>
+    }
+
+    <h4>Đánh giá</h4>
+    <p class="text-muted">Chức năng đánh giá đang được làm...</p>
+</div>
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.RecipeID }) |
+    @Html.ActionLink("Quay lại danh sách", "Index")
+</p>

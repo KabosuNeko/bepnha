@@ -1,0 +1,39 @@
+﻿@model RecipeSharingWebsite.Models.Recipe
+
+@{
+    ViewBag.Title = "Sửa công thức";
+}
+
+<h2>Sửa công thức</h2>
+
+@if (ViewBag.Err != null)
+{
+    <div class="alert alert-danger">@ViewBag.Err</div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Công thức</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.RecipeID)
+        @Html.Partial("_RecipeForm")
+
+        <div class="form-group row mb-3">
+            <div class="offset-md-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay lại danh sách", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
