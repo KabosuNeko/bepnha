@@ -1,0 +1,103 @@
+NGUON ANH MON AN - tat ca lay tu Wikimedia Commons (giay phep tu do)
+
+pho-bo.jpg
+    Anh goc: Pho Bo by Banh & Mee in Kirkgate Market.jpg
+    Tac gia: Andy Li
+    Giay phep: CC0
+    Link: https://commons.wikimedia.org/wiki/File:Pho_Bo_by_Banh_%26_Mee_in_Kirkgate_Market.jpg
+
+bun-cha.jpg
+    Anh goc: Bún chả Hà Nội (tháng 7 năm 2018) (1).jpg
+    Tac gia: Phương Huy
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:B%C3%BAn_ch%E1%BA%A3_H%C3%A0_N%E1%BB%99i_(th%C3%A1ng_7_n%C4%83m_2018)_(1).jpg
+
+com-tam.jpg
+    Anh goc: Cơm tấm SG (cơm sườn) ng27th9n2020 (1).jpg
+    Tac gia: Phương Huy
+    Giay phep: CC0
+    Link: https://commons.wikimedia.org/wiki/File:C%C6%A1m_t%E1%BA%A5m_SG_(c%C6%A1m_s%C6%B0%E1%BB%9Dn)_ng27th9n2020_(1).jpg
+
+banh-mi.jpg
+    Anh goc: Vietnamese Grilled Pork Bánh Mì, Bánh Mì Bánh Mì Westfield Carousel, 2026 (01).jpg
+    Tac gia: Bahnfrend
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:Vietnamese_Grilled_Pork_B%C3%A1nh_M%C3%AC,_B%C3%A1nh_M%C3%AC_B%C3%A1nh_M%C3%AC_Westfield_Carousel,_2026_(01).jpg
+
+goi-cuon.jpg
+    Anh goc: Gỏi cuốn at a Vietnamese-style restaurant in Beijing (20180103175625).jpg
+    Tac gia: N509FZ
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:G%E1%BB%8Fi_cu%E1%BB%91n_at_a_Vietnamese-style_restaurant_in_Beijing_(20180103175625).jpg
+
+bun-bo-hue.jpg
+    Anh goc: Bun-Bo-Hue-from-Huong-Giang-2011.jpg
+    Tac gia: Kham Tran - www.khamtran.com
+    Giay phep: CC BY 3.0
+    Link: https://commons.wikimedia.org/wiki/File:Bun-Bo-Hue-from-Huong-Giang-2011.jpg
+
+thit-kho-trung.jpg
+    Anh goc: Thịt kho hột vịt.jpg
+    Tac gia: Baoothersks
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:Th%E1%BB%8Bt_kho_h%E1%BB%99t_v%E1%BB%8Bt.jpg
+
+canh-chua.jpg
+    Anh goc: Canh chua cá lóc ở Thủy Trúc Quán, đường Nguyễn Nhữ Lãm (4).jpg
+    Tac gia: Phương Huy (thảo luận)
+    Giay phep: Public domain
+    Link: https://commons.wikimedia.org/wiki/File:Canh_chua_c%C3%A1_l%C3%B3c_%E1%BB%9F_Th%E1%BB%A7y_Tr%C3%BAc_Qu%C3%A1n,_%C4%91%C6%B0%E1%BB%9Dng_Nguy%E1%BB%85n_Nh%E1%BB%AF_L%C3%A3m_(4).jpg
+
+dau-hu-sot-ca.jpg
+    Anh goc: Tomato-sauced tofu.jpg
+    Tac gia: Mickey Đại Phát
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:Tomato-sauced_tofu.jpg
+
+che-dau-xanh.jpg
+    Anh goc: Lễ hội ẩm thực Cửa Việt th4n2023 đặc sản món chè Huế (chè đậu xanh đánh).jpg
+    Tac gia: Phương Huy
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:L%E1%BB%85_h%E1%BB%99i_%E1%BA%A9m_th%E1%BB%B1c_C%E1%BB%ADa_Vi%E1%BB%87t_th4n2023_%C4%91%E1%BA%B7c_s%E1%BA%A3n_m%C3%B3n_ch%C3%A8_Hu%E1%BA%BF_(ch%C3%A8_%C4%91%E1%BA%ADu_xanh_%C4%91%C3%A1nh).jpg
+
+ca-phe-sua-da.jpg
+    Anh goc: Ca Phe Sua Da.jpg
+    Tac gia: Clarin
+    Giay phep: CC BY 2.5
+    Link: https://commons.wikimedia.org/wiki/File:Ca_Phe_Sua_Da.jpg
+
+sinh-to-bo.jpg
+    Anh goc: Sinh tố bơ.jpg
+    Tac gia: Hoangkid (thảo luận)
+    Giay phep: Public domain
+    Link: https://commons.wikimedia.org/wiki/File:Sinh_t%E1%BB%91_b%C6%A1.jpg
+
+rau-muong-xao-toi.jpg
+    Anh goc: Rau muống xào tỏi, tháng 4 năm 2018.jpg
+    Tac gia: Phương Huy (thảo luận)
+    Giay phep: Public domain
+    Link: https://commons.wikimedia.org/wiki/File:Rau_mu%E1%BB%91ng_x%C3%A0o_t%E1%BB%8Fi,_th%C3%A1ng_4_n%C4%83m_2018.jpg
+
+canh-bi-dao.jpg
+    Anh goc: Bữa cơm nhà Mheo, ng19th1n2020 (nồi canh bí đao).jpg
+    Tac gia: Phương Huy
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:B%E1%BB%AFa_c%C6%A1m_nh%C3%A0_Mheo,_ng19th1n2020_(n%E1%BB%93i_canh_b%C3%AD_%C4%91ao).jpg
+
+ca-kho-to.jpg
+    Anh goc: Phú Quốc 2022 (cá kho tộ) (2).jpg
+    Tac gia: Phương Huy
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:Ph%C3%BA_Qu%E1%BB%91c_2022_(c%C3%A1_kho_t%E1%BB%99)_(2).jpg
+
+cha-gio.jpg
+    Anh goc: Chả giò SG (nem rán giòn) ở quán bún riêu Bà Ti ng26th7n2023 (7).jpg
+    Tac gia: Phương Huy
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:Ch%E1%BA%A3_gi%C3%B2_SG_(nem_r%C3%A1n_gi%C3%B2n)_%E1%BB%9F_qu%C3%A1n_b%C3%BAn_ri%C3%AAu_B%C3%A0_Ti_ng26th7n2023_(7).jpg
+
+banh-flan.jpg
+    Anh goc: Crème caramel at NB Steak JK.jpg
+    Tac gia: Oleg Yunakov
+    Giay phep: CC BY-SA 4.0
+    Link: https://commons.wikimedia.org/wiki/File:Cr%C3%A8me_caramel_at_NB_Steak_JK.jpg
