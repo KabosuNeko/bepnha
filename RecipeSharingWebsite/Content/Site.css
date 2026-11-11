@@ -89,7 +89,7 @@ a:hover {
     color: #f2ede6;
 }
 
-/* Anh mon an: cat cho deu khung (anh doc/ngang deu dep) */
+/* Anh mon an: cat cho deu khung */
 .card-img-top {
     height: 220px;
     object-fit: cover;
