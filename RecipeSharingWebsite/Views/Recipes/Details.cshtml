@@ -14,7 +14,7 @@
     </ol>
 </nav>
 
-@* bai chua duyet / bi xoa: chi chu bai va admin thay trang nay *@
+@* bài chưa duyệt / bị xóa: chỉ chủ bài và admin thấy trang này *@
 @if (Model.Status == RecipeSharingWebsite.Models.Recipe.ChoDuyet)
 {
     <div class="alert alert-warning"><i class="bi bi-hourglass-split me-1"></i> Bài đang chờ admin duyệt, người khác chưa thấy bài này.</div>
@@ -86,7 +86,7 @@ else if (Model.Status == RecipeSharingWebsite.Models.Recipe.BiXoa)
 </div>
 
 <div class="row g-4 mb-5">
-    @* Nguyen lieu *@
+    @* Nguyên liệu *@
     <div class="col-lg-5">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-cream fw-bold"><i class="bi bi-basket text-accent me-2"></i>Nguyên liệu</div>
@@ -99,7 +99,7 @@ else if (Model.Status == RecipeSharingWebsite.Models.Recipe.BiXoa)
         </div>
     </div>
 
-    @* Cac buoc lam *@
+    @* Các bước làm *@
     <div class="col-lg-7">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-cream fw-bold"><i class="bi bi-list-ol text-accent me-2"></i>Các bước làm</div>
@@ -109,7 +109,7 @@ else if (Model.Status == RecipeSharingWebsite.Models.Recipe.BiXoa)
                 {
                     <div class="d-flex gap-3 mb-3">
                         <span class="step-num rounded-circle d-flex align-items-center justify-content-center fw-bold">@buoc</span>
-                        @* bo so thu tu "1. " o dau dong vi da co vong tron danh so *@
+                        @* bỏ số thứ tự "1. " ở đầu dòng vì đã có vòng tròn đánh số *@
                         <p class="mb-0 pt-1">@(step.Length > 3 && char.IsDigit(step[0]) && step.Contains(". ") ? step.Substring(step.IndexOf(". ") + 2) : step)</p>
                     </div>
                     buoc++;
@@ -119,7 +119,7 @@ else if (Model.Status == RecipeSharingWebsite.Models.Recipe.BiXoa)
     </div>
 </div>
 
-@* ===== Danh gia ===== *@
+@* ===== Đánh giá ===== *@
 <div class="card border-0 shadow-sm" id="danh-gia">
     <div class="card-header bg-cream fw-bold d-flex justify-content-between">
         <span><i class="bi bi-star text-accent me-2"></i>Đánh giá (@ratings.Count)</span>

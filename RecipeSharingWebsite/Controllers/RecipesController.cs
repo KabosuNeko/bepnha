@@ -12,7 +12,7 @@ namespace RecipeSharingWebsite.Controllers
     {
         BepNhaDBEntities db = new BepNhaDBEntities();
 
-        // GET: Recipes - chi hien bai da duyet
+        // GET: Recipes - chỉ hiện bài đã duyệt
         public ActionResult Index(string searchString, string sortStyle, int? categoryID)
         {
             ViewBag.NameSort = sortStyle == "name" ? "name_desc" : "name";
@@ -22,11 +22,11 @@ namespace RecipeSharingWebsite.Controllers
                           where r.Status == Recipe.DaDuyet
                           select r;
 
-            // tim kiem theo ten mon
+            // tìm kiếm theo tên món
             if (!String.IsNullOrEmpty(searchString))
                 recipes = recipes.Where(r => r.Title.Contains(searchString));
 
-            // loc theo danh muc
+            // lọc theo danh mục
             if (categoryID != null)
                 recipes = recipes.Where(r => r.CategoryID == categoryID);
 
@@ -48,7 +48,7 @@ namespace RecipeSharingWebsite.Controllers
         public ActionResult Details(int id)
         {
             var recipe = db.Recipes.Find(id);
-            // bai chua duyet / bi xoa: chi chu bai va admin xem duoc
+            // bài chưa duyệt / bị xóa: chỉ chủ bài và admin xem được
             if (recipe == null || (recipe.Status != Recipe.DaDuyet && !DuocSua(recipe)))
                 return HttpNotFound();
 
@@ -57,7 +57,7 @@ namespace RecipeSharingWebsite.Controllers
             return View(recipe);
         }
 
-        // POST: Recipes/Rate - danh gia mon an
+        // POST: Recipes/Rate - đánh giá món ăn
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Rate(Rating rating)
@@ -106,12 +106,12 @@ namespace RecipeSharingWebsite.Controllers
             ViewBag.CategoryList = new SelectList(db.Categories, "CategoryID", "CategoryName");
             if (ModelState.IsValid)
             {
-                // nguoi dang lay theo tai khoan, khong cho nhap tay
+                // người đăng lấy theo tài khoản, không cho nhập tay
                 recipe.UserID = (int)Session["UserID"];
                 recipe.Author = (string)Session["FullName"];
                 recipe.CreatedAt = DateTime.Now;
-                recipe.ImagePath = "~/Content/Images/placeholder.svg"; // TODO: lam chuc nang upload anh
-                // admin dang thi hien luon, nguoi dung thuong phai cho duyet
+                recipe.ImagePath = "~/Content/Images/placeholder.svg"; // TODO: làm chức năng upload ảnh
+                // admin đăng thì hiện luôn, người dùng thường phải chờ duyệt
                 recipe.Status = LaAdmin() ? Recipe.DaDuyet : Recipe.ChoDuyet;
                 recipe.RejectReason = null;
                 db.Recipes.Add(recipe);
@@ -168,7 +168,7 @@ namespace RecipeSharingWebsite.Controllers
             r2.CookTimeMinutes = recipe.CookTimeMinutes;
             r2.Servings = recipe.Servings;
             r2.Difficulty = recipe.Difficulty;
-            // nguoi dung sua bai thi phai duyet lai, admin sua thi giu nguyen
+            // người dùng sửa bài thì phải duyệt lại, admin sửa thì giữ nguyên
             if (!LaAdmin())
             {
                 r2.Status = Recipe.ChoDuyet;
@@ -178,7 +178,7 @@ namespace RecipeSharingWebsite.Controllers
             return RedirectToAction("Details", new { id = recipe.RecipeID });
         }
 
-        // GET: Recipes/Delete/5 - chu bai tu xoa bai cua minh
+        // GET: Recipes/Delete/5 - chủ bài tự xóa bài của mình
         public ActionResult Delete(int id)
         {
             var recipe = db.Recipes.Find(id);
@@ -205,7 +205,7 @@ namespace RecipeSharingWebsite.Controllers
             return RedirectToAction("MyRecipes", "Account");
         }
 
-        // ===== kiem tra quyen =====
+        // ===== kiểm tra quyền =====
         private bool LaAdmin()
         {
             return Session["IsAdmin"] != null && (bool)Session["IsAdmin"];
@@ -221,7 +221,7 @@ namespace RecipeSharingWebsite.Controllers
             return LaAdmin() || LaChuBai(recipe);
         }
 
-        // chua dang nhap thi chuyen sang dang nhap, da dang nhap ma khong co quyen thi bao loi 403
+        // chưa đăng nhập thì chuyển sang đăng nhập, đã đăng nhập mà không có quyền thì báo lỗi 403
         private ActionResult KhongCoQuyen()
         {
             if (Session["UserID"] == null)

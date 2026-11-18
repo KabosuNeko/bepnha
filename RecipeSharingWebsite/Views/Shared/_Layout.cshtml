@@ -1,5 +1,5 @@
 ﻿@{
-    // lay ten controller hien tai de to sang menu dang chon
+    // lấy tên controller hiện tại để tô sáng menu đang chọn
     string ctrl = ViewContext.RouteData.Values["controller"].ToString();
     string act = ViewContext.RouteData.Values["action"].ToString();
     bool daDangNhap = Session["UserID"] != null;

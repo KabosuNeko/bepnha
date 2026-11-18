@@ -11,14 +11,14 @@ namespace RecipeSharingWebsite.Controllers
     {
         BepNhaDBEntities db = new BepNhaDBEntities();
 
-        // chay truoc moi action: khong phai admin thi chuyen ve trang dang nhap
+        // chạy trước mọi action: không phải admin thì chuyển về trang đăng nhập
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (Session["IsAdmin"] == null || !(bool)Session["IsAdmin"])
                 filterContext.Result = RedirectToAction("Login", "Account", new { returnUrl = Request.RawUrl });
         }
 
-        // GET: Admin?status=Chờ duyệt - danh sach bai theo trang thai
+        // GET: Admin?status=Chờ duyệt - danh sách bài theo trạng thái
         public ActionResult Index(string status)
         {
             if (String.IsNullOrEmpty(status))
@@ -32,7 +32,7 @@ namespace RecipeSharingWebsite.Controllers
             return View(recipes);
         }
 
-        // POST: Admin/Approve/5 - duyet bai
+        // POST: Admin/Approve/5 - duyệt bài
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Approve(int id)
@@ -48,7 +48,7 @@ namespace RecipeSharingWebsite.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Admin/Reject/5 - xoa bai kem ly do, nguoi dang xem ly do o trang Bai cua toi
+        // POST: Admin/Reject/5 - xóa bài kèm lý do, người đăng xem lý do ở trang Bài của tôi
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Reject(int id, string reason)

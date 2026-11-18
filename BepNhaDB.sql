@@ -1,8 +1,8 @@
 ﻿/*
-  BepNhaDB.sql - Database cho website chia se cong thuc "Bep Nha"
-  Cach dung: mo file nay trong SSMS (ket noi .\SQLEXPRESS) roi bam Execute (F5).
-  Sau do vao Visual Studio: Add > New Item > ADO.NET Entity Data Model > EF Designer from database.
-  Tai khoan mau:  admin / admin123  (quan tri)   -   user1 / user123  (nguoi dung)
+  BepNhaDB.sql - Database cho website chia sẻ công thức "Bếp Nhà"
+  Cách dùng: mở file này trong SSMS (kết nối .\SQLEXPRESS) rồi bấm Execute (F5).
+  Sau đó vào Visual Studio: Add > New Item > ADO.NET Entity Data Model > EF Designer from database.
+  Tài khoản mẫu:  admin / admin123  (quản trị)   -   user1 / user123  (người dùng)
 */
 
 CREATE DATABASE BepNhaDB;
@@ -10,7 +10,7 @@ GO
 USE BepNhaDB;
 GO
 
-/* ===== Bang Categories: danh muc mon an ===== */
+/* ===== Bảng Categories: danh mục món ăn ===== */
 CREATE TABLE Categories (
     CategoryID   INT IDENTITY(1,1) PRIMARY KEY,
     CategoryName NVARCHAR(50)  NOT NULL,
@@ -18,17 +18,17 @@ CREATE TABLE Categories (
 );
 GO
 
-/* ===== Bang Users: tai khoan ===== */
+/* ===== Bảng Users: tài khoản ===== */
 CREATE TABLE Users (
     UserID       INT IDENTITY(1,1) PRIMARY KEY,
     Username     NVARCHAR(50)  NOT NULL UNIQUE,
-    PasswordHash NVARCHAR(200) NOT NULL,          -- mat khau da ma hoa (Crypto.HashPassword)
+    PasswordHash NVARCHAR(200) NOT NULL,          -- mật khẩu đã mã hóa (Crypto.HashPassword)
     FullName     NVARCHAR(50)  NOT NULL,
     IsAdmin      BIT           NOT NULL DEFAULT 0
 );
 GO
 
-/* ===== Bang Recipes: cong thuc ===== */
+/* ===== Bảng Recipes: công thức ===== */
 CREATE TABLE Recipes (
     RecipeID        INT IDENTITY(1,1) PRIMARY KEY,
     Title           NVARCHAR(120) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE Recipes (
 );
 GO
 
-/* ===== Bang Ratings: danh gia ===== */
+/* ===== Bảng Ratings: đánh giá ===== */
 CREATE TABLE Ratings (
     RatingID     INT IDENTITY(1,1) PRIMARY KEY,
     RecipeID     INT           NOT NULL FOREIGN KEY REFERENCES Recipes(RecipeID) ON DELETE CASCADE,
@@ -60,13 +60,13 @@ CREATE TABLE Ratings (
 );
 GO
 
-/* ===== Du lieu mau: tai khoan ===== */
+/* ===== Dữ liệu mẫu: tài khoản ===== */
 INSERT INTO Users (Username, PasswordHash, FullName, IsAdmin) VALUES
     (N'admin', N'AP2tsxuyYfCfVVX5xSDm6vugBdH8yVpmvP7Z2JYzch6p0CqWUqVxVor4YF2ez8askg==', N'Quản trị viên', 1),
     (N'user1', N'ADtuSx6yrRnJDCtScK2F7DhpUZakG/Gn18i9VWVUQtbkR4JKDXK8XWpjQWxi2LXwqQ==', N'Minh Anh', 0);
 GO
 
-/* ===== Du lieu mau: danh muc ===== */
+/* ===== Dữ liệu mẫu: danh mục ===== */
 SET IDENTITY_INSERT Categories ON;
 INSERT INTO Categories (CategoryID, CategoryName, Description) VALUES (1, N'Món nước', N'Phở, bún, mì và các món có nước dùng');
 INSERT INTO Categories (CategoryID, CategoryName, Description) VALUES (2, N'Cơm - Món khô', N'Cơm, bánh mì và các món ăn khô');
@@ -79,7 +79,7 @@ INSERT INTO Categories (CategoryID, CategoryName, Description) VALUES (8, N'Đ�
 SET IDENTITY_INSERT Categories OFF;
 GO
 
-/* ===== Du lieu mau: cong thuc ===== */
+/* ===== Dữ liệu mẫu: công thức ===== */
 SET IDENTITY_INSERT Recipes ON;
 INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Instructions, PrepTimeMinutes, CookTimeMinutes, Servings, Difficulty, Author, ImagePath, CreatedAt) VALUES (1, N'Phở bò', 1, N'Nước dùng xương bò ninh cùng gừng, hành tím, hoa hồi và quế, ăn kèm bánh phở và thịt bò tái.', N'1 kg xương ống bò
 500 g thịt bò nạm
@@ -262,7 +262,7 @@ INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Inst
 SET IDENTITY_INSERT Recipes OFF;
 GO
 
-/* ===== Du lieu mau: danh gia ===== */
+/* ===== Dữ liệu mẫu: đánh giá ===== */
 SET IDENTITY_INSERT Ratings ON;
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (1, 1, N'Ngọc Mai', 5, N'Nước dùng trong và thơm, mình ninh đúng 2 tiếng là vừa.', N'2025-09-06T00:00:00');
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (2, 1, N'Đức Long', 4, N'Ngon, nhưng mình bớt đường phèn một chút cho hợp khẩu vị.', N'2025-09-07T00:00:00');

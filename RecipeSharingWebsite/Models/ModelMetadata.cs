@@ -24,7 +24,7 @@ namespace RecipeSharingWebsite.Models
     [MetadataType(typeof(RecipeMetadata))]
     public partial class Recipe
     {
-        // 3 trang thai cua bai dang (cot Status)
+        // 3 trạng thái của bài đăng (cột Status)
         public const string ChoDuyet = "Chờ duyệt";
         public const string DaDuyet = "Đã duyệt";
         public const string BiXoa = "Bị xóa";
@@ -79,7 +79,7 @@ namespace RecipeSharingWebsite.Models
         [Display(Name = "Độ khó")]
         public string Difficulty { get; set; }
 
-        // khong bat nhap: lay ho ten cua tai khoan dang dang nhap
+        // không bắt nhập: lấy họ tên của tài khoản đang đăng nhập
         [Display(Name = "Người đăng")]
         public string Author { get; set; }
 

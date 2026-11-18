@@ -34,7 +34,7 @@ namespace RecipeSharingWebsite.Controllers
             {
                 Username = model.Username,
                 FullName = model.FullName,
-                PasswordHash = Crypto.HashPassword(model.Password), // ma hoa mat khau, khong luu mat khau that
+                PasswordHash = Crypto.HashPassword(model.Password), // mã hóa mật khẩu, không lưu mật khẩu thật
                 IsAdmin = false
             };
             db.Users.Add(user);
@@ -70,7 +70,7 @@ namespace RecipeSharingWebsite.Controllers
 
             DangNhap(user);
 
-            // chi quay ve link trong web minh, tranh bi chuyen sang trang la
+            // chỉ quay về link trong web mình, tránh bị chuyển sang trang lạ
             if (Url.IsLocalUrl(returnUrl))
                 return Redirect(returnUrl);
             return RedirectToAction("Index", "Home");
@@ -85,7 +85,7 @@ namespace RecipeSharingWebsite.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: Account/MyRecipes - bai cua toi: xem trang thai duyet va ly do bi xoa
+        // GET: Account/MyRecipes - bài của tôi: xem trạng thái duyệt và lý do bị xóa
         public ActionResult MyRecipes()
         {
             if (Session["UserID"] == null)
@@ -98,7 +98,7 @@ namespace RecipeSharingWebsite.Controllers
             return View(recipes);
         }
 
-        // luu nguoi dung vao Session
+        // lưu người dùng vào Session
         private void DangNhap(User user)
         {
             Session["UserID"] = user.UserID;

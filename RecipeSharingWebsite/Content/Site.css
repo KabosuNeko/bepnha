@@ -1,4 +1,4 @@
-/* Bang mau: chu #2B2B2B - chu phu #6B6B6B - nen kem #FAF7F2 - duong ke #E7E2DA - mau nhan #B4552D */
+/* Bảng màu: chữ #2B2B2B - chữ phụ #6B6B6B - nền kem #FAF7F2 - đường kẻ #E7E2DA - màu nhấn #B4552D */
 
 body {
     color: #2B2B2B;
@@ -19,7 +19,7 @@ h1, h2, h3 {
 }
 
 .text-muted {
-    color: red !important;
+    color: #6B6B6B !important;
 }
 
 .text-accent {
@@ -52,7 +52,7 @@ h1, h2, h3 {
     color: #B4552D;
 }
 
-/* Nut bam */
+/* Nút bấm */
 .btn-primary {
     background: #2B2B2B;
     border-color: #2B2B2B;
@@ -84,11 +84,11 @@ h1, h2, h3 {
     background: #B4552D;
 }
 
-/* Banner trang chu: slideshow */
+/* Banner trang chủ: slideshow */
 .hero-img {
     height: 520px;
     object-fit: cover;
-    filter: brightness(.5); /* lam toi anh de chu trang de doc */
+    filter: brightness(.5); /* làm tối ảnh để chữ trắng dễ đọc */
 }
 
 .carousel-caption {
@@ -112,7 +112,7 @@ h1, h2, h3 {
     color: #f2ede6;
 }
 
-/* Card mon an: re chuot vao thi noi len */
+/* Thẻ món ăn: rê chuột vào thì nổi lên */
 .recipe-card {
     border: 1px solid #E7E2DA;
     transition: transform .2s, box-shadow .2s;
@@ -123,13 +123,13 @@ h1, h2, h3 {
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
 }
 
-/* Anh mon an: cat cho deu khung */
+/* Ảnh món ăn: cắt cho đều khung */
 .card-img-top {
     height: 220px;
     object-fit: cover;
 }
 
-/* Muc nho tren dau (chu cam in hoa) */
+/* Mục nhỏ trên đầu (chữ cam in hoa) */
 .kicker {
     display: block;
     font-size: 12px;
@@ -139,13 +139,13 @@ h1, h2, h3 {
     margin-bottom: 6px;
 }
 
-/* Mon ngon cua tuan */
+/* Món ngon của tuần */
 .featured img {
     height: 420px;
     object-fit: cover;
 }
 
-/* Trang chi tiet */
+/* Trang chi tiết */
 .detail-img {
     height: 420px;
     object-fit: cover;
@@ -169,7 +169,7 @@ h1, h2, h3 {
     color: #fff;
 }
 
-/* Sao danh gia */
+/* Sao đánh giá */
 .stars {
     color: #E8A33D;
 }

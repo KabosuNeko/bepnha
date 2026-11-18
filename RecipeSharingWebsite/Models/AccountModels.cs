@@ -2,7 +2,7 @@
 
 namespace RecipeSharingWebsite.Models
 {
-    // Du lieu form Dang nhap
+    // Dữ liệu form Đăng nhập
     public class LoginModel
     {
         [Required(ErrorMessage = "Vui lòng nhập tên đăng nhập")]
@@ -15,7 +15,7 @@ namespace RecipeSharingWebsite.Models
         public string Password { get; set; }
     }
 
-    // Du lieu form Dang ky
+    // Dữ liệu form Đăng ký
     public class RegisterModel
     {
         [Required(ErrorMessage = "Vui lòng nhập tên đăng nhập")]

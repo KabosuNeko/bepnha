@@ -1,25 +1,25 @@
 ﻿/*
-  CapNhat_TaiKhoan.sql - them tai khoan, duyet bai cho database BepNhaDB DA CO SAN.
-  (Tao database moi tu dau thi chay BepNhaDB.sql, file do da co san cac phan nay.)
-  Chay xong: mo BepNhaModel.edmx > chuot phai > Update Model from Database.
+  CapNhat_TaiKhoan.sql - thêm tài khoản, duyệt bài cho database BepNhaDB ĐÃ CÓ SẴN.
+  (Tạo database mới từ đầu thì chạy BepNhaDB.sql, file đó đã có sẵn các phần này.)
+  Chạy xong: mở BepNhaModel.edmx > chuột phải > Update Model from Database.
 
-  Tai khoan mau:  admin / admin123  (quan tri)   -   user1 / user123  (nguoi dung)
+  Tài khoản mẫu:  admin / admin123  (quản trị)   -   user1 / user123  (người dùng)
 */
 
 USE BepNhaDB;
 GO
 
-/* ===== Bang Users: tai khoan ===== */
+/* ===== Bảng Users: tài khoản ===== */
 CREATE TABLE Users (
     UserID       INT IDENTITY(1,1) PRIMARY KEY,
     Username     NVARCHAR(50)  NOT NULL UNIQUE,
-    PasswordHash NVARCHAR(200) NOT NULL,          -- mat khau da ma hoa (Crypto.HashPassword)
+    PasswordHash NVARCHAR(200) NOT NULL,          -- mật khẩu đã mã hóa (Crypto.HashPassword)
     FullName     NVARCHAR(50)  NOT NULL,
     IsAdmin      BIT           NOT NULL DEFAULT 0
 );
 GO
 
-/* ===== Recipes: them nguoi dang, trang thai duyet, ly do xoa ===== */
+/* ===== Recipes: thêm người đăng, trạng thái duyệt, lý do xóa ===== */
 ALTER TABLE Recipes ADD
     UserID       INT           NULL CONSTRAINT FK_Recipes_Users FOREIGN KEY REFERENCES Users(UserID),
     Status       NVARCHAR(20)  NOT NULL CONSTRAINT DF_Recipes_Status DEFAULT N'Đã duyệt',  -- Chờ duyệt / Đã duyệt / Bị xóa

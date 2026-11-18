@@ -7,7 +7,7 @@
 @section hero {
     <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
         @{
-            // lay 4 mon moi nhat lam slide
+            // lấy 4 món mới nhất làm slide
             var slides = Model.Take(4).ToList();
         }
 
@@ -18,7 +18,7 @@
             }
         </div>
 
-        @* Moi slide la 1 mon an, bam vao thi mo trang chi tiet *@
+        @* Mỗi slide là 1 món ăn, bấm vào thì mở trang chi tiết *@
         <div class="carousel-inner">
             @for (int i = 0; i < slides.Count; i++)
             {
@@ -34,7 +34,7 @@
             }
         </div>
 
-        @* Chu dung yen o giua; pe-none de bam xuyen qua xuong slide *@
+        @* Chữ đứng yên ở giữa; pe-none để bấm xuyên qua xuống slide *@
         <div class="hero position-absolute top-0 start-0 w-100 h-100 z-1 pe-none">
             <div class="container">
                 <h1>Công thức đơn giản cho bữa cơm ngon</h1>
@@ -53,7 +53,7 @@
     </div>
 }
 
-@* ===== Danh muc ===== *@
+@* ===== Danh mục ===== *@
 <section class="mb-5">
     <span class="kicker">Khám phá</span>
     <h2 class="mb-3">Danh mục món ăn</h2>
@@ -65,7 +65,7 @@
     </div>
 </section>
 
-@* ===== Mon moi nhat ===== *@
+@* ===== Món mới nhất ===== *@
 <section class="mb-5">
     <div class="d-flex justify-content-between align-items-end mb-3">
         <div>
@@ -82,7 +82,7 @@
     </div>
 </section>
 
-@* ===== Mon ngon cua tuan ===== *@
+@* ===== Món ngon của tuần ===== *@
 @if (ViewBag.Featured != null)
 {
     var featured = (RecipeSharingWebsite.Models.Recipe)ViewBag.Featured;

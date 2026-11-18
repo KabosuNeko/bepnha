@@ -13,14 +13,14 @@ namespace RecipeSharingWebsite.Controllers
 
         public ActionResult Index()
         {
-            // chi lay bai da duyet
+            // chỉ lấy bài đã duyệt
             var approved = db.Recipes.Where(r => r.Status == Recipe.DaDuyet);
 
-            // lay 6 mon moi nhat
+            // lấy 6 món mới nhất
             var latest = approved.OrderByDescending(r => r.CreatedAt).Take(6).ToList();
             ViewBag.Categories = db.Categories.ToList();
 
-            // mon ngon cua tuan: moi tuan doi 1 mon theo so tuan trong nam
+            // món ngon của tuần: mỗi tuần đổi 1 món theo số tuần trong năm
             var all = approved.OrderBy(r => r.RecipeID).ToList();
             if (all.Count > 0)
             {

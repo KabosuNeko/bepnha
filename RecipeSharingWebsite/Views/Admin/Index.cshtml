@@ -11,7 +11,7 @@
     <h1 class="mb-0">Duyệt bài đăng</h1>
 </div>
 
-@* 3 tab theo trang thai *@
+@* 3 tab theo trạng thái *@
 <ul class="nav nav-tabs mb-4">
     <li class="nav-item">
         <a class="nav-link @(status == Recipe.ChoDuyet ? "active" : "")" href="@Url.Action("Index", new { status = Recipe.ChoDuyet })">

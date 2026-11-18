@@ -11,7 +11,7 @@ namespace RecipeSharingWebsite.Controllers
     {
         BepNhaDBEntities db = new BepNhaDBEntities();
 
-        // quan ly danh muc chi danh cho admin
+        // quản lý danh mục chỉ dành cho admin
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (Session["IsAdmin"] == null || !(bool)Session["IsAdmin"])
@@ -93,7 +93,7 @@ namespace RecipeSharingWebsite.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var category = db.Categories.Find(id);
-            // danh muc con cong thuc thi khong cho xoa
+            // danh mục còn công thức thì không cho xóa
             if (category.Recipes.Count > 0)
             {
                 ViewBag.Err = "Danh mục này còn " + category.Recipes.Count + " công thức nên không xóa được!";
