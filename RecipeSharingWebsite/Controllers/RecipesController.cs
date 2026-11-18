@@ -22,9 +22,9 @@ namespace RecipeSharingWebsite.Controllers
                           where r.Status == Recipe.DaDuyet
                           select r;
 
-            // tìm kiếm theo tên món
+            // tìm kiếm theo tên món hoặc nguyên liệu
             if (!String.IsNullOrEmpty(searchString))
-                recipes = recipes.Where(r => r.Title.Contains(searchString));
+                recipes = recipes.Where(r => r.Title.Contains(searchString) || r.Ingredients.Contains(searchString));
 
             // lọc theo danh mục
             if (categoryID != null)

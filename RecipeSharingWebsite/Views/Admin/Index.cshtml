@@ -7,7 +7,6 @@
 }
 
 <div class="mb-4">
-    <span class="kicker">Quản trị</span>
     <h1 class="mb-0">Duyệt bài đăng</h1>
 </div>
 
@@ -47,8 +46,8 @@
                                 <a href="@Url.Action("Details", "Recipes", new { id = item.RecipeID })">@item.Title</a>
                             </h5>
                             <p class="text-muted small mb-2">
-                                <i class="bi bi-person me-1"></i>@item.Author
-                                <span class="mx-1">·</span><i class="bi bi-calendar3 me-1"></i>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                                @item.Author
+                                <span class="mx-1">·</span>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")
                             </p>
                         </div>
                     </div>
@@ -65,7 +64,7 @@
                             using (Html.BeginForm("Approve", "Admin", new { id = item.RecipeID }, FormMethod.Post, null))
                             {
                                 @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> Duyệt</button>
+                                <button type="submit" class="btn btn-sm btn-success">Duyệt</button>
                             }
                         }
                         @if (item.Status != Recipe.BiXoa)
@@ -75,7 +74,7 @@
                                 @Html.AntiForgeryToken()
                                 <div class="input-group input-group-sm">
                                     <input type="text" name="reason" class="form-control" maxlength="500" required placeholder="Lý do xóa (gửi cho người đăng)" />
-                                    <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Xóa</button>
+                                    <button type="submit" class="btn btn-outline-danger">Xóa</button>
                                 </div>
                             }
                         }

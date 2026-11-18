@@ -17,12 +17,12 @@
     <div class="col-xl-10">
         @if (ViewBag.Err != null)
         {
-            <div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-1"></i>@ViewBag.Err</div>
+            <div class="alert alert-danger">@ViewBag.Err</div>
         }
 
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-cream py-3">
-                <h1 class="h3 mb-0"><i class="bi bi-pencil-square text-accent me-2"></i>Sửa công thức</h1>
+                <h1 class="h3 mb-0">Sửa công thức</h1>
                 <small class="text-muted">
                     Đang sửa: @Model.Title.
                     @(laAdmin ? "" : "Sau khi lưu, bài sẽ chờ admin duyệt lại.")
@@ -39,7 +39,7 @@
 
                     <hr class="my-4" />
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary px-4"><i class="bi bi-save"></i> Lưu thay đổi</button>
+                        <button type="submit" class="btn btn-primary px-4">Lưu thay đổi</button>
                         <a class="btn btn-outline-secondary" href="@Url.Action("Details", new { id = Model.RecipeID })">Hủy</a>
                     </div>
                 }

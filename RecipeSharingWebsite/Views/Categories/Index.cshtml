@@ -6,10 +6,9 @@
 
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
     <div>
-        <span class="kicker">Quản trị</span>
         <h1 class="mb-0">Danh mục món ăn</h1>
     </div>
-    <a class="btn btn-primary" href="@Url.Action("Create")"><i class="bi bi-plus-lg"></i> Thêm danh mục</a>
+    <a class="btn btn-primary" href="@Url.Action("Create")">Thêm danh mục</a>
 </div>
 
 <div class="card border-0 shadow-sm">
@@ -35,8 +34,8 @@
                             <span class="badge rounded-pill badge-accent">@item.Recipes.Count</span>
                         </td>
                         <td class="text-end pe-4 text-nowrap">
-                            <a class="btn btn-sm btn-outline-secondary" href="@Url.Action("Edit", new { id = item.CategoryID })"><i class="bi bi-pencil"></i> Sửa</a>
-                            <a class="btn btn-sm btn-outline-danger" href="@Url.Action("Delete", new { id = item.CategoryID })"><i class="bi bi-trash"></i> Xóa</a>
+                            <a class="btn btn-sm btn-outline-secondary" href="@Url.Action("Edit", new { id = item.CategoryID })">Sửa</a>
+                            <a class="btn btn-sm btn-outline-danger" href="@Url.Action("Delete", new { id = item.CategoryID })">Xóa</a>
                         </td>
                     </tr>
                 }

@@ -245,6 +245,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_RecipeCard.cshtml" />
     <Content Include="Views\Shared\_Stars.cshtml" />
+    <Content Include="Views\Shared\_Avatar.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\MyRecipes.cshtml" />

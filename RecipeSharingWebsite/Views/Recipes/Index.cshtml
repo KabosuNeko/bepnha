@@ -4,66 +4,70 @@
     ViewBag.Title = "Công thức";
     string catID = Request.QueryString["categoryID"];
     string sort = Request.QueryString["sortStyle"];
+    string search = ViewBag.SearchString;
 }
 
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
-    <div>
-        <span class="kicker">Công thức</span>
-        <h1 class="mb-0">Danh sách công thức</h1>
-    </div>
-    <a class="btn btn-primary" href="@Url.Action("Create")"><i class="bi bi-plus-lg"></i> Đăng công thức mới</a>
-</div>
-
-@* ===== Thanh tìm kiếm + lọc ===== *@
-<div class="card border-0 bg-cream mb-4">
-    <div class="card-body">
+<div class="row g-4 g-lg-5">
+    @* ===== Cột trái: tìm kiếm + danh sách ===== *@
+    <div class="col-lg-8">
         @using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
         {
             <div class="input-group mb-3">
-                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                @Html.TextBox("searchString", null, new { @class = "form-control", placeholder = "Nhập tên món cần tìm..." })
+                @Html.TextBox("searchString", null, new { @class = "form-control", placeholder = "Tìm tên món hay nguyên liệu..." })
                 <button type="submit" class="btn btn-primary px-4">Tìm</button>
             </div>
         }
 
-        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-            <span class="small text-muted me-1">Danh mục:</span>
-            <a class="btn btn-sm rounded-pill btn-outline-secondary @(string.IsNullOrEmpty(catID) ? "active" : "")" href="@Url.Action("Index")">Tất cả</a>
-            @foreach (var c in (List<RecipeSharingWebsite.Models.Category>)ViewBag.Categories)
-            {
-                <a class="btn btn-sm rounded-pill btn-outline-secondary @(catID == c.CategoryID.ToString() ? "active" : "")"
-                   href="@Url.Action("Index", new { categoryID = c.CategoryID })">@c.CategoryName</a>
-            }
-        </div>
-
-        <div class="d-flex flex-wrap align-items-center gap-2">
-            <span class="small text-muted me-1">Sắp xếp:</span>
-            <div class="btn-group btn-group-sm" role="group">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+            <h1 class="h4 mb-0">
+                @(string.IsNullOrEmpty(search) ? "Tất cả công thức" : "Kết quả cho \"" + search + "\"")
+                <span class="text-muted fw-normal">(@Model.Count())</span>
+            </h1>
+            <div class="btn-group btn-group-sm" role="group" aria-label="Sắp xếp">
+                <a class="btn btn-outline-secondary @(string.IsNullOrEmpty(sort) ? "active" : "")"
+                   href="@Url.Action("Index", new { searchString = search, categoryID = catID })">Mới nhất</a>
                 <a class="btn btn-outline-secondary @(sort == "name" || sort == "name_desc" ? "active" : "")"
-                   href="@Url.Action("Index", new { sortStyle = ViewBag.NameSort, searchString = ViewBag.SearchString })">
-                    <i class="bi bi-sort-alpha-down"></i> Tên món
-                </a>
+                   href="@Url.Action("Index", new { sortStyle = ViewBag.NameSort, searchString = search, categoryID = catID })">Tên món</a>
                 <a class="btn btn-outline-secondary @(sort == "time" || sort == "time_desc" ? "active" : "")"
-                   href="@Url.Action("Index", new { sortStyle = ViewBag.TimeSort, searchString = ViewBag.SearchString })">
-                    <i class="bi bi-clock"></i> Thời gian nấu
-                </a>
+                   href="@Url.Action("Index", new { sortStyle = ViewBag.TimeSort, searchString = search, categoryID = catID })">Thời gian nấu</a>
             </div>
         </div>
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-light border mt-3">
+                Chưa có công thức nào phù hợp. @Html.ActionLink("Xem tất cả", "Index", null, new { @class = "alert-link" })
+            </div>
+        }
+
+        @foreach (var item in Model)
+        {
+            @* mỗi món một hàng: ảnh trái, thông tin phải *@
+            <a class="recipe-row" href="@Url.Action("Details", new { id = item.RecipeID })">
+                <img src="@Url.Content(item.ImagePath ?? "~/Content/Images/placeholder.svg")" alt="@item.Title" />
+                <div class="flex-grow-1">
+                    <h2 class="h5 mb-1">@item.Title</h2>
+                    <p class="text-muted small mb-2 ingredients-line">@item.Ingredients.Replace("\n", ", ")</p>
+                    <div class="small text-muted">
+                        @item.TotalTimeMinutes phút · @item.Servings người · @item.Category.CategoryName
+                    </div>
+                    <div class="small mt-1">@Html.Partial("_Avatar", item.Author) @item.Author</div>
+                </div>
+            </a>
+        }
     </div>
-</div>
 
-<p class="text-muted">Tìm thấy <strong>@Model.Count()</strong> công thức.</p>
-
-@if (!Model.Any())
-{
-    <div class="alert alert-warning">
-        <i class="bi bi-emoji-frown"></i> Không có công thức nào phù hợp. @Html.ActionLink("Xem tất cả", "Index", null, new { @class = "alert-link" })
+    @* ===== Cột phải: lọc theo danh mục ===== *@
+    <div class="col-lg-4">
+        <h2 class="h6 fw-bold mb-3">Danh mục</h2>
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action @(string.IsNullOrEmpty(catID) ? "active" : "")"
+               href="@Url.Action("Index", new { searchString = search })">Tất cả</a>
+            @foreach (var c in (List<RecipeSharingWebsite.Models.Category>)ViewBag.Categories)
+            {
+                <a class="list-group-item list-group-item-action @(catID == c.CategoryID.ToString() ? "active" : "")"
+                   href="@Url.Action("Index", new { categoryID = c.CategoryID, searchString = search })">@c.CategoryName</a>
+            }
+        </div>
     </div>
-}
-
-<div class="row g-4">
-    @foreach (var item in Model)
-    {
-        @Html.Partial("_RecipeCard", item)
-    }
 </div>

@@ -1,47 +1,76 @@
 ﻿@model IEnumerable<RecipeSharingWebsite.Models.Recipe>
+@using RecipeSharingWebsite.Models
 
 @{
     ViewBag.Title = "Trang chủ";
+    // lấy 4 món mới nhất làm slide
+    var slides = Model.Take(4).ToList();
 }
 
 @section hero {
-    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
-        @{
-            // lấy 4 món mới nhất làm slide
-            var slides = Model.Take(4).ToList();
-        }
+    @* Khối tìm kiếm: tìm theo tên món hoặc nguyên liệu *@
+    <section class="search-hero py-5">
+        <div class="container" style="max-width: 720px">
+            <h1 class="mb-2">Hôm nay nấu gì?</h1>
+            <p class="text-muted mb-4">Tìm trong các công thức nhà làm, theo tên món hoặc nguyên liệu bạn đang có.</p>
+            @using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
+            {
+                <div class="input-group input-group-lg mb-3">
+                    <input type="search" name="searchString" class="form-control" placeholder="Ví dụ: thịt bò, bún, cà chua..." aria-label="Tìm tên món hay nguyên liệu" />
+                    <button type="submit" class="btn btn-primary px-4">Tìm</button>
+                </div>
+            }
+            <div>
+                <span class="text-muted small me-2">Hay tìm:</span>
+                @foreach (var tu in new[] { "Bún", "Thịt heo", "Cá", "Đậu hũ", "Trứng", "Chè" })
+                {
+                    <a class="tag" href="@Url.Action("Index", "Recipes", new { searchString = tu })">@tu</a>
+                }
+            </div>
+        </div>
+    </section>
+}
 
+@* ===== Danh mục: ảnh tròn lấy từ món đầu tiên của danh mục ===== *@
+<section class="mb-5">
+    <h2 class="h4 mb-3">Danh mục</h2>
+    <div class="d-flex flex-wrap gap-4">
+        @foreach (var c in (List<Category>)ViewBag.Categories)
+        {
+            var anh = c.Recipes.Where(r => r.Status == Recipe.DaDuyet && r.ImagePath != null)
+                               .Select(r => r.ImagePath).FirstOrDefault() ?? "~/Content/Images/placeholder.svg";
+            <a class="cat-tile text-center" href="@Url.Action("Index", "Recipes", new { categoryID = c.CategoryID })">
+                <img src="@Url.Content(anh)" alt="@c.CategoryName" />
+                <div class="small fw-semibold mt-2">@c.CategoryName</div>
+            </a>
+        }
+    </div>
+</section>
+
+@* ===== Slideshow món mới: mỗi slide là 1 món ăn, bấm vào thì mở trang chi tiết ===== *@
+@if (slides.Any())
+{
+    <div id="heroCarousel" class="carousel slide carousel-fade rounded-3 overflow-hidden mb-5" data-bs-ride="carousel" data-bs-interval="4000">
         <div class="carousel-indicators">
             @for (int i = 0; i < slides.Count; i++)
             {
                 <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Slide @(i + 1)"></button>
             }
         </div>
-
-        @* Mỗi slide là 1 món ăn, bấm vào thì mở trang chi tiết *@
         <div class="carousel-inner">
             @for (int i = 0; i < slides.Count; i++)
             {
                 <div class="carousel-item @(i == 0 ? "active" : "")">
                     <a href="@Url.Action("Details", "Recipes", new { id = slides[i].RecipeID })">
-                        <img src="@Url.Content(slides[i].ImagePath ?? "~/Content/Images/placeholder.svg")" class="d-block w-100 hero-img" alt="@slides[i].Title" />
-                        <div class="carousel-caption">
-                            <h4>@slides[i].Title</h4>
-                            <p>Bấm để xem công thức</p>
+                        <img src="@Url.Content(slides[i].ImagePath ?? "~/Content/Images/placeholder.svg")" class="d-block w-100 slide-img" alt="@slides[i].Title" />
+                        <div class="carousel-caption slide-caption">
+                            <div class="small">Món mới của @slides[i].Author</div>
+                            <h3 class="mb-0 text-white">@slides[i].Title</h3>
                         </div>
                     </a>
                 </div>
             }
         </div>
-
-        @* Chữ đứng yên ở giữa; pe-none để bấm xuyên qua xuống slide *@
-        <div class="hero position-absolute top-0 start-0 w-100 h-100 z-1 pe-none">
-            <div class="container">
-                <h1>Công thức đơn giản cho bữa cơm ngon</h1>
-                <p>Chia sẻ món ăn của gia đình bạn và tìm công thức mình thích.</p>
-            </div>
-        </div>
-
         <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Trước</span>
@@ -53,26 +82,11 @@
     </div>
 }
 
-@* ===== Danh mục ===== *@
-<section class="mb-5">
-    <span class="kicker">Khám phá</span>
-    <h2 class="mb-3">Danh mục món ăn</h2>
-    <div class="d-flex flex-wrap gap-2">
-        @foreach (var c in (List<RecipeSharingWebsite.Models.Category>)ViewBag.Categories)
-        {
-            <a class="btn btn-outline-secondary rounded-pill px-3" href="@Url.Action("Index", "Recipes", new { categoryID = c.CategoryID })">@c.CategoryName</a>
-        }
-    </div>
-</section>
-
 @* ===== Món mới nhất ===== *@
 <section class="mb-5">
     <div class="d-flex justify-content-between align-items-end mb-3">
-        <div>
-            <span class="kicker">Vừa lên bếp</span>
-            <h2 class="mb-0">Món mới nhất</h2>
-        </div>
-        <a class="btn btn-link text-accent" href="@Url.Action("Index", "Recipes")">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        <h2 class="h4 mb-0">Món mới lên bếp</h2>
+        <a class="text-accent" href="@Url.Action("Index", "Recipes")">Xem tất cả →</a>
     </div>
     <div class="row g-4">
         @foreach (var recipe in Model)
@@ -85,24 +99,20 @@
 @* ===== Món ngon của tuần ===== *@
 @if (ViewBag.Featured != null)
 {
-    var featured = (RecipeSharingWebsite.Models.Recipe)ViewBag.Featured;
-    <section class="card border-0 shadow-sm overflow-hidden featured mb-5">
-        <div class="row g-0">
-            <div class="col-md-6">
-                <img src="@Url.Content(featured.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100" alt="@featured.Title" />
-            </div>
-            <div class="col-md-6 bg-cream d-flex align-items-center">
-                <div class="card-body p-4 p-lg-5">
-                    <span class="kicker"><i class="bi bi-star-fill"></i> Món ngon của tuần</span>
-                    <h2 class="card-title">@featured.Title</h2>
-                    <p class="card-text">@featured.Description</p>
-                    <ul class="list-inline text-muted small mb-4">
-                        <li class="list-inline-item me-3"><i class="bi bi-clock me-1"></i>@featured.TotalTimeMinutes phút</li>
-                        <li class="list-inline-item me-3"><i class="bi bi-people me-1"></i>@featured.Servings người</li>
-                        <li class="list-inline-item"><i class="bi bi-bar-chart me-1"></i>@featured.Difficulty</li>
-                    </ul>
-                    <a class="btn btn-primary px-4" href="@Url.Action("Details", "Recipes", new { id = featured.RecipeID })">Xem công thức</a>
-                </div>
+    var featured = (Recipe)ViewBag.Featured;
+    <section class="row g-0 bg-cream rounded-3 overflow-hidden featured mb-5">
+        <div class="col-md-6">
+            <img src="@Url.Content(featured.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100" alt="@featured.Title" />
+        </div>
+        <div class="col-md-6 d-flex align-items-center">
+            <div class="p-4 p-lg-5">
+                <div class="text-accent fw-semibold mb-2">Món ngon của tuần</div>
+                <h2>@featured.Title</h2>
+                <p>@featured.Description</p>
+                <p class="text-muted small mb-4">
+                    @Html.Partial("_Avatar", featured.Author) @featured.Author · @featured.TotalTimeMinutes phút · @featured.Servings người
+                </p>
+                <a class="btn btn-primary px-4" href="@Url.Action("Details", "Recipes", new { id = featured.RecipeID })">Xem công thức</a>
             </div>
         </div>
     </section>
