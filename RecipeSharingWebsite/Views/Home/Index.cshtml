@@ -8,25 +8,48 @@
 }
 
 @section hero {
-    @* Khối tìm kiếm: tìm theo tên món hoặc nguyên liệu *@
-    <section class="search-hero py-5">
-        <div class="container" style="max-width: 720px">
-            <h1 class="mb-2">Hôm nay nấu gì?</h1>
-            <p class="text-muted mb-4">Tìm trong các công thức nhà làm, theo tên món hoặc nguyên liệu bạn đang có.</p>
-            @using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
+    @* Slideshow làm nền, khối tìm kiếm "Hôm nay nấu gì?" nằm đè lên trên *@
+    <section id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-interval="4000">
+        <div class="carousel-inner">
+            @for (int i = 0; i < slides.Count; i++)
             {
-                <div class="input-group input-group-lg mb-3">
-                    <input type="search" name="searchString" class="form-control" placeholder="Ví dụ: thịt bò, bún, cà chua..." aria-label="Tìm tên món hay nguyên liệu" />
-                    <button type="submit" class="btn btn-primary px-4">Tìm</button>
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <img src="@Url.Content(slides[i].ImagePath ?? "~/Content/Images/placeholder.svg")" class="d-block w-100 hero-img" alt="@slides[i].Title" />
+                    @* tên món ở góc dưới, bấm vào mở trang chi tiết *@
+                    <a class="hero-dish" href="@Url.Action("Details", "Recipes", new { id = slides[i].RecipeID })">
+                        @slides[i].Title <span class="opacity-75">· món của @slides[i].Author →</span>
+                    </a>
                 </div>
             }
-            <div>
-                <span class="text-muted small me-2">Hay tìm:</span>
-                @foreach (var tu in new[] { "Bún", "Thịt heo", "Cá", "Đậu hũ", "Trứng", "Chè" })
+        </div>
+
+        @* Khối tìm kiếm: tìm theo tên món hoặc nguyên liệu *@
+        <div class="hero-search">
+            <div class="container" style="max-width: 720px">
+                <h1 class="mb-2 text-white">Hôm nay nấu gì?</h1>
+                <p class="mb-4 text-white opacity-75">Tìm trong các công thức nhà làm, theo tên món hoặc nguyên liệu bạn đang có.</p>
+                @using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
                 {
-                    <a class="tag" href="@Url.Action("Index", "Recipes", new { searchString = tu })">@tu</a>
+                    <div class="input-group input-group-lg mb-3">
+                        <input type="search" name="searchString" class="form-control" placeholder="Ví dụ: thịt bò, bún, cà chua..." aria-label="Tìm tên món hay nguyên liệu" />
+                        <button type="submit" class="btn btn-primary px-4">Tìm</button>
+                    </div>
                 }
+                <div>
+                    <span class="text-white small me-2">Hay tìm:</span>
+                    @foreach (var tu in new[] { "Bún", "Thịt heo", "Cá", "Đậu hũ", "Trứng", "Chè" })
+                    {
+                        <a class="tag" href="@Url.Action("Index", "Recipes", new { searchString = tu })">@tu</a>
+                    }
+                </div>
             </div>
+        </div>
+
+        <div class="carousel-indicators">
+            @for (int i = 0; i < slides.Count; i++)
+            {
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Slide @(i + 1)"></button>
+            }
         </div>
     </section>
 }
@@ -46,41 +69,6 @@
         }
     </div>
 </section>
-
-@* ===== Slideshow món mới: mỗi slide là 1 món ăn, bấm vào thì mở trang chi tiết ===== *@
-@if (slides.Any())
-{
-    <div id="heroCarousel" class="carousel slide carousel-fade rounded-3 overflow-hidden mb-5" data-bs-ride="carousel" data-bs-interval="4000">
-        <div class="carousel-indicators">
-            @for (int i = 0; i < slides.Count; i++)
-            {
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Slide @(i + 1)"></button>
-            }
-        </div>
-        <div class="carousel-inner">
-            @for (int i = 0; i < slides.Count; i++)
-            {
-                <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <a href="@Url.Action("Details", "Recipes", new { id = slides[i].RecipeID })">
-                        <img src="@Url.Content(slides[i].ImagePath ?? "~/Content/Images/placeholder.svg")" class="d-block w-100 slide-img" alt="@slides[i].Title" />
-                        <div class="carousel-caption slide-caption">
-                            <div class="small">Món mới của @slides[i].Author</div>
-                            <h3 class="mb-0 text-white">@slides[i].Title</h3>
-                        </div>
-                    </a>
-                </div>
-            }
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Trước</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Sau</span>
-        </button>
-    </div>
-}
 
 @* ===== Món mới nhất ===== *@
 <section class="mb-5">

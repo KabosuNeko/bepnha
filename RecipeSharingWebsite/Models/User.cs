@@ -11,7 +11,7 @@ namespace RecipeSharingWebsite.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,13 +19,13 @@ namespace RecipeSharingWebsite.Models
         {
             this.Recipes = new HashSet<Recipe>();
         }
-
+    
         public int UserID { get; set; }
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public string FullName { get; set; }
         public bool IsAdmin { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recipe> Recipes { get; set; }
     }

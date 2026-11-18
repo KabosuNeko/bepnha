@@ -90,17 +90,51 @@ h1, h2, h3, h4, h5 {
     border-color: #2B2B2B;
 }
 
-/* Trang chủ: khối tìm kiếm */
-.search-hero {
-    background: #FAF7F2;
-    border-bottom: 1px solid #E7E2DA;
+/* Trang chủ: slideshow làm nền, khối tìm kiếm nằm đè lên trên */
+.hero-slider {
+    position: relative;
+    min-height: 460px; /* chưa có món nào thì vẫn đủ chỗ cho ô tìm */
+    background: #4A3A2E;
 }
 
-.search-hero .form-control {
-    border-color: #E7E2DA;
+.hero-img {
+    height: 460px;
+    object-fit: cover;
+    filter: brightness(.55); /* làm tối ảnh để chữ trắng và ô tìm dễ nhìn */
 }
 
-.search-hero .tag {
+.hero-search {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    pointer-events: none; /* bấm xuyên qua phần trống xuống ảnh */
+}
+
+.hero-search .container {
+    pointer-events: auto; /* nhưng ô tìm và từ khóa vẫn bấm được */
+}
+
+.hero-dish {
+    position: absolute;
+    right: 24px;
+    bottom: 44px; /* nằm trên mấy gạch chỉ slide */
+    z-index: 3;
+    color: #fff;
+    font-weight: 600;
+}
+
+.hero-dish:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.hero-slider .carousel-indicators {
+    z-index: 3;
+}
+
+.hero-search .tag {
     display: inline-block;
     padding: 4px 12px;
     margin: 0 6px 6px 0;
@@ -122,21 +156,6 @@ h1, h2, h3, h4, h5 {
 
 .cat-tile:hover img {
     box-shadow: 0 0 0 2px #B4552D;
-}
-
-/* Slideshow: ảnh sáng, chữ trên nền mờ ở dưới */
-.slide-img {
-    height: 380px;
-    object-fit: cover;
-}
-
-.slide-caption {
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 48px 24px 32px;
-    text-align: left;
-    background: linear-gradient(transparent, rgba(0, 0, 0, .65));
 }
 
 /* Thẻ món ăn (trang chủ) */

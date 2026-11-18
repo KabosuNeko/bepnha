@@ -4,12 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2c7d7e40e1074b3d9f9beaf6df38132d" Name="Diagram1">
+      <Diagram DiagramId="2c7d7e40e1074b3d9f9beaf6df38132d" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="BepNhaDBModel.Category" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BepNhaDBModel.Rating" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BepNhaDBModel.Recipe" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BepNhaDBModel.User" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
         <AssociationConnector Association="BepNhaDBModel.FK__Recipes__Categor__4CA06362" ManuallyRouted="false" />
         <AssociationConnector Association="BepNhaDBModel.FK__Ratings__RecipeI__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="BepNhaDBModel.FK_Recipes_Users" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
