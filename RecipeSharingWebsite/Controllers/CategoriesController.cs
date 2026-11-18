@@ -11,6 +11,13 @@ namespace RecipeSharingWebsite.Controllers
     {
         BepNhaDBEntities db = new BepNhaDBEntities();
 
+        // quan ly danh muc chi danh cho admin
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (Session["IsAdmin"] == null || !(bool)Session["IsAdmin"])
+                filterContext.Result = RedirectToAction("Login", "Account", new { returnUrl = Request.RawUrl });
+        }
+
         // GET: Categories
         public ActionResult Index()
         {

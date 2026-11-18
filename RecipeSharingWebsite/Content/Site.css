@@ -2,23 +2,36 @@
 
 body {
     color: #2B2B2B;
+    background: #fff;
 }
 
 a {
     color: #2B2B2B;
+    text-decoration: none;
 }
 
 a:hover {
     color: #B4552D;
 }
 
+h1, h2, h3 {
+    font-family: "Times New Roman", serif;
+}
+
 .text-muted {
-    color: #6B6B6B !important;
+    color: red !important;
+}
+
+.text-accent {
+    color: #B4552D !important;
+}
+
+.bg-cream {
+    background: #FAF7F2 !important;
 }
 
 /* Thanh menu */
 .site-head {
-    background: #fff;
     border-bottom: 1px solid #E7E2DA;
 }
 
@@ -30,11 +43,12 @@ a:hover {
 .site-head .nav-link {
     font-size: 13px;
     text-transform: uppercase;
-    letter-spacing: .1em;
+    letter-spacing: .08em;
     color: #2B2B2B;
 }
 
-.site-head .nav-link:hover {
+.site-head .nav-link:hover,
+.site-head .nav-link.active {
     color: #B4552D;
 }
 
@@ -44,7 +58,8 @@ a:hover {
     border-color: #2B2B2B;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus {
     background: #B4552D;
     border-color: #B4552D;
 }
@@ -59,7 +74,17 @@ a:hover {
     border-color: #2B2B2B;
 }
 
-/* Banner trang chu: slideshow anh nen */
+.btn-outline-secondary.active {
+    background: #B4552D;
+    border-color: #B4552D;
+    color: #fff;
+}
+
+.badge-accent {
+    background: #B4552D;
+}
+
+/* Banner trang chu: slideshow */
 .hero-img {
     height: 520px;
     object-fit: cover;
@@ -70,7 +95,6 @@ a:hover {
     color: #fff;
 }
 
-/* Chu nam giua banner */
 .hero {
     display: flex;
     align-items: center;
@@ -80,7 +104,6 @@ a:hover {
 }
 
 .hero h1 {
-    font-family: "Times New Roman", serif;
     font-size: 52px;
 }
 
@@ -89,27 +112,24 @@ a:hover {
     color: #f2ede6;
 }
 
+/* Card mon an: re chuot vao thi noi len */
+.recipe-card {
+    border: 1px solid #E7E2DA;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+}
+
 /* Anh mon an: cat cho deu khung */
 .card-img-top {
     height: 220px;
     object-fit: cover;
 }
 
-/* Mon ngon cua tuan */
-.featured {
-    background: #FAF7F2;
-}
-
-.featured img {
-    height: 420px;
-    object-fit: cover;
-}
-
-.featured h2 {
-    font-family: "Times New Roman", serif;
-    font-size: 34px;
-}
-
+/* Muc nho tren dau (chu cam in hoa) */
 .kicker {
     display: block;
     font-size: 12px;
@@ -119,13 +139,43 @@ a:hover {
     margin-bottom: 6px;
 }
 
-/* Bang va footer */
-.table th {
-    border-bottom-color: #E7E2DA;
+/* Mon ngon cua tuan */
+.featured img {
+    height: 420px;
+    object-fit: cover;
 }
 
-footer {
+/* Trang chi tiet */
+.detail-img {
+    height: 420px;
+    object-fit: cover;
+}
+
+.stat-box {
+    background: #FAF7F2;
+    border: 1px solid #E7E2DA;
+}
+
+.stat-box i {
+    font-size: 22px;
+    color: #B4552D;
+}
+
+.step-num {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    background: #B4552D;
+    color: #fff;
+}
+
+/* Sao danh gia */
+.stars {
+    color: #E8A33D;
+}
+
+/* Footer */
+.site-foot {
     background: #FAF7F2;
     border-top: 1px solid #E7E2DA;
-    color: #6B6B6B;
 }

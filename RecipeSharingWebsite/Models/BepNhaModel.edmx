@@ -41,7 +41,32 @@
           <Property Name="Author" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ImagePath" Type="nvarchar" MaxLength="300" />
           <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="RejectReason" Type="nvarchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Recipes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Recipes" Type="Self.Recipes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Recipes">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Ratings__RecipeI__4F7CD00D">
           <End Role="Recipes" Type="Self.Recipes" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -72,6 +97,11 @@
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Recipes" EntityType="Self.Recipes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Recipes_Users" Association="Self.FK_Recipes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Recipes" EntitySet="Recipes" />
+          </AssociationSet>
           <AssociationSet Name="FK__Ratings__RecipeI__4F7CD00D" Association="Self.FK__Ratings__RecipeI__4F7CD00D">
             <End Role="Recipes" EntitySet="Recipes" />
             <End Role="Ratings" EntitySet="Ratings" />
@@ -124,9 +154,36 @@
           <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ImagePath" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RejectReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Category" Relationship="Self.FK__Recipes__Categor__4CA06362" FromRole="Recipes" ToRole="Categories" />
           <NavigationProperty Name="Ratings" Relationship="Self.FK__Ratings__RecipeI__4F7CD00D" FromRole="Recipes" ToRole="Ratings" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Recipes_Users" FromRole="Recipes" ToRole="Users" />
         </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Recipes" Relationship="Self.FK_Recipes_Users" FromRole="Users" ToRole="Recipes" />
+        </EntityType>
+        <Association Name="FK_Recipes_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Recipes" Type="Self.Recipe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Recipes">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Recipes__Categor__4CA06362">
           <End Role="Categories" Type="Self.Category" Multiplicity="1" />
           <End Role="Recipes" Type="Self.Recipe" Multiplicity="*" />
@@ -157,6 +214,11 @@
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Ratings" EntityType="Self.Rating" />
           <EntitySet Name="Recipes" EntityType="Self.Recipe" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Recipes_Users" Association="Self.FK_Recipes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Recipes" EntitySet="Recipes" />
+          </AssociationSet>
           <AssociationSet Name="FK__Recipes__Categor__4CA06362" Association="Self.FK__Recipes__Categor__4CA06362">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Recipes" EntitySet="Recipes" />
@@ -209,6 +271,20 @@
                 <ScalarProperty Name="Author" ColumnName="Author" />
                 <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RejectReason" ColumnName="RejectReason" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="BepNhaDBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

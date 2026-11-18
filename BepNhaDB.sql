@@ -2,6 +2,7 @@
   BepNhaDB.sql - Database cho website chia se cong thuc "Bep Nha"
   Cach dung: mo file nay trong SSMS (ket noi .\SQLEXPRESS) roi bam Execute (F5).
   Sau do vao Visual Studio: Add > New Item > ADO.NET Entity Data Model > EF Designer from database.
+  Tai khoan mau:  admin / admin123  (quan tri)   -   user1 / user123  (nguoi dung)
 */
 
 CREATE DATABASE BepNhaDB;
@@ -14,6 +15,16 @@ CREATE TABLE Categories (
     CategoryID   INT IDENTITY(1,1) PRIMARY KEY,
     CategoryName NVARCHAR(50)  NOT NULL,
     Description  NVARCHAR(200) NULL
+);
+GO
+
+/* ===== Bang Users: tai khoan ===== */
+CREATE TABLE Users (
+    UserID       INT IDENTITY(1,1) PRIMARY KEY,
+    Username     NVARCHAR(50)  NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(200) NOT NULL,          -- mat khau da ma hoa (Crypto.HashPassword)
+    FullName     NVARCHAR(50)  NOT NULL,
+    IsAdmin      BIT           NOT NULL DEFAULT 0
 );
 GO
 
@@ -31,11 +42,14 @@ CREATE TABLE Recipes (
     Difficulty      NVARCHAR(20)  NOT NULL,
     Author          NVARCHAR(50)  NOT NULL,
     ImagePath       NVARCHAR(300) NULL,
-    CreatedAt       DATETIME      NOT NULL
+    CreatedAt       DATETIME      NOT NULL,
+    UserID          INT           NULL CONSTRAINT FK_Recipes_Users FOREIGN KEY REFERENCES Users(UserID),
+    Status          NVARCHAR(20)  NOT NULL CONSTRAINT DF_Recipes_Status DEFAULT N'Đã duyệt',  -- Chờ duyệt / Đã duyệt / Bị xóa
+    RejectReason    NVARCHAR(500) NULL
 );
 GO
 
-/* ===== Bang Ratings: danh gia (chuc nang dang lam) ===== */
+/* ===== Bang Ratings: danh gia ===== */
 CREATE TABLE Ratings (
     RatingID     INT IDENTITY(1,1) PRIMARY KEY,
     RecipeID     INT           NOT NULL FOREIGN KEY REFERENCES Recipes(RecipeID) ON DELETE CASCADE,
@@ -44,6 +58,12 @@ CREATE TABLE Ratings (
     Comment      NVARCHAR(500) NULL,
     CreatedAt    DATETIME      NOT NULL
 );
+GO
+
+/* ===== Du lieu mau: tai khoan ===== */
+INSERT INTO Users (Username, PasswordHash, FullName, IsAdmin) VALUES
+    (N'admin', N'AP2tsxuyYfCfVVX5xSDm6vugBdH8yVpmvP7Z2JYzch6p0CqWUqVxVor4YF2ez8askg==', N'Quản trị viên', 1),
+    (N'user1', N'ADtuSx6yrRnJDCtScK2F7DhpUZakG/Gn18i9VWVUQtbkR4JKDXK8XWpjQWxi2LXwqQ==', N'Minh Anh', 0);
 GO
 
 /* ===== Du lieu mau: danh muc ===== */

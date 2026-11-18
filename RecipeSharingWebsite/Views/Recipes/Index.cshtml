@@ -2,87 +2,68 @@
 
 @{
     ViewBag.Title = "Công thức";
+    string catID = Request.QueryString["categoryID"];
+    string sort = Request.QueryString["sortStyle"];
 }
 
-<h2>Danh sách công thức</h2>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <span class="kicker">Công thức</span>
+        <h1 class="mb-0">Danh sách công thức</h1>
+    </div>
+    <a class="btn btn-primary" href="@Url.Action("Create")"><i class="bi bi-plus-lg"></i> Đăng công thức mới</a>
+</div>
 
-<p>
-    @Html.ActionLink("Đăng công thức mới", "Create")
-</p>
+@* ===== Thanh tim kiem + loc ===== *@
+<div class="card border-0 bg-cream mb-4">
+    <div class="card-body">
+        @using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
+        {
+            <div class="input-group mb-3">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                @Html.TextBox("searchString", null, new { @class = "form-control", placeholder = "Nhập tên món cần tìm..." })
+                <button type="submit" class="btn btn-primary px-4">Tìm</button>
+            </div>
+        }
 
-@using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+            <span class="small text-muted me-1">Danh mục:</span>
+            <a class="btn btn-sm rounded-pill btn-outline-secondary @(string.IsNullOrEmpty(catID) ? "active" : "")" href="@Url.Action("Index")">Tất cả</a>
+            @foreach (var c in (List<RecipeSharingWebsite.Models.Category>)ViewBag.Categories)
+            {
+                <a class="btn btn-sm rounded-pill btn-outline-secondary @(catID == c.CategoryID.ToString() ? "active" : "")"
+                   href="@Url.Action("Index", new { categoryID = c.CategoryID })">@c.CategoryName</a>
+            }
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <span class="small text-muted me-1">Sắp xếp:</span>
+            <div class="btn-group btn-group-sm" role="group">
+                <a class="btn btn-outline-secondary @(sort == "name" || sort == "name_desc" ? "active" : "")"
+                   href="@Url.Action("Index", new { sortStyle = ViewBag.NameSort, searchString = ViewBag.SearchString })">
+                    <i class="bi bi-sort-alpha-down"></i> Tên món
+                </a>
+                <a class="btn btn-outline-secondary @(sort == "time" || sort == "time_desc" ? "active" : "")"
+                   href="@Url.Action("Index", new { sortStyle = ViewBag.TimeSort, searchString = ViewBag.SearchString })">
+                    <i class="bi bi-clock"></i> Thời gian nấu
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p class="text-muted">Tìm thấy <strong>@Model.Count()</strong> công thức.</p>
+
+@if (!Model.Any())
 {
-    <p>
-        Tìm kiếm: @Html.TextBox("searchString")
-        <input type="submit" value="Tìm" />
-    </p>
+    <div class="alert alert-warning">
+        <i class="bi bi-emoji-frown"></i> Không có công thức nào phù hợp. @Html.ActionLink("Xem tất cả", "Index", null, new { @class = "alert-link" })
+    </div>
 }
 
-<p>
-    Danh mục:
-    @Html.ActionLink("Tất cả", "Index")
-    @foreach (var c in (List<RecipeSharingWebsite.Models.Category>)ViewBag.Categories)
-    {
-        <text> | </text>@Html.ActionLink(c.CategoryName, "Index", new { categoryID = c.CategoryID })
-    }
-</p>
-
-<p>
-    Sắp xếp:
-    @Html.ActionLink("Tên món", "Index", new { sortStyle = ViewBag.NameSort, searchString = ViewBag.SearchString }, new { @class = "btn btn-warning btn-sm" })
-    @Html.ActionLink("Thời gian nấu", "Index", new { sortStyle = ViewBag.TimeSort, searchString = ViewBag.SearchString }, new { @class = "btn btn-warning btn-sm" })
-</p>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ImagePath)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CategoryID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TotalTimeMinutes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Difficulty)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Author)
-        </th>
-        <th></th>
-    </tr>
-
+<div class="row g-4">
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                <img src="@Url.Content(item.ImagePath ?? "~/Content/Images/placeholder.svg")" width="80" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @item.TotalTimeMinutes phút
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Difficulty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.ActionLink("Sửa", "Edit", new { id = item.RecipeID }) |
-                @Html.ActionLink("Chi tiết", "Details", new { id = item.RecipeID }) |
-                @Html.ActionLink("Xóa", "Delete", new { id = item.RecipeID })
-            </td>
-        </tr>
+        @Html.Partial("_RecipeCard", item)
     }
-
-</table>
+</div>

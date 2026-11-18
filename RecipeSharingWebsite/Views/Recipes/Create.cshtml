@@ -2,30 +2,45 @@
 
 @{
     ViewBag.Title = "Đăng công thức";
+    bool laAdmin = Session["IsAdmin"] != null && (bool)Session["IsAdmin"];
 }
 
-<h2>Đăng công thức mới</h2>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index")">Công thức</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Đăng công thức</li>
+    </ol>
+</nav>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<div class="row justify-content-center">
+    <div class="col-xl-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-cream py-3">
+                <h1 class="h3 mb-0"><i class="bi bi-journal-plus text-accent me-2"></i>Đăng công thức mới</h1>
+                <small class="text-muted">
+                    Người đăng: <strong>@Session["FullName"]</strong>.
+                    @(laAdmin ? "Bài của admin hiện ngay." : "Bài sẽ hiện sau khi admin duyệt.")
+                    Mỗi dòng trong phần nguyên liệu và các bước làm là một mục riêng.
+                </small>
+            </div>
+            <div class="card-body p-4">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-    <div class="form-horizontal">
-        <h4>Công thức</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.Partial("_RecipeForm")
+                    @Html.Partial("_RecipeForm")
 
-        <div class="form-group row mb-3">
-            <div class="offset-md-2 col-md-10">
-                <input type="submit" value="Đăng" class="btn btn-primary" />
+                    <hr class="my-4" />
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4"><i class="bi bi-check-lg"></i> Đăng công thức</button>
+                        <a class="btn btn-outline-secondary" href="@Url.Action("Index")">Hủy</a>
+                    </div>
+                }
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Quay lại danh sách", "Index")
 </div>
 
 @section Scripts {

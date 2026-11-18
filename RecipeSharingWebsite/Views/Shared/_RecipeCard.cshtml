@@ -1,13 +1,21 @@
 ﻿@model RecipeSharingWebsite.Models.Recipe
 
-<div class="col-md-4 mb-4">
-    <div class="card h-100">
-        <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" class="card-img-top" alt="@Model.Title" />
+<div class="col-sm-6 col-lg-4">
+    <div class="card h-100 recipe-card">
+        <a href="@Url.Action("Details", "Recipes", new { id = Model.RecipeID })">
+            <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" class="card-img-top" alt="@Model.Title" />
+        </a>
         <div class="card-body">
-            <span class="badge bg-secondary">@Model.Category.CategoryName</span>
-            <h5 class="card-title mt-2">@Model.Title</h5>
-            <p class="card-text text-muted">@Model.TotalTimeMinutes phút - @Model.Servings người - @Model.Difficulty</p>
-            @Html.ActionLink("Xem công thức", "Details", "Recipes", new { id = Model.RecipeID }, new { @class = "btn btn-outline-primary btn-sm" })
+            <span class="badge badge-accent">@Model.Category.CategoryName</span>
+            <h5 class="card-title mt-2 mb-1">
+                <a href="@Url.Action("Details", "Recipes", new { id = Model.RecipeID })" class="stretched-link">@Model.Title</a>
+            </h5>
+            <p class="card-text text-muted small mb-0">@Model.Description</p>
+        </div>
+        <div class="card-footer bg-white border-top-0 text-muted small d-flex justify-content-between">
+            <span><i class="bi bi-clock me-1"></i>@Model.TotalTimeMinutes phút</span>
+            <span><i class="bi bi-people me-1"></i>@Model.Servings người</span>
+            <span><i class="bi bi-bar-chart me-1"></i>@Model.Difficulty</span>
         </div>
     </div>
 </div>

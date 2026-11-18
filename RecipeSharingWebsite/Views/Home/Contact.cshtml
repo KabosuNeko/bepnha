@@ -1,16 +1,74 @@
 ﻿@{
     ViewBag.Title = "Liên hệ";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<address>
-    123 đường ABC, Quận 1<br />
-    TP. Hồ Chí Minh<br />
-    <abbr title="Phone">Điện thoại:</abbr>
-    0123 456 789
-</address>
+<div class="mb-4">
+    <span class="kicker">Kết nối với chúng tôi</span>
+    <h1>@ViewBag.Title</h1>
+    <p class="text-muted">@ViewBag.Message Góp ý về công thức hoặc về website, bạn gửi qua các kênh dưới đây.</p>
+</div>
 
-<address>
-    <strong>Email:</strong> <a href="mailto:bepnha@example.com">bepnha@example.com</a>
-</address>
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm text-center p-3">
+            <div class="card-body">
+                <i class="bi bi-envelope display-6 text-accent"></i>
+                <h5 class="mt-3">Email</h5>
+                <a href="mailto:bepnha@example.com">bepnha@example.com</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm text-center p-3">
+            <div class="card-body">
+                <i class="bi bi-telephone display-6 text-accent"></i>
+                <h5 class="mt-3">Điện thoại</h5>
+                <p class="mb-0">0123 456 789</p>
+                <small class="text-muted">8:00 - 17:00, thứ Hai đến thứ Sáu</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm text-center p-3">
+            <div class="card-body">
+                <i class="bi bi-geo-alt display-6 text-accent"></i>
+                <h5 class="mt-3">Địa chỉ</h5>
+                <p class="mb-0">123 đường ABC, Quận 1<br />TP. Hồ Chí Minh</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="h3 mb-3">Câu hỏi thường gặp</h2>
+<div class="accordion" id="faq">
+    <div class="accordion-item">
+        <h3 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">
+                Đăng công thức có mất phí không?
+            </button>
+        </h3>
+        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faq">
+            <div class="accordion-body">Không. Bạn đăng ký tài khoản, bấm "Đăng công thức" và điền thông tin món ăn. Bài sẽ hiện sau khi admin duyệt.</div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                Tôi có thể sửa công thức đã đăng không?
+            </button>
+        </h3>
+        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faq">
+            <div class="accordion-body">Được. Vào "Bài của tôi" rồi bấm "Sửa". Sau khi sửa, bài sẽ chờ admin duyệt lại.</div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                Làm sao để đánh giá món ăn?
+            </button>
+        </h3>
+        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faq">
+            <div class="accordion-body">Đăng nhập, mở trang chi tiết món, chọn số sao và viết bình luận ở phần Đánh giá.</div>
+        </div>
+    </div>
+</div>

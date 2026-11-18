@@ -1,92 +1,187 @@
 ﻿@model RecipeSharingWebsite.Models.Recipe
 
 @{
-    ViewBag.Title = "Chi tiết";
+    ViewBag.Title = Model.Title;
+    var ratings = Model.Ratings.OrderByDescending(r => r.CreatedAt).ToList();
+    double diemTB = ratings.Any() ? ratings.Average(r => r.Stars) : 0;
 }
 
-<h2>Chi tiết công thức</h2>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index")">Công thức</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+    </ol>
+</nav>
 
-<div>
-    <h4>@Model.Title</h4>
-    <hr />
-    <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" width="300" class="mb-3" />
+@* bai chua duyet / bi xoa: chi chu bai va admin thay trang nay *@
+@if (Model.Status == RecipeSharingWebsite.Models.Recipe.ChoDuyet)
+{
+    <div class="alert alert-warning"><i class="bi bi-hourglass-split me-1"></i> Bài đang chờ admin duyệt, người khác chưa thấy bài này.</div>
+}
+else if (Model.Status == RecipeSharingWebsite.Models.Recipe.BiXoa)
+{
+    <div class="alert alert-danger"><i class="bi bi-x-octagon me-1"></i> Bài đã bị admin xóa. Lý do: @Model.RejectReason</div>
+}
 
-    <dl class="row">
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.CategoryID)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
+<div class="row g-4 mb-5">
+    <div class="col-lg-6">
+        <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100 rounded-3 shadow-sm detail-img" alt="@Model.Title" />
+    </div>
+    <div class="col-lg-6">
+        <a class="badge badge-accent text-white" href="@Url.Action("Index", new { categoryID = Model.CategoryID })">@Model.Category.CategoryName</a>
+        <h1 class="mt-2">@Model.Title</h1>
+        <p class="text-muted">
+            <i class="bi bi-person-circle me-1"></i>@Model.Author
+            <span class="mx-2">·</span>
+            <i class="bi bi-calendar3 me-1"></i>@Model.CreatedAt.ToString("dd/MM/yyyy")
+            <span class="mx-2">·</span>
+            @Html.Partial("_Stars", diemTB) (@ratings.Count đánh giá)
+        </p>
+        <p class="lead">@Model.Description</p>
 
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+        <div class="row g-2 text-center mb-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-box rounded-3 p-2 h-100">
+                    <i class="bi bi-hourglass-split"></i>
+                    <div class="small text-muted">Chuẩn bị</div>
+                    <div class="fw-bold">@Model.PrepTimeMinutes phút</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-box rounded-3 p-2 h-100">
+                    <i class="bi bi-fire"></i>
+                    <div class="small text-muted">Nấu</div>
+                    <div class="fw-bold">@Model.CookTimeMinutes phút</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-box rounded-3 p-2 h-100">
+                    <i class="bi bi-people"></i>
+                    <div class="small text-muted">Khẩu phần</div>
+                    <div class="fw-bold">@Model.Servings người</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-box rounded-3 p-2 h-100">
+                    <i class="bi bi-bar-chart"></i>
+                    <div class="small text-muted">Độ khó</div>
+                    <div class="fw-bold">@Model.Difficulty</div>
+                </div>
+            </div>
+        </div>
 
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.PrepTimeMinutes)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.PrepTimeMinutes)
-        </dd>
-
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.CookTimeMinutes)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.CookTimeMinutes)
-        </dd>
-
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Servings)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Servings)
-        </dd>
-
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Difficulty)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Difficulty)
-        </dd>
-
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Author)
-        </dd>
-
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class="col-sm-9">
-            @Model.CreatedAt.ToString("dd/MM/yyyy")
-        </dd>
-    </dl>
-
-    <h4>Nguyên liệu</h4>
-    <ul>
-        @foreach (var item in Model.Ingredients.Split('\n'))
-        {
-            <li>@item</li>
-        }
-    </ul>
-
-    <h4>Các bước làm</h4>
-    @foreach (var step in Model.Instructions.Split('\n'))
-    {
-        <p>@step</p>
-    }
-
-    <h4>Đánh giá</h4>
-    <p class="text-muted">Chức năng đánh giá đang được làm...</p>
+        <div class="d-flex flex-wrap gap-2">
+            @if (ViewBag.DuocSua)
+            {
+                <a class="btn btn-primary" href="@Url.Action("Edit", new { id = Model.RecipeID })"><i class="bi bi-pencil"></i> Sửa</a>
+            }
+            @if (ViewBag.LaChuBai)
+            {
+                <a class="btn btn-outline-danger" href="@Url.Action("Delete", new { id = Model.RecipeID })"><i class="bi bi-trash"></i> Xóa</a>
+            }
+            <a class="btn btn-outline-secondary" href="@Url.Action("Index")"><i class="bi bi-arrow-left"></i> Quay lại danh sách</a>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Sửa", "Edit", new { id = Model.RecipeID }) |
-    @Html.ActionLink("Quay lại danh sách", "Index")
-</p>
+
+<div class="row g-4 mb-5">
+    @* Nguyen lieu *@
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-cream fw-bold"><i class="bi bi-basket text-accent me-2"></i>Nguyên liệu</div>
+            <ul class="list-group list-group-flush">
+                @foreach (var item in Model.Ingredients.Split('\n'))
+                {
+                    <li class="list-group-item"><i class="bi bi-check2 text-accent me-2"></i>@item</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    @* Cac buoc lam *@
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-cream fw-bold"><i class="bi bi-list-ol text-accent me-2"></i>Các bước làm</div>
+            <div class="card-body">
+                @{ int buoc = 1; }
+                @foreach (var step in Model.Instructions.Split('\n'))
+                {
+                    <div class="d-flex gap-3 mb-3">
+                        <span class="step-num rounded-circle d-flex align-items-center justify-content-center fw-bold">@buoc</span>
+                        @* bo so thu tu "1. " o dau dong vi da co vong tron danh so *@
+                        <p class="mb-0 pt-1">@(step.Length > 3 && char.IsDigit(step[0]) && step.Contains(". ") ? step.Substring(step.IndexOf(". ") + 2) : step)</p>
+                    </div>
+                    buoc++;
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ===== Danh gia ===== *@
+<div class="card border-0 shadow-sm" id="danh-gia">
+    <div class="card-header bg-cream fw-bold d-flex justify-content-between">
+        <span><i class="bi bi-star text-accent me-2"></i>Đánh giá (@ratings.Count)</span>
+        @if (ratings.Any())
+        {
+            <span>@Html.Partial("_Stars", diemTB) @diemTB.ToString("0.0") / 5</span>
+        }
+    </div>
+    <div class="card-body">
+        @if (Model.Status == RecipeSharingWebsite.Models.Recipe.DaDuyet)
+        {
+            if (Session["UserID"] != null)
+            {
+                using (Html.BeginForm("Rate", "Recipes", FormMethod.Post, new { @class = "mb-4" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="RecipeID" value="@Model.RecipeID" />
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <select name="Stars" class="form-select" required>
+                                <option value="">-- Chọn số sao --</option>
+                                <option value="5">5 sao - Rất ngon</option>
+                                <option value="4">4 sao - Ngon</option>
+                                <option value="3">3 sao - Bình thường</option>
+                                <option value="2">2 sao - Chưa ngon</option>
+                                <option value="1">1 sao - Không ngon</option>
+                            </select>
+                        </div>
+                        <div class="col-md-7">
+                            <input type="text" name="Comment" class="form-control" maxlength="500" placeholder="Bình luận của bạn (không bắt buộc)" />
+                        </div>
+                        <div class="col-md-2 d-grid">
+                            <button type="submit" class="btn btn-primary">Gửi</button>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="mb-4"><a class="text-accent" href="@Url.Action("Login", "Account", new { returnUrl = Url.Action("Details", new { id = Model.RecipeID }) })">Đăng nhập</a> để đánh giá món này.</p>
+            }
+        }
+
+        @if (!ratings.Any())
+        {
+            <p class="text-muted mb-0">Chưa có đánh giá nào.</p>
+        }
+        <ul class="list-group list-group-flush">
+            @foreach (var r in ratings)
+            {
+                <li class="list-group-item px-0">
+                    <div class="d-flex justify-content-between">
+                        <strong>@r.ReviewerName</strong>
+                        <small class="text-muted">@r.CreatedAt.ToString("dd/MM/yyyy")</small>
+                    </div>
+                    @Html.Partial("_Stars", (double)r.Stars)
+                    @if (!string.IsNullOrEmpty(r.Comment))
+                    {
+                        <p class="mb-0 mt-1">@r.Comment</p>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+</div>

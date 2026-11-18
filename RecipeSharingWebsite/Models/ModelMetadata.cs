@@ -24,6 +24,11 @@ namespace RecipeSharingWebsite.Models
     [MetadataType(typeof(RecipeMetadata))]
     public partial class Recipe
     {
+        // 3 trang thai cua bai dang (cot Status)
+        public const string ChoDuyet = "Chờ duyệt";
+        public const string DaDuyet = "Đã duyệt";
+        public const string BiXoa = "Bị xóa";
+
         [Display(Name = "Tổng thời gian")]
         public int TotalTimeMinutes
         {
@@ -74,8 +79,7 @@ namespace RecipeSharingWebsite.Models
         [Display(Name = "Độ khó")]
         public string Difficulty { get; set; }
 
-        [Required(ErrorMessage = "Vui lòng nhập tên người đăng")]
-        [StringLength(50, ErrorMessage = "Tên người đăng tối đa 50 ký tự")]
+        // khong bat nhap: lay ho ten cua tai khoan dang dang nhap
         [Display(Name = "Người đăng")]
         public string Author { get; set; }
 
@@ -84,5 +88,28 @@ namespace RecipeSharingWebsite.Models
 
         [Display(Name = "Ngày đăng")]
         public DateTime CreatedAt { get; set; }
+
+        [Display(Name = "Trạng thái")]
+        public string Status { get; set; }
+
+        [Display(Name = "Lý do bị xóa")]
+        public string RejectReason { get; set; }
+    }
+
+    [MetadataType(typeof(RatingMetadata))]
+    public partial class Rating
+    {
+    }
+
+    public class RatingMetadata
+    {
+        [Range(1, 5, ErrorMessage = "Vui lòng chọn từ 1 đến 5 sao")]
+        [Display(Name = "Số sao")]
+        public int Stars { get; set; }
+
+        [StringLength(500, ErrorMessage = "Bình luận tối đa 500 ký tự")]
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Bình luận")]
+        public string Comment { get; set; }
     }
 }

@@ -53,38 +53,57 @@
     </div>
 }
 
-<main>
-
-    <h3>Danh mục</h3>
-    <div class="d-flex flex-wrap gap-2 mb-4">
+@* ===== Danh muc ===== *@
+<section class="mb-5">
+    <span class="kicker">Khám phá</span>
+    <h2 class="mb-3">Danh mục món ăn</h2>
+    <div class="d-flex flex-wrap gap-2">
         @foreach (var c in (List<RecipeSharingWebsite.Models.Category>)ViewBag.Categories)
         {
-            @Html.ActionLink(c.CategoryName, "Index", "Recipes", new { categoryID = c.CategoryID }, new { @class = "btn btn-outline-secondary btn-sm px-3" })
+            <a class="btn btn-outline-secondary rounded-pill px-3" href="@Url.Action("Index", "Recipes", new { categoryID = c.CategoryID })">@c.CategoryName</a>
         }
     </div>
+</section>
 
-    <h3>Món mới nhất</h3>
-    <div class="row">
+@* ===== Mon moi nhat ===== *@
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <div>
+            <span class="kicker">Vừa lên bếp</span>
+            <h2 class="mb-0">Món mới nhất</h2>
+        </div>
+        <a class="btn btn-link text-accent" href="@Url.Action("Index", "Recipes")">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="row g-4">
         @foreach (var recipe in Model)
         {
             @Html.Partial("_RecipeCard", recipe)
         }
     </div>
+</section>
 
-    @if (ViewBag.Featured != null)
-    {
-        var featured = (RecipeSharingWebsite.Models.Recipe)ViewBag.Featured;
-        <div class="row g-0 featured mt-4">
+@* ===== Mon ngon cua tuan ===== *@
+@if (ViewBag.Featured != null)
+{
+    var featured = (RecipeSharingWebsite.Models.Recipe)ViewBag.Featured;
+    <section class="card border-0 shadow-sm overflow-hidden featured mb-5">
+        <div class="row g-0">
             <div class="col-md-6">
-                <img src="@Url.Content(featured.ImagePath ?? "~/Content/Images/placeholder.svg")" class="img-fluid w-100" alt="@featured.Title" />
+                <img src="@Url.Content(featured.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100" alt="@featured.Title" />
             </div>
-            <div class="col-md-6 p-5 align-self-center">
-                <span class="kicker">Món ngon của tuần</span>
-                <h2>@featured.Title</h2>
-                <p>@featured.Description</p>
-                <p class="text-muted">@featured.TotalTimeMinutes phút - @featured.Servings người - @featured.Difficulty</p>
-                @Html.ActionLink("Xem công thức", "Details", "Recipes", new { id = featured.RecipeID }, new { @class = "btn btn-primary px-4" })
+            <div class="col-md-6 bg-cream d-flex align-items-center">
+                <div class="card-body p-4 p-lg-5">
+                    <span class="kicker"><i class="bi bi-star-fill"></i> Món ngon của tuần</span>
+                    <h2 class="card-title">@featured.Title</h2>
+                    <p class="card-text">@featured.Description</p>
+                    <ul class="list-inline text-muted small mb-4">
+                        <li class="list-inline-item me-3"><i class="bi bi-clock me-1"></i>@featured.TotalTimeMinutes phút</li>
+                        <li class="list-inline-item me-3"><i class="bi bi-people me-1"></i>@featured.Servings người</li>
+                        <li class="list-inline-item"><i class="bi bi-bar-chart me-1"></i>@featured.Difficulty</li>
+                    </ul>
+                    <a class="btn btn-primary px-4" href="@Url.Action("Details", "Recipes", new { id = featured.RecipeID })">Xem công thức</a>
+                </div>
             </div>
         </div>
-    }
-</main>
+    </section>
+}

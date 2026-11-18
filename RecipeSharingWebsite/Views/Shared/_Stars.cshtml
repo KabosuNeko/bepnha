@@ -1,0 +1,8 @@
+﻿@model double
+@* Ve 5 ngoi sao theo so diem, vi du 3.6 diem -> 4 sao day *@
+<span class="stars" title="@Model.ToString("0.0") / 5">
+    @for (int i = 1; i <= 5; i++)
+    {
+        <i class="bi @(i <= Math.Round(Model) ? "bi-star-fill" : "bi-star")"></i>
+    }
+</span>

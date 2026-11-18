@@ -4,42 +4,46 @@
     ViewBag.Title = "Thêm danh mục";
 }
 
-<h2>Thêm danh mục</h2>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index")">Danh mục</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Thêm danh mục</li>
+    </ol>
+</nav>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4>Danh mục</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group row mb-3">
-            @Html.LabelFor(model => model.CategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-cream py-3">
+                <h1 class="h3 mb-0"><i class="bi bi-folder-plus text-accent me-2"></i>Thêm danh mục</h1>
             </div>
-        </div>
+            <div class="card-body p-4">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-        <div class="form-group row mb-3">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.CategoryName, htmlAttributes: new { @class = "form-label fw-semibold" })
+                        @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control", placeholder = "Ví dụ: Món nước" } })
+                        @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger small" })
+                    </div>
 
-        <div class="form-group row mb-3">
-            <div class="offset-md-2 col-md-10">
-                <input type="submit" value="Thêm" class="btn btn-primary" />
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label fw-semibold" })
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3", placeholder = "Mô tả ngắn cho danh mục" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger small" })
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4"><i class="bi bi-check-lg"></i> Thêm</button>
+                        <a class="btn btn-outline-secondary" href="@Url.Action("Index")">Hủy</a>
+                    </div>
+                }
             </div>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Quay lại danh sách", "Index")
 </div>
 
 @section Scripts {
