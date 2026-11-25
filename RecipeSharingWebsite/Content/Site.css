@@ -77,9 +77,33 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     --bs-dropdown-item-padding-y: .65rem; /* cao khoảng 44px cho dễ bấm trên điện thoại */
 }
 
-/* Nút bấm, ô nhập, nút mở menu: vùng bấm tối thiểu 44px */
-.btn, .form-control, .form-select, .navbar-toggler {
-    min-height: 44px;
+/* Nút bấm, ô nhập, nút mở menu: cao 44px cho dễ bấm.
+   Tăng padding trên dưới bằng nhau (không dùng min-height) để chữ luôn nằm giữa nút. */
+.btn {
+    --bs-btn-padding-y: .5625rem; /* 9px + chữ 24px + viền 2px = 44px */
+}
+
+.form-control, .form-select {
+    padding-top: .5625rem;
+    padding-bottom: .5625rem;
+}
+
+.navbar-toggler {
+    padding-top: .4375rem;
+    padding-bottom: .4375rem;
+}
+
+/* Menu trên điện thoại: mỗi mục một dòng cao 44px, có đường kẻ ngăn cách */
+@media (max-width: 991.98px) {
+    .site-head .navbar-collapse {
+        border-top: 1px solid #E7E2DA;
+        margin-top: 8px;
+    }
+
+    .site-head .nav-link {
+        padding: .625rem 0;
+        border-bottom: 1px solid #E7E2DA;
+    }
 }
 
 /* đặt lại biến của Bootstrap để cả lúc rê, bấm giữ, focus đều là màu cam */
@@ -199,7 +223,13 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     font-size: 14px;
 }
 
-/* Danh mục: ảnh tròn */
+/* Danh mục: ảnh tròn, máy tính xếp nhiều hàng (điện thoại vuốt ngang, xem cuối file) */
+.cat-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
 .cat-tile img {
     width: 88px;
     height: 88px;
@@ -323,6 +353,63 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     object-fit: cover;
 }
 
+/* 3 phần của trang chi tiết: điện thoại xếp dọc đầu bài > nguyên liệu > các bước,
+   máy tính chia 2 cột, nguyên liệu bên phải dính theo khi cuộn */
+.detail-layout {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "side" "steps";
+}
+
+.detail-head { grid-area: head; }
+.detail-side { grid-area: side; }
+.detail-steps { grid-area: steps; }
+
+@media (min-width: 992px) {
+    .detail-layout {
+        column-gap: 48px;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+        grid-template-areas: "head side" "steps side";
+    }
+
+    .detail-side {
+        align-self: start;
+        position: sticky;
+        top: 80px;
+        z-index: 1; /* thấp hơn menu (1020) để không đè lên menu */
+    }
+}
+
+/* Thông tin nhanh của món: 2 cột trên điện thoại, 4 cột từ 576px */
+.recipe-facts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px 0;
+    margin-bottom: 12px;
+    border-top: 1px solid #E7E2DA;
+    border-bottom: 1px solid #E7E2DA;
+}
+
+.recipe-facts dt {
+    font-weight: 400;
+    font-size: 14px;
+    color: #6B6B6B;
+}
+
+.recipe-facts dd {
+    margin: 0;
+    font-weight: 600;
+}
+
+@media (min-width: 576px) {
+    .recipe-facts {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 /* Lời người nấu: dấu ngoặc kép lớn màu cam, dùng ở trang chi tiết và mục Món ngon của tuần */
 .author-note {
     position: relative;
@@ -410,11 +497,64 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
         display: none !important;
     }
 
-    .sticky-lg-top {
+    .detail-side {
         position: static !important;
     }
 
     .detail-img {
         max-height: 260px;
     }
+}
+
+/* ===== Điện thoại (dưới 768px) ===== */
+@media (max-width: 767.98px) {
+    /* slideshow thấp lại để thấy được phần bên dưới */
+    .hero-slider { min-height: 400px; }
+    .hero-img { height: 400px; }
+    .hero-search h1 { font-size: 28px; }
+
+    /* từ khóa "Hay tìm" thành một hàng vuốt ngang thay vì xuống 2 dòng */
+    .hero-tags {
+        display: flex;
+        align-items: center;
+        overflow-x: auto;
+        scrollbar-width: none;
+        margin-right: -12px;
+    }
+
+    .hero-tags .tag { flex-shrink: 0; margin-bottom: 0; }
+
+    .hero-dish { left: 12px; right: 12px; bottom: 52px; font-size: 14px; }
+
+    /* danh mục thành một hàng vuốt ngang */
+    .cat-strip {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 12px;
+        margin: 0 -12px;
+        padding: 0 12px 8px;
+        scrollbar-width: none;
+    }
+
+    .cat-tile { flex: 0 0 76px; }
+    .cat-tile img { width: 72px; height: 72px; }
+
+    .featured img { height: 220px; }
+
+    /* danh sách công thức: ảnh nhỏ lại cho chữ có chỗ */
+    .recipe-row img { width: 104px; height: 104px; }
+}
+
+/* ===== Thẻ món trên điện thoại nhỏ (dưới 576px): ảnh trái, chữ phải cho gọn ===== */
+@media (max-width: 575.98px) {
+    .recipe-card {
+        flex-direction: row;
+        gap: 12px;
+    }
+
+    .recipe-card .card-img-wrap { flex: 0 0 112px; height: 112px; }
+    .recipe-card .card-img-top { height: 112px; }
+    .recipe-card .card-cat { display: none; } /* ảnh nhỏ, nhãn danh mục che mất ảnh */
+    .recipe-card .card-body { padding: 0 !important; min-width: 0; }
+    .recipe-card .card-title { font-size: 17px; }
 }

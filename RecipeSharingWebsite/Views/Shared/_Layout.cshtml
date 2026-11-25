@@ -26,7 +26,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link @(ctrl == "Home" && act == "Index" ? "active" : "")" href="@Url.Action("Index", "Home")">Trang chủ</a>
                     </li>
@@ -47,10 +47,41 @@
                     }
                 </ul>
 
+                @* ===== Điện thoại: tài khoản hiện thẳng trong menu, không dùng dropdown ===== *@
+                <div class="d-lg-none pb-3">
+                    @if (daDangNhap)
+                    {
+                        <div class="d-flex align-items-center gap-2 py-3">
+                            @Html.Partial("_Avatar", (string)Session["FullName"]) <span class="fw-semibold">@Session["FullName"]</span>
+                        </div>
+                        <a class="btn btn-primary w-100 mb-2" href="@Url.Action("Create", "Recipes")">+ Viết món mới</a>
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("MyRecipes", "Account")">Bài của tôi</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("Favorites", "Account")">Món đã lưu</a></li>
+                            <li class="nav-item"><a class="nav-link" href="@Url.Action("ChangePassword", "Account")">Đổi mật khẩu</a></li>
+                            <li class="nav-item">
+                                @using (Html.BeginForm("Logout", "Account", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="nav-link w-100 text-start">Đăng xuất</button>
+                                }
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="d-flex gap-2 pt-3">
+                            <a class="btn btn-outline-secondary flex-fill" href="@Url.Action("Login", "Account")">Đăng nhập</a>
+                            <a class="btn btn-primary flex-fill" href="@Url.Action("Register", "Account")">Đăng ký</a>
+                        </div>
+                    }
+                </div>
+
+                @* ===== Máy tính: nút viết món + menu tài khoản dạng dropdown ===== *@
                 @if (daDangNhap)
                 {
-                    <a class="btn btn-primary me-2" href="@Url.Action("Create", "Recipes")">+ Viết món mới</a>
-                    <div class="dropdown">
+                    <a class="btn btn-primary me-2 d-none d-lg-inline-block" href="@Url.Action("Create", "Recipes")">+ Viết món mới</a>
+                    <div class="dropdown d-none d-lg-block">
                         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             @Html.Partial("_Avatar", (string)Session["FullName"]) @Session["FullName"]
                         </button>
@@ -71,8 +102,8 @@
                 }
                 else
                 {
-                    <a class="btn btn-outline-secondary me-2" href="@Url.Action("Login", "Account")">Đăng nhập</a>
-                    <a class="btn btn-primary" href="@Url.Action("Register", "Account")">Đăng ký</a>
+                    <a class="btn btn-outline-secondary me-2 d-none d-lg-inline-block" href="@Url.Action("Login", "Account")">Đăng nhập</a>
+                    <a class="btn btn-primary d-none d-lg-inline-block" href="@Url.Action("Register", "Account")">Đăng ký</a>
                 }
             </div>
         </div>

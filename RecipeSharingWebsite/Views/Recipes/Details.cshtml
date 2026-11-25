@@ -25,8 +25,11 @@ else if (Model.Status == Recipe.BiXoa)
     <div class="alert alert-danger">Bài đã bị admin xóa. Lý do: @Model.RejectReason</div>
 }
 
-<div class="row g-4 g-lg-5">
-    <div class="col-lg-8">
+@* Bố cục 3 phần: đầu bài, nguyên liệu, các bước.
+   Điện thoại: xếp dọc theo thứ tự đó (xem nguyên liệu trước khi nấu).
+   Máy tính: nguyên liệu nằm cột phải và dính theo khi cuộn (xem .detail-layout trong Site.css). *@
+<div class="detail-layout">
+    <div class="detail-head">
         <h1 class="mb-3">@Model.Title</h1>
 
         @* người đăng *@
@@ -60,15 +63,39 @@ else if (Model.Status == Recipe.BiXoa)
             <p class="mb-0">@Model.Description</p>
         </div>
 
-        <p class="text-muted">
-            Chuẩn bị @Model.PrepTimeMinutes phút · Nấu @Model.CookTimeMinutes phút · @Model.Servings người · Độ khó: @Model.Difficulty
-            @if (ratings.Any())
-            {
-                <text> · </text>@Html.Partial("_Stars", diemTB) <text>@diemTB.ToString("0.0") (@ratings.Count)</text>
-            }
-        </p>
+        @* thông tin nhanh: 2 cột trên điện thoại, 4 cột trên máy tính *@
+        <dl class="recipe-facts">
+            <div><dt>Chuẩn bị</dt><dd>@Model.PrepTimeMinutes phút</dd></div>
+            <div><dt>Nấu</dt><dd>@Model.CookTimeMinutes phút</dd></div>
+            <div><dt>Khẩu phần</dt><dd>@Model.Servings người</dd></div>
+            <div><dt>Độ khó</dt><dd>@Model.Difficulty</dd></div>
+        </dl>
+        @if (ratings.Any())
+        {
+            <p class="mb-0">
+                @Html.Partial("_Stars", diemTB) <strong>@diemTB.ToString("0.0")</strong>
+                <a class="text-muted no-print" href="#danh-gia">(@ratings.Count đánh giá)</a>
+            </p>
+        }
+    </div>
 
-        <h2 class="h4 mt-5 mb-3">Các bước làm</h2>
+    @* ===== Nguyên liệu: có ô tick để đánh dấu đã chuẩn bị ===== *@
+    <aside class="detail-side bg-cream rounded-3 p-4">
+        <h2 class="h5 mb-1">Nguyên liệu</h2>
+        <p class="text-muted small mb-3">Cho @Model.Servings người · tick vào món đã chuẩn bị</p>
+        <div class="ingredient-list" data-recipe="@Model.RecipeID">
+            @foreach (var item in Model.Ingredients.Split('\n'))
+            {
+                <label class="d-flex gap-2 py-2 border-bottom">
+                    <input type="checkbox" class="form-check-input mt-1" />
+                    <span>@item</span>
+                </label>
+            }
+        </div>
+    </aside>
+
+    <div class="detail-steps">
+        <h2 class="h4 mb-3">Các bước làm</h2>
         @{ int buoc = 1; }
         @foreach (var step in Model.Instructions.Split('\n'))
         {
@@ -93,25 +120,6 @@ else if (Model.Status == Recipe.BiXoa)
                 }
             </div>
         }
-    </div>
-
-    @* ===== Nguyên liệu: có ô tick để đánh dấu đã chuẩn bị ===== *@
-    <div class="col-lg-4">
-        @* dính theo khi cuộn; z-index thấp hơn menu (1020) để không đè lên menu *@
-        <div class="bg-cream rounded-3 p-4 sticky-lg-top" style="top: 80px; z-index: 1">
-
-            <h2 class="h5 mb-1">Nguyên liệu</h2>
-            <p class="text-muted small mb-3">Cho @Model.Servings người · tick vào món đã chuẩn bị</p>
-            <div class="ingredient-list" data-recipe="@Model.RecipeID">
-                @foreach (var item in Model.Ingredients.Split('\n'))
-                {
-                    <label class="d-flex gap-2 py-2 border-bottom">
-                        <input type="checkbox" class="form-check-input mt-1" />
-                        <span>@item</span>
-                    </label>
-                }
-            </div>
-        </div>
     </div>
 </div>
 

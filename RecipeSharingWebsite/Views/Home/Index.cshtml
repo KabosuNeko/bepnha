@@ -38,8 +38,8 @@
                         <button type="submit" class="btn btn-primary px-4">Tìm</button>
                     </div>
                 }
-                <div>
-                    <span class="text-white small me-2">Hay tìm:</span>
+                <div class="hero-tags">
+                    <span class="text-white small me-2 flex-shrink-0">Hay tìm:</span>
                     @foreach (var tu in new[] { "Bún", "Thịt heo", "Cá", "Đậu hũ", "Trứng", "Chè" })
                     {
                         <a class="tag" href="@Url.Action("Index", "Recipes", new { searchString = tu })">@tu</a>
@@ -63,7 +63,7 @@
 @* ===== Danh mục: ảnh tròn lấy từ món đầu tiên của danh mục ===== *@
 <section class="mb-5">
     <h2 class="h3 mb-3">Danh mục</h2>
-    <div class="d-flex flex-wrap gap-4">
+    <div class="cat-strip">
         @foreach (var c in (List<Category>)ViewBag.Categories)
         {
             var anh = c.Recipes.Where(r => r.Status == Recipe.DaDuyet && r.ImagePath != null)

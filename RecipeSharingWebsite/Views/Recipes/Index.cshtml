@@ -10,6 +10,8 @@
     string search = ViewBag.SearchString;
     int trang = ViewBag.Page;
     int soTrang = ViewBag.TotalPages;
+    // số bộ lọc đang chọn, hiện trên nút "Lọc" ở điện thoại
+    int soBoLoc = new[] { catID, doKho, thoiGian }.Count(x => !string.IsNullOrEmpty(x));
 
     // tạo link giữ nguyên các bộ lọc đang chọn, chỉ đổi một giá trị; đổi bộ lọc thì quay về trang 1
     Func<string, object, string> Link = (key, value) =>
@@ -41,10 +43,16 @@
                 @(string.IsNullOrEmpty(search) ? "Tất cả công thức" : "Kết quả cho \"" + search + "\"")
                 <span class="text-muted fw-normal">(@ViewBag.Total)</span>
             </h1>
-            <div class="btn-group" role="group" aria-label="Sắp xếp">
-                <a class="btn btn-outline-secondary @(string.IsNullOrEmpty(sort) ? "active" : "")" href="@Link("sortStyle", null)">Mới nhất</a>
-                <a class="btn btn-outline-secondary @(sort == "name" || sort == "name_desc" ? "active" : "")" href="@Link("sortStyle", (string)ViewBag.NameSort)">Tên món</a>
-                <a class="btn btn-outline-secondary @(sort == "time" || sort == "time_desc" ? "active" : "")" href="@Link("sortStyle", (string)ViewBag.TimeSort)">Thời gian nấu</a>
+            <div class="d-flex gap-2">
+                @* điện thoại: bộ lọc nằm trong bảng trượt, bấm nút này để mở *@
+                <button type="button" class="btn btn-outline-secondary d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#boLoc" aria-controls="boLoc">
+                    Lọc@(soBoLoc > 0 ? " (" + soBoLoc + ")" : "")
+                </button>
+                <div class="btn-group" role="group" aria-label="Sắp xếp">
+                    <a class="btn btn-outline-secondary @(string.IsNullOrEmpty(sort) ? "active" : "")" href="@Link("sortStyle", null)">Mới nhất</a>
+                    <a class="btn btn-outline-secondary @(sort == "name" || sort == "name_desc" ? "active" : "")" href="@Link("sortStyle", (string)ViewBag.NameSort)">Tên</a>
+                    <a class="btn btn-outline-secondary @(sort == "time" || sort == "time_desc" ? "active" : "")" href="@Link("sortStyle", (string)ViewBag.TimeSort)">Thời gian</a>
+                </div>
             </div>
         </div>
 
@@ -93,8 +101,15 @@
         }
     </div>
 
-    @* ===== Cột phải: lọc theo danh mục, độ khó, thời gian ===== *@
+    @* ===== Cột phải: lọc theo danh mục, độ khó, thời gian =====
+       offcanvas-lg: trên điện thoại là bảng trượt từ phải, từ màn hình lg trở lên là cột bình thường *@
     <div class="col-lg-4">
+      <div class="offcanvas-lg offcanvas-end" tabindex="-1" id="boLoc" aria-labelledby="boLocTieuDe">
+        <div class="offcanvas-header border-bottom">
+            <h2 class="offcanvas-title h5" id="boLocTieuDe">Lọc công thức</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#boLoc" aria-label="Đóng"></button>
+        </div>
+        <div class="offcanvas-body d-block">
         <h2 class="h6 fw-bold mb-3">Danh mục</h2>
         <div class="list-group mb-4">
             <a class="list-group-item list-group-item-action @(string.IsNullOrEmpty(catID) ? "active" : "")" href="@Link("categoryID", null)">Tất cả</a>
@@ -120,5 +135,7 @@
             <a class="btn btn-outline-secondary @(thoiGian == "30" ? "active" : "")" href="@Link("maxTime", 30)">Tối đa 30 phút</a>
             <a class="btn btn-outline-secondary @(thoiGian == "60" ? "active" : "")" href="@Link("maxTime", 60)">Tối đa 1 giờ</a>
         </div>
+        </div>
+      </div>
     </div>
 </div>
