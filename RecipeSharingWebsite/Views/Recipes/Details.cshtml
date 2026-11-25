@@ -38,9 +38,9 @@ else if (Model.Status == Recipe.BiXoa)
             </div>
         </div>
 
-        <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100 rounded-3 detail-img mb-4" alt="@Model.Title" />
+        <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100 rounded-3 detail-img mb-4" width="1280" height="720" fetchpriority="high" alt="@Model.Title" />
 
-        <div class="author-note rounded p-3 mb-4">
+        <div class="author-note mb-4">
             <div class="fw-semibold mb-1">Lời của @Model.Author</div>
             <p class="mb-0">@Model.Description</p>
         </div>
@@ -70,11 +70,11 @@ else if (Model.Status == Recipe.BiXoa)
             <div class="d-flex gap-2 mt-4">
                 @if (ViewBag.DuocSua)
                 {
-                    <a class="btn btn-outline-secondary btn-sm" href="@Url.Action("Edit", new { id = Model.RecipeID })">Sửa bài</a>
+                    <a class="btn btn-outline-secondary" href="@Url.Action("Edit", new { id = Model.RecipeID })">Sửa bài</a>
                 }
                 @if (ViewBag.LaChuBai)
                 {
-                    <a class="btn btn-outline-danger btn-sm" href="@Url.Action("Delete", new { id = Model.RecipeID })">Xóa bài</a>
+                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", new { id = Model.RecipeID })">Xóa bài</a>
                 }
             </div>
         }
@@ -82,7 +82,9 @@ else if (Model.Status == Recipe.BiXoa)
 
     @* ===== Nguyên liệu: có ô tick để đánh dấu đã chuẩn bị ===== *@
     <div class="col-lg-4">
-        <div class="bg-cream rounded-3 p-4 sticky-lg-top" style="top: 80px">
+        @* dính theo khi cuộn; z-index thấp hơn menu (1020) để không đè lên menu *@
+        <div class="bg-cream rounded-3 p-4 sticky-lg-top" style="top: 80px; z-index: 1">
+
             <h2 class="h5 mb-1">Nguyên liệu</h2>
             <p class="text-muted small mb-3">Cho @Model.Servings người · tick vào món đã chuẩn bị</p>
             <div class="ingredient-list" data-recipe="@Model.RecipeID">
@@ -110,9 +112,10 @@ else if (Model.Status == Recipe.BiXoa)
             {
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="RecipeID" value="@Model.RecipeID" />
-                <div class="row g-2">
+                <div class="row g-2 align-items-end">
                     <div class="col-md-4">
-                        <select name="Stars" class="form-select" required>
+                        <label for="soSao" class="form-label small fw-semibold">Số sao</label>
+                        <select name="Stars" id="soSao" class="form-select" required>
                             <option value="">Chọn số sao</option>
                             <option value="5">5 sao - Rất ngon</option>
                             <option value="4">4 sao - Ngon</option>
@@ -122,7 +125,8 @@ else if (Model.Status == Recipe.BiXoa)
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" name="Comment" class="form-control" maxlength="500" placeholder="Bạn nấu thử thấy sao?" />
+                        <label for="nhanXet" class="form-label small fw-semibold">Nhận xét (không bắt buộc)</label>
+                        <input type="text" name="Comment" id="nhanXet" class="form-control" maxlength="500" placeholder="Bạn nấu thử thấy sao?" />
                     </div>
                     <div class="col-md-2 d-grid">
                         <button type="submit" class="btn btn-primary">Gửi</button>

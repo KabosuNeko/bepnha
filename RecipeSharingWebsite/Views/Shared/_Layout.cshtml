@@ -14,7 +14,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -48,23 +47,11 @@
                     }
                 </ul>
 
-                @* trang chủ và trang Công thức đã có ô tìm lớn nên không hiện ô tìm trên menu *@
-                @if (!(ctrl == "Home" && act == "Index") && !(ctrl == "Recipes" && act == "Index"))
-                {
-                    using (Html.BeginForm("Index", "Recipes", FormMethod.Get, new { @class = "d-flex me-lg-3 mb-2 mb-lg-0", role = "search" }))
-                    {
-                        <div class="input-group input-group-sm">
-                            <input type="search" name="searchString" class="form-control" placeholder="Tìm món ăn..." aria-label="Tìm món ăn" />
-                            <button class="btn btn-outline-secondary" type="submit" aria-label="Tìm"><i class="bi bi-search"></i></button>
-                        </div>
-                    }
-                }
-
                 @if (daDangNhap)
                 {
-                    <a class="btn btn-primary btn-sm me-2" href="@Url.Action("Create", "Recipes")">+ Viết món mới</a>
+                    <a class="btn btn-primary me-2" href="@Url.Action("Create", "Recipes")">+ Viết món mới</a>
                     <div class="dropdown">
-                        <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             @Html.Partial("_Avatar", (string)Session["FullName"]) @Session["FullName"]
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -82,8 +69,8 @@
                 }
                 else
                 {
-                    <a class="btn btn-outline-secondary btn-sm me-2" href="@Url.Action("Login", "Account")">Đăng nhập</a>
-                    <a class="btn btn-primary btn-sm" href="@Url.Action("Register", "Account")">Đăng ký</a>
+                    <a class="btn btn-outline-secondary me-2" href="@Url.Action("Login", "Account")">Đăng nhập</a>
+                    <a class="btn btn-primary" href="@Url.Action("Register", "Account")">Đăng ký</a>
                 }
             </div>
         </div>
@@ -95,14 +82,14 @@
         @if (TempData["Msg"] != null)
         {
             <div class="alert alert-success alert-dismissible fade show">
-                <i class="bi bi-check-circle me-1"></i> @TempData["Msg"]
+                @TempData["Msg"]
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
             </div>
         }
         @if (TempData["Err"] != null)
         {
             <div class="alert alert-danger alert-dismissible fade show">
-                <i class="bi bi-exclamation-triangle me-1"></i> @TempData["Err"]
+                @TempData["Err"]
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
             </div>
         }

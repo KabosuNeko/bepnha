@@ -1,4 +1,15 @@
-/* Bảng màu: chữ #2B2B2B - chữ phụ #6B6B6B - nền kem #FAF7F2 - đường kẻ #E7E2DA - màu nhấn #B4552D */
+/* Bảng màu: chữ #2B2B2B - chữ phụ #6B6B6B - nền kem #FAF7F2 - đường kẻ #E7E2DA - màu nhấn #B4552D
+   Lý do chọn màu, font: xem DESIGN.md ở thư mục gốc */
+
+/* Đổi màu xanh mặc định của Bootstrap sang màu nhấn của trang (link, tab, focus) */
+:root {
+    --bs-primary: #B4552D;
+    --bs-primary-rgb: 180, 85, 45;
+    --bs-link-color: #B4552D;
+    --bs-link-color-rgb: 180, 85, 45;
+    --bs-link-hover-color: #96441F;
+    --bs-link-hover-color-rgb: 150, 68, 31;
+}
 
 body {
     font-family: "Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
@@ -17,6 +28,15 @@ a:hover {
 
 h1, h2, h3, h4, h5 {
     font-weight: 700;
+}
+
+/* Thứ gì bấm được thì hiện con trỏ bàn tay */
+select, label[for], summary, .form-check-input {
+    cursor: pointer;
+}
+
+button:disabled, .btn.disabled, select:disabled, input:disabled {
+    cursor: not-allowed;
 }
 
 .text-muted {
@@ -52,32 +72,56 @@ h1, h2, h3, h4, h5 {
     color: #B4552D;
 }
 
-/* Nút bấm */
-.btn-primary {
-    background: #B4552D;
-    border-color: #B4552D;
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: #B4552D;
+    --bs-dropdown-item-padding-y: .65rem; /* cao khoảng 44px cho dễ bấm trên điện thoại */
 }
 
-.btn-primary:hover,
-.btn-primary:focus {
-    background: #96441F;
-    border-color: #96441F;
+/* Nút bấm, ô nhập, nút mở menu: vùng bấm tối thiểu 44px */
+.btn, .form-control, .form-select, .navbar-toggler {
+    min-height: 44px;
+}
+
+/* đặt lại biến của Bootstrap để cả lúc rê, bấm giữ, focus đều là màu cam */
+.btn-primary {
+    --bs-btn-bg: #B4552D;
+    --bs-btn-border-color: #B4552D;
+    --bs-btn-hover-bg: #96441F;
+    --bs-btn-hover-border-color: #96441F;
+    --bs-btn-active-bg: #7E3819;
+    --bs-btn-active-border-color: #7E3819;
+    --bs-btn-disabled-bg: #B4552D;
+    --bs-btn-disabled-border-color: #B4552D;
+    --bs-btn-focus-shadow-rgb: 180, 85, 45;
 }
 
 .btn-outline-primary {
-    color: #B4552D;
-    border-color: #B4552D;
-}
-
-.btn-outline-primary:hover {
-    background: #B4552D;
-    border-color: #B4552D;
+    --bs-btn-color: #B4552D;
+    --bs-btn-border-color: #B4552D;
+    --bs-btn-hover-bg: #B4552D;
+    --bs-btn-hover-border-color: #B4552D;
+    --bs-btn-active-bg: #96441F;
+    --bs-btn-active-border-color: #96441F;
+    --bs-btn-focus-shadow-rgb: 180, 85, 45;
 }
 
 .btn-outline-secondary.active {
     background: #2B2B2B;
     border-color: #2B2B2B;
     color: #fff;
+}
+
+/* Ô nhập: viền focus và ô tick dùng màu nhấn thay vì xanh */
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    border-color: #D9A58C;
+    box-shadow: 0 0 0 .25rem rgba(180, 85, 45, .25);
+}
+
+.form-check-input:checked {
+    background-color: #B4552D;
+    border-color: #B4552D;
 }
 
 .badge-accent {
@@ -100,7 +144,8 @@ h1, h2, h3, h4, h5 {
 .hero-img {
     height: 460px;
     object-fit: cover;
-    filter: brightness(.55); /* làm tối ảnh để chữ trắng và ô tìm dễ nhìn */
+    /* .45: điểm trắng nhất của ảnh còn khoảng #737373, chữ trắng vẫn đạt 4.7:1 */
+    filter: brightness(.45);
 }
 
 .hero-search {
@@ -119,7 +164,7 @@ h1, h2, h3, h4, h5 {
 .hero-dish {
     position: absolute;
     right: 24px;
-    bottom: 44px; /* nằm trên mấy gạch chỉ slide */
+    bottom: 56px; /* nằm trên mấy gạch chỉ slide */
     z-index: 3;
     color: #fff;
     font-weight: 600;
@@ -130,14 +175,44 @@ h1, h2, h3, h4, h5 {
     text-decoration: underline;
 }
 
+/* gạch chỉ slide dồn sang phải để không đè nút dừng bên trái */
 .hero-slider .carousel-indicators {
     z-index: 3;
+    left: auto;
+    right: 24px;
+    margin: 0 0 4px 0;
+}
+
+/* gạch chỉ slide: nhìn vẫn mảnh nhưng vùng bấm cao 44px */
+.hero-slider .carousel-indicators [data-bs-target] {
+    width: 44px;
+    border-top-width: 21px;
+    border-bottom-width: 21px;
+}
+
+/* nút dừng / chạy slideshow ở góc dưới bên trái */
+.hero-pause {
+    position: absolute;
+    left: 24px;
+    bottom: 12px;
+    z-index: 3;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, .6);
+    background: rgba(0, 0, 0, .35);
+}
+
+.hero-pause:hover,
+.hero-pause:focus-visible {
+    color: #2B2B2B;
+    background: #fff;
 }
 
 .hero-search .tag {
-    display: inline-block;
-    padding: 4px 12px;
-    margin: 0 6px 6px 0;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    margin: 0 6px 8px 0;
     border: 1px solid #E7E2DA;
     border-radius: 999px;
     background: #fff;
@@ -163,10 +238,34 @@ h1, h2, h3, h4, h5 {
     border: 0;
 }
 
+.card-img-wrap {
+    position: relative;
+    overflow: hidden; /* để ảnh phóng to không tràn ra ngoài khung */
+    border-radius: 8px;
+}
+
 .recipe-card .card-img-top {
     height: 200px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 0;
+    transition: transform .3s;
+}
+
+/* rê chuột vào thẻ thì ảnh phóng nhẹ, cho biết thẻ bấm được */
+.recipe-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* nhãn danh mục ở góc ảnh, bo góc nhỏ như tem dán */
+.card-cat {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, .92);
+    font-size: 12px;
+    font-weight: 600;
 }
 
 /* Danh sách công thức (kiểu Cookpad: ảnh trái, chữ phải) */
@@ -221,13 +320,31 @@ h1, h2, h3, h4, h5 {
 
 /* Trang chi tiết */
 .detail-img {
+    height: auto;
+    aspect-ratio: 16 / 9;
     max-height: 440px;
     object-fit: cover;
 }
 
+/* Lời người nấu: dấu ngoặc kép lớn màu cam, dùng ở trang chi tiết và mục Món ngon của tuần */
 .author-note {
-    background: #FAF7F2;
-    border-left: 3px solid #B4552D;
+    position: relative;
+    padding-left: 44px;
+}
+
+.author-note::before {
+    content: "\201C";
+    position: absolute;
+    left: 2px;
+    top: -10px;
+    font-size: 64px;
+    line-height: 1;
+    font-weight: 700;
+    color: #B4552D;
+}
+
+.author-note p {
+    font-style: italic;
 }
 
 /* Nguyên liệu có ô tick: tick rồi thì gạch ngang */
@@ -249,13 +366,25 @@ h1, h2, h3, h4, h5 {
     font-size: 14px;
 }
 
-/* Sao đánh giá */
+/* Sao đánh giá: màu mật ong đậm, đạt 4.67:1 trên nền trắng */
 .stars {
-    color: #E8A33D;
+    color: #A86412;
 }
 
 /* Footer */
 .site-foot {
     background: #FAF7F2;
     border-top: 1px solid #E7E2DA;
+}
+
+/* Người dùng bật giảm chuyển động trong hệ điều hành thì tắt hiệu ứng */
+@media (prefers-reduced-motion: reduce) {
+    .carousel-item,
+    .recipe-card .card-img-top {
+        transition: none !important;
+    }
+
+    .recipe-card:hover .card-img-top {
+        transform: none;
+    }
 }

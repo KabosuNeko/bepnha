@@ -34,8 +34,8 @@
                             <span class="badge rounded-pill badge-accent">@item.Recipes.Count</span>
                         </td>
                         <td class="text-end pe-4 text-nowrap">
-                            <a class="btn btn-sm btn-outline-secondary" href="@Url.Action("Edit", new { id = item.CategoryID })">Sửa</a>
-                            <a class="btn btn-sm btn-outline-danger" href="@Url.Action("Delete", new { id = item.CategoryID })">Xóa</a>
+                            <a class="btn btn-outline-secondary" href="@Url.Action("Edit", new { id = item.CategoryID })">Sửa</a>
+                            <a class="btn btn-outline-danger" href="@Url.Action("Delete", new { id = item.CategoryID })">Xóa</a>
                         </td>
                     </tr>
                 }

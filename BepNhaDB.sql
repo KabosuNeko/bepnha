@@ -2,7 +2,8 @@
   BepNhaDB.sql - Database cho website chia sẻ công thức "Bếp Nhà"
   Cách dùng: mở file này trong SSMS (kết nối .\SQLEXPRESS) rồi bấm Execute (F5).
   Sau đó vào Visual Studio: Add > New Item > ADO.NET Entity Data Model > EF Designer from database.
-  Tài khoản mẫu:  admin / admin123  (quản trị)   -   user1 / user123  (người dùng)
+  Tài khoản mẫu (quản trị):   admin / admin123   -   admin2 / admin456
+  Tài khoản mẫu (người dùng): user1 / user123   -   user2 / user456   -   user3 / user789
 */
 
 CREATE DATABASE BepNhaDB;
@@ -63,7 +64,10 @@ GO
 /* ===== Dữ liệu mẫu: tài khoản ===== */
 INSERT INTO Users (Username, PasswordHash, FullName, IsAdmin) VALUES
     (N'admin', N'AP2tsxuyYfCfVVX5xSDm6vugBdH8yVpmvP7Z2JYzch6p0CqWUqVxVor4YF2ez8askg==', N'Quản trị viên', 1),
-    (N'user1', N'ADtuSx6yrRnJDCtScK2F7DhpUZakG/Gn18i9VWVUQtbkR4JKDXK8XWpjQWxi2LXwqQ==', N'Minh Anh', 0);
+    (N'user1', N'ADtuSx6yrRnJDCtScK2F7DhpUZakG/Gn18i9VWVUQtbkR4JKDXK8XWpjQWxi2LXwqQ==', N'Minh Anh', 0),
+    (N'admin2', N'AMYH30UnddrpxFNrZzm/nw9fSDcXeBfHOWNhS9X0YuAszciTt3HpyFnr7KAZi0IN4A==', N'Quản trị viên 2', 1),
+    (N'user2', N'AETvGhu0sIJIFsL+0QNNRyNNLHHXK0VLGKQSi6l6IZpSsiwjS91Qjv5uVf/0dcbpKw==', N'Thu Trang', 0),
+    (N'user3', N'AGd8m7hS6b2lUJd6lhyFl5qpuIQFSgCITBgZMR1svVyf2rqRZXmj1snV5Li+Pa00Gg==', N'Hoàng Nam', 0);
 GO
 
 /* ===== Dữ liệu mẫu: danh mục ===== */
@@ -285,5 +289,16 @@ INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (19, 9, N'Đình Khoa', 5, N'Đậu hũ non non mềm, sốt cà chua đậm vị rất hợp cơm trắng.', N'2025-09-28T00:00:00');
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (20, 10, N'Ngọc Hân', 5, N'Chè ngọt thanh, mình để lạnh ăn kèm đá rất mát.', N'2025-09-29T00:00:00');
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (21, 10, N'Thảo Vy', 4, NULL, N'2025-09-30T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (22, 11, N'Quang Dũng', 5, N'Pha phin đúng kiểu, đậm và thơm, sáng nào cũng uống.', N'2025-10-02T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (23, 11, N'Mỹ Duyên', 4, N'Mình bớt sữa đặc một chút cho đỡ ngọt.', N'2025-10-03T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (24, 12, N'Ngọc Mai', 5, N'Bơ chín xay với sữa đặc béo ngậy, cả nhà đều thích.', N'2025-10-04T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (25, 13, N'Đức Long', 4, N'Xào lửa lớn nên rau vẫn giòn xanh.', N'2025-10-06T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (26, 13, N'Trà My', 5, N'Món chay nhanh gọn, tỏi phi rất thơm.', N'2025-10-07T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (27, 14, N'Hải Yến', 4, N'Canh thanh mát, hợp ngày nóng.', N'2025-10-08T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (28, 15, N'Văn Sơn', 5, N'Kho niêu đất nước sánh lại rất đưa cơm.', N'2025-10-10T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (29, 15, N'Hồng Nhung', 4, N'Mình thêm chút ớt cho cay hơn.', N'2025-10-11T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (30, 16, N'Bảo Trân', 5, N'Cuốn chặt tay, chiên lửa vừa nên vỏ giòn lâu.', N'2025-10-12T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (31, 17, N'Diệu Linh', 5, N'Bánh mịn, không bị rỗ, caramel đắng nhẹ vừa miệng.', N'2025-10-14T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (32, 17, N'Minh Nhật', 4, NULL, N'2025-10-15T00:00:00');
 SET IDENTITY_INSERT Ratings OFF;
 GO

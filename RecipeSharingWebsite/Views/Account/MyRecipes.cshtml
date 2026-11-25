@@ -57,8 +57,8 @@ else
                             </td>
                             <td class="text-end pe-4 text-nowrap">
                                 @* sửa xong bài sẽ chuyển về Chờ duyệt (kể cả bài bị xóa: sửa lại rồi gửi duyệt lại) *@
-                                <a class="btn btn-sm btn-outline-secondary" href="@Url.Action("Edit", "Recipes", new { id = item.RecipeID })">Sửa</a>
-                                <a class="btn btn-sm btn-outline-danger" href="@Url.Action("Delete", "Recipes", new { id = item.RecipeID })">Xóa</a>
+                                <a class="btn btn-outline-secondary" href="@Url.Action("Edit", "Recipes", new { id = item.RecipeID })">Sửa</a>
+                                <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Recipes", new { id = item.RecipeID })">Xóa</a>
                             </td>
                         </tr>
                     }

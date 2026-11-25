@@ -31,9 +31,9 @@ namespace RecipeSharingWebsite.Controllers
             return View(latest);
         }
 
+        // trang liên hệ: thông tin thành viên nhóm
         public ActionResult Contact()
         {
-            ViewBag.Message = "Thông tin liên hệ.";
             return View();
         }
     }

@@ -9,15 +9,17 @@
 
 @section hero {
     @* Slideshow làm nền, khối tìm kiếm "Hôm nay nấu gì?" nằm đè lên trên *@
-    <section id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-interval="4000">
+    <section id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false">
         <div class="carousel-inner">
             @for (int i = 0; i < slides.Count; i++)
             {
                 <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <img src="@Url.Content(slides[i].ImagePath ?? "~/Content/Images/placeholder.svg")" class="d-block w-100 hero-img" alt="@slides[i].Title" />
+                    @* ảnh đầu tiên tải trước (fetchpriority) vì là thứ người dùng thấy đầu tiên *@
+                    <img src="@Url.Content(slides[i].ImagePath ?? "~/Content/Images/placeholder.svg")" class="d-block w-100 hero-img"
+                         width="1600" height="460" alt="@slides[i].Title" @(i == 0 ? "fetchpriority=high" : "") />
                     @* tên món ở góc dưới, bấm vào mở trang chi tiết *@
                     <a class="hero-dish" href="@Url.Action("Details", "Recipes", new { id = slides[i].RecipeID })">
-                        @slides[i].Title <span class="opacity-75">· món của @slides[i].Author →</span>
+                        @slides[i].Title · món của @slides[i].Author →
                     </a>
                 </div>
             }
@@ -27,11 +29,12 @@
         <div class="hero-search">
             <div class="container" style="max-width: 720px">
                 <h1 class="mb-2 text-white">Hôm nay nấu gì?</h1>
-                <p class="mb-4 text-white opacity-75">Tìm trong các công thức nhà làm, theo tên món hoặc nguyên liệu bạn đang có.</p>
+                <p class="mb-4 text-white">Tìm trong các công thức nhà làm, theo tên món hoặc nguyên liệu bạn đang có.</p>
                 @using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
                 {
+                    <label for="timMon" class="visually-hidden">Tìm tên món hay nguyên liệu</label>
                     <div class="input-group input-group-lg mb-3">
-                        <input type="search" name="searchString" class="form-control" placeholder="Ví dụ: thịt bò, bún, cà chua..." aria-label="Tìm tên món hay nguyên liệu" />
+                        <input type="search" id="timMon" name="searchString" class="form-control" placeholder="Ví dụ: thịt bò, bún, cà chua..." />
                         <button type="submit" class="btn btn-primary px-4">Tìm</button>
                     </div>
                 }
@@ -45,58 +48,52 @@
             </div>
         </div>
 
-        <div class="carousel-indicators">
-            @for (int i = 0; i < slides.Count; i++)
-            {
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Slide @(i + 1)"></button>
-            }
-        </div>
+        @if (slides.Count > 1)
+        {
+            @* nút dừng: slideshow tự chạy nên phải cho người xem dừng lại được *@
+            <button type="button" class="btn hero-pause" id="nutDung" aria-pressed="false">Dừng ảnh</button>
+
+            <div class="carousel-indicators">
+                @for (int i = 0; i < slides.Count; i++)
+                {
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-label="Xem ảnh @(i + 1)"></button>
+                }
+            </div>
+        }
     </section>
 }
 
 @* ===== Danh mục: ảnh tròn lấy từ món đầu tiên của danh mục ===== *@
 <section class="mb-5">
-    <h2 class="h4 mb-3">Danh mục</h2>
+    <h2 class="h3 mb-3">Danh mục</h2>
     <div class="d-flex flex-wrap gap-4">
         @foreach (var c in (List<Category>)ViewBag.Categories)
         {
             var anh = c.Recipes.Where(r => r.Status == Recipe.DaDuyet && r.ImagePath != null)
                                .Select(r => r.ImagePath).FirstOrDefault() ?? "~/Content/Images/placeholder.svg";
             <a class="cat-tile text-center" href="@Url.Action("Index", "Recipes", new { categoryID = c.CategoryID })">
-                <img src="@Url.Content(anh)" alt="@c.CategoryName" />
+                <img src="@Url.Content(anh)" width="88" height="88" alt="" />
                 <div class="small fw-semibold mt-2">@c.CategoryName</div>
             </a>
         }
     </div>
 </section>
 
-@* ===== Món mới nhất ===== *@
-<section class="mb-5">
-    <div class="d-flex justify-content-between align-items-end mb-3">
-        <h2 class="h4 mb-0">Món mới lên bếp</h2>
-        <a class="text-accent" href="@Url.Action("Index", "Recipes")">Xem tất cả →</a>
-    </div>
-    <div class="row g-4">
-        @foreach (var recipe in Model)
-        {
-            @Html.Partial("_RecipeCard", recipe)
-        }
-    </div>
-</section>
-
-@* ===== Món ngon của tuần ===== *@
+@* ===== Món ngon của tuần: đặt ngay dưới danh mục làm điểm nhấn chính ===== *@
 @if (ViewBag.Featured != null)
 {
     var featured = (Recipe)ViewBag.Featured;
     <section class="row g-0 bg-cream rounded-3 overflow-hidden featured mb-5">
         <div class="col-md-6">
-            <img src="@Url.Content(featured.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100" alt="@featured.Title" />
+            <img src="@Url.Content(featured.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100" width="640" height="360" loading="lazy" alt="@featured.Title" />
         </div>
         <div class="col-md-6 d-flex align-items-center">
             <div class="p-4 p-lg-5">
                 <div class="text-accent fw-semibold mb-2">Món ngon của tuần</div>
                 <h2>@featured.Title</h2>
-                <p>@featured.Description</p>
+                <div class="author-note mb-3">
+                    <p class="mb-1">@featured.Description</p>
+                </div>
                 <p class="text-muted small mb-4">
                     @Html.Partial("_Avatar", featured.Author) @featured.Author · @featured.TotalTimeMinutes phút · @featured.Servings người
                 </p>
@@ -104,4 +101,57 @@
             </div>
         </div>
     </section>
+}
+
+@* ===== Món mới nhất ===== *@
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h2 class="h3 mb-0">Món mới lên bếp</h2>
+        @if (Model.Any())
+        {
+            <a class="text-accent" href="@Url.Action("Index", "Recipes")">Xem tất cả</a>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        @* chưa có món nào được duyệt *@
+        <div class="bg-cream rounded-3 p-4">
+            <p class="mb-2">Chưa có món nào được đăng.</p>
+            <a class="btn btn-primary" href="@Url.Action("Create", "Recipes")">Viết món đầu tiên</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var recipe in Model)
+            {
+                @Html.Partial("_RecipeCard", recipe)
+            }
+        </div>
+    }
+</section>
+
+@section scripts {
+    <script>
+        // Nút Dừng ảnh / Chạy ảnh cho slideshow
+        var hero = document.getElementById('heroCarousel');
+        var nutDung = document.getElementById('nutDung');
+        if (nutDung) {
+            var slide = bootstrap.Carousel.getOrCreateInstance(hero);
+            var dangDung = false;
+
+            function datTrangThai(dung) {
+                dangDung = dung;
+                if (dung) slide.pause(); else slide.cycle();
+                nutDung.textContent = dung ? 'Chạy ảnh' : 'Dừng ảnh';
+                nutDung.setAttribute('aria-pressed', dung);
+            }
+
+            nutDung.addEventListener('click', function () { datTrangThai(!dangDung); });
+
+            // máy bật "giảm chuyển động" thì dừng sẵn từ đầu
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) datTrangThai(true);
+        }
+    </script>
 }

@@ -35,7 +35,7 @@
     <div class="card border-0 shadow-sm mb-3">
         <div class="row g-0">
             <div class="col-md-3">
-                <img src="@Url.Content(item.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100 h-100 object-fit-cover rounded-start" style="min-height:160px" alt="@item.Title" />
+                <img src="@Url.Content(item.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100 h-100 object-fit-cover rounded-start" style="min-height:160px" width="300" height="200" loading="lazy" alt="@item.Title" />
             </div>
             <div class="col-md-9">
                 <div class="card-body">
@@ -58,13 +58,13 @@
                         <div class="alert alert-danger small py-2 mb-2">Lý do đã gửi: @item.RejectReason</div>
                     }
 
-                    <div class="d-flex flex-wrap gap-2 align-items-start">
+                    <div class="d-flex flex-wrap gap-2 align-items-end">
                         @if (item.Status != Recipe.DaDuyet)
                         {
                             using (Html.BeginForm("Approve", "Admin", new { id = item.RecipeID }, FormMethod.Post, null))
                             {
                                 @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-sm btn-success">Duyệt</button>
+                                <button type="submit" class="btn btn-success">Duyệt</button>
                             }
                         }
                         @if (item.Status != Recipe.BiXoa)
@@ -72,8 +72,9 @@
                             using (Html.BeginForm("Reject", "Admin", new { id = item.RecipeID }, FormMethod.Post, new { @class = "flex-grow-1" }))
                             {
                                 @Html.AntiForgeryToken()
-                                <div class="input-group input-group-sm">
-                                    <input type="text" name="reason" class="form-control" maxlength="500" required placeholder="Lý do xóa (gửi cho người đăng)" />
+                                <label for="lyDo-@item.RecipeID" class="form-label small fw-semibold mb-1">Lý do xóa</label>
+                                <div class="input-group">
+                                    <input type="text" name="reason" id="lyDo-@item.RecipeID" class="form-control" maxlength="500" required placeholder="Lý do xóa (gửi cho người đăng)" />
                                     <button type="submit" class="btn btn-outline-danger">Xóa</button>
                                 </div>
                             }

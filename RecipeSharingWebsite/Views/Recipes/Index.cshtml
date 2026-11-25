@@ -12,8 +12,9 @@
     <div class="col-lg-8">
         @using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
         {
+            <label for="timMon" class="visually-hidden">Tìm tên món hay nguyên liệu</label>
             <div class="input-group mb-3">
-                @Html.TextBox("searchString", null, new { @class = "form-control", placeholder = "Tìm tên món hay nguyên liệu..." })
+                @Html.TextBox("searchString", null, new { @class = "form-control", id = "timMon", placeholder = "Tìm tên món hay nguyên liệu..." })
                 <button type="submit" class="btn btn-primary px-4">Tìm</button>
             </div>
         }
@@ -23,7 +24,7 @@
                 @(string.IsNullOrEmpty(search) ? "Tất cả công thức" : "Kết quả cho \"" + search + "\"")
                 <span class="text-muted fw-normal">(@Model.Count())</span>
             </h1>
-            <div class="btn-group btn-group-sm" role="group" aria-label="Sắp xếp">
+            <div class="btn-group" role="group" aria-label="Sắp xếp">
                 <a class="btn btn-outline-secondary @(string.IsNullOrEmpty(sort) ? "active" : "")"
                    href="@Url.Action("Index", new { searchString = search, categoryID = catID })">Mới nhất</a>
                 <a class="btn btn-outline-secondary @(sort == "name" || sort == "name_desc" ? "active" : "")"
@@ -44,7 +45,7 @@
         {
             @* mỗi món một hàng: ảnh trái, thông tin phải *@
             <a class="recipe-row" href="@Url.Action("Details", new { id = item.RecipeID })">
-                <img src="@Url.Content(item.ImagePath ?? "~/Content/Images/placeholder.svg")" alt="@item.Title" />
+                <img src="@Url.Content(item.ImagePath ?? "~/Content/Images/placeholder.svg")" width="160" height="120" loading="lazy" alt="@item.Title" />
                 <div class="flex-grow-1">
                     <h2 class="h5 mb-1">@item.Title</h2>
                     <p class="text-muted small mb-2 ingredients-line">@item.Ingredients.Replace("\n", ", ")</p>

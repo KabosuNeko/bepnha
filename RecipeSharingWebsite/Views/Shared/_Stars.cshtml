@@ -1,8 +1,3 @@
 ﻿@model double
-@* Vẽ 5 ngôi sao theo số điểm, ví dụ 3.6 điểm -> 4 sao đầy *@
-<span class="stars" title="@Model.ToString("0.0") / 5">
-    @for (int i = 1; i <= 5; i++)
-    {
-        <i class="bi @(i <= Math.Round(Model) ? "bi-star-fill" : "bi-star")"></i>
-    }
-</span>
+@* Vẽ 5 ngôi sao bằng ký tự ★ / ☆ theo số điểm, ví dụ 3.6 điểm -> 4 sao đầy *@
+<span class="stars" title="@Model.ToString("0.0") / 5">@for (int i = 1; i <= 5; i++){@(i <= Math.Round(Model, MidpointRounding.AwayFromZero) ? "★" : "☆")}</span>

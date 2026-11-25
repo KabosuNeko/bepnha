@@ -1,16 +1,27 @@
 ﻿@model RecipeSharingWebsite.Models.Recipe
+@{
+    // điểm đánh giá trung bình của món (chưa ai chấm thì không hiện)
+    int soDanhGia = Model.Ratings.Count;
+    double diemTB = soDanhGia > 0 ? Model.Ratings.Average(r => r.Stars) : 0;
+}
 
 <div class="col-sm-6 col-lg-4">
     <div class="card h-100 recipe-card">
-        <a href="@Url.Action("Details", "Recipes", new { id = Model.RecipeID })">
-            <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" class="card-img-top" alt="@Model.Title" />
-        </a>
+        @* khung ảnh: nhãn danh mục nằm ở góc, rê chuột thì ảnh phóng nhẹ *@
+        <div class="card-img-wrap">
+            <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" class="card-img-top" width="400" height="200" loading="lazy" alt="@Model.Title" />
+            <span class="card-cat">@Model.Category.CategoryName</span>
+        </div>
         <div class="card-body px-0 pt-2">
             <h5 class="card-title mb-1">
                 <a href="@Url.Action("Details", "Recipes", new { id = Model.RecipeID })" class="stretched-link">@Model.Title</a>
             </h5>
             <div class="text-muted small">
                 @Html.Partial("_Avatar", Model.Author) @Model.Author · @Model.TotalTimeMinutes phút
+                @if (soDanhGia > 0)
+                {
+                    <span class="ms-1"><span class="stars">★</span> @diemTB.ToString("0.0") (@soDanhGia)</span>
+                }
             </div>
         </div>
     </div>
