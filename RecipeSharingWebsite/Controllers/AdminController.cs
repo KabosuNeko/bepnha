@@ -26,6 +26,17 @@ namespace RecipeSharingWebsite.Controllers
 
             ViewBag.Status = status;
             ViewBag.SoChoDuyet = db.Recipes.Count(r => r.Status == Recipe.ChoDuyet);
+
+            // thống kê nhanh, đếm thẳng từ database
+            ViewBag.SoDaDuyet = db.Recipes.Count(r => r.Status == Recipe.DaDuyet);
+            ViewBag.SoBiXoa = db.Recipes.Count(r => r.Status == Recipe.BiXoa);
+            ViewBag.SoTaiKhoan = db.Users.Count();
+            ViewBag.SoDanhGia = db.Ratings.Count();
+            // món điểm cao nhất (ít nhất 2 lượt chấm), bằng điểm thì món nhiều lượt chấm hơn đứng trước
+            ViewBag.MonDiemCao = db.Recipes.Where(r => r.Status == Recipe.DaDuyet && r.Ratings.Count >= 2)
+                                           .OrderByDescending(r => r.Ratings.Average(x => (double)x.Stars))
+                                           .ThenByDescending(r => r.Ratings.Count)
+                                           .FirstOrDefault();
             var recipes = db.Recipes.Where(r => r.Status == status)
                                     .OrderByDescending(r => r.CreatedAt)
                                     .ToList();

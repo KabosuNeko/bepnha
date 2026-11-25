@@ -148,6 +148,9 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ModelMetadata.cs" />
+    <Compile Include="Models\Favorite.cs">
+      <DependentUpon>BepNhaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Rating.cs">
       <DependentUpon>BepNhaModel.tt</DependentUpon>
     </Compile>
@@ -249,6 +252,9 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\MyRecipes.cshtml" />
+    <Content Include="Views\Account\Favorites.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Recipes\ByAuthor.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Categories\Create.cshtml" />
     <Content Include="Views\Categories\Delete.cshtml" />

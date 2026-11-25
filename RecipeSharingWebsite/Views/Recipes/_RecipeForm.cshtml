@@ -65,4 +65,22 @@
         @Html.DropDownListFor(model => model.Difficulty, new SelectList(new[] { "Dễ", "Trung bình", "Khó" }), "--Chọn--", htmlAttributes: new { @class = "form-select" })
         @Html.ValidationMessageFor(model => model.Difficulty, "", new { @class = "text-danger small" })
     </div>
+
+    @* ảnh món ăn: không bắt buộc; khi sửa bài thì hiện ảnh đang dùng *@
+    <div class="col-12">
+        <label for="anhMon" class="form-label fw-semibold">Ảnh món ăn</label>
+        <div class="d-flex flex-wrap align-items-center gap-3">
+            @if (!string.IsNullOrEmpty(Model?.ImagePath))
+            {
+                <img src="@Url.Content(Model.ImagePath)" width="120" height="80" class="rounded object-fit-cover" alt="Ảnh đang dùng" />
+            }
+            <div class="flex-grow-1">
+                <input type="file" name="anhMon" id="anhMon" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                <div class="text-muted small mt-1">
+                    @(string.IsNullOrEmpty(Model?.ImagePath) ? "Ảnh .jpg, .png hoặc .webp, tối đa 2 MB. Không chọn thì dùng ảnh mặc định." : "Chọn ảnh mới nếu muốn thay, tối đa 2 MB.")
+                </div>
+            </div>
+        </div>
+        @Html.ValidationMessage("ImagePath", "", new { @class = "text-danger small" })
+    </div>
 </div>

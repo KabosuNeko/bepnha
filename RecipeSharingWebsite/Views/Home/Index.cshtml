@@ -9,7 +9,7 @@
 
 @section hero {
     @* Slideshow làm nền, khối tìm kiếm "Hôm nay nấu gì?" nằm đè lên trên *@
-    <section id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false">
+    <section id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
             @for (int i = 0; i < slides.Count; i++)
             {
@@ -50,9 +50,6 @@
 
         @if (slides.Count > 1)
         {
-            @* nút dừng: slideshow tự chạy nên phải cho người xem dừng lại được *@
-            <button type="button" class="btn hero-pause" id="nutDung" aria-pressed="false">Dừng ảnh</button>
-
             <div class="carousel-indicators">
                 @for (int i = 0; i < slides.Count; i++)
                 {
@@ -131,27 +128,3 @@
         </div>
     }
 </section>
-
-@section scripts {
-    <script>
-        // Nút Dừng ảnh / Chạy ảnh cho slideshow
-        var hero = document.getElementById('heroCarousel');
-        var nutDung = document.getElementById('nutDung');
-        if (nutDung) {
-            var slide = bootstrap.Carousel.getOrCreateInstance(hero);
-            var dangDung = false;
-
-            function datTrangThai(dung) {
-                dangDung = dung;
-                if (dung) slide.pause(); else slide.cycle();
-                nutDung.textContent = dung ? 'Chạy ảnh' : 'Dừng ảnh';
-                nutDung.setAttribute('aria-pressed', dung);
-            }
-
-            nutDung.addEventListener('click', function () { datTrangThai(!dangDung); });
-
-            // máy bật "giảm chuyển động" thì dừng sẵn từ đầu
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) datTrangThai(true);
-        }
-    </script>
-}

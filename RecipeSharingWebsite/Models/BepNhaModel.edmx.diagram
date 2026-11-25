@@ -9,9 +9,12 @@
         <EntityTypeShape EntityType="BepNhaDBModel.Rating" Width="1.5" PointX="5.25" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BepNhaDBModel.Recipe" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="BepNhaDBModel.User" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BepNhaDBModel.Favorite" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
         <AssociationConnector Association="BepNhaDBModel.FK__Recipes__Categor__4CA06362" ManuallyRouted="false" />
         <AssociationConnector Association="BepNhaDBModel.FK__Ratings__RecipeI__4F7CD00D" ManuallyRouted="false" />
         <AssociationConnector Association="BepNhaDBModel.FK_Recipes_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="BepNhaDBModel.FK_Favorites_Recipes" ManuallyRouted="false" />
+        <AssociationConnector Association="BepNhaDBModel.FK_Favorites_Users" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

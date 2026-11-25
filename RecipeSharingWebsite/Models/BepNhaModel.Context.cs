@@ -26,6 +26,7 @@ namespace RecipeSharingWebsite.Models
         }
     
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
         public virtual DbSet<User> Users { get; set; }

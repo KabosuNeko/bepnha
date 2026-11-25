@@ -18,7 +18,7 @@ Trang công thức nhà làm cho người nấu ăn tại gia, kiểu bếp ấm
 - Danh sách công thức: mỗi món một hàng, ảnh trái chữ phải, đọc nhanh nguyên liệu.
 
 ## Điểm nhận diện
-- Lời người nấu luôn hiện như một câu trích, có dấu ngoặc kép lớn màu cam và chữ nghiêng.
+- Lời người nấu luôn hiện như một câu trích, có dấu ngoặc kép màu cam và chữ nghiêng (trang chi tiết, Món ngon của tuần, thẻ món).
 
 ## Chuyển động
-- Chỉ có slideshow (có nút dừng) và ảnh thẻ phóng nhẹ khi rê chuột. Cả hai tắt khi máy bật giảm chuyển động.
+- Slideshow tự đổi ảnh (dừng khi rê chuột vào) và ảnh thẻ phóng nhẹ khi rê chuột. Hiệu ứng chuyển ảnh và phóng ảnh tắt khi máy bật giảm chuyển động.

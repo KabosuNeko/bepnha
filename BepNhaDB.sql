@@ -61,6 +61,16 @@ CREATE TABLE Ratings (
 );
 GO
 
+/* ===== Bảng Favorites: món yêu thích (người dùng lưu món) ===== */
+CREATE TABLE Favorites (
+    FavoriteID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID     INT      NOT NULL CONSTRAINT FK_Favorites_Users FOREIGN KEY REFERENCES Users(UserID),
+    RecipeID   INT      NOT NULL CONSTRAINT FK_Favorites_Recipes FOREIGN KEY REFERENCES Recipes(RecipeID) ON DELETE CASCADE,
+    CreatedAt  DATETIME NOT NULL,
+    CONSTRAINT UQ_Favorites UNIQUE (UserID, RecipeID)   -- mỗi người chỉ lưu một món một lần
+);
+GO
+
 /* ===== Dữ liệu mẫu: tài khoản ===== */
 INSERT INTO Users (Username, PasswordHash, FullName, IsAdmin) VALUES
     (N'admin', N'AP2tsxuyYfCfVVX5xSDm6vugBdH8yVpmvP7Z2JYzch6p0CqWUqVxVor4YF2ez8askg==', N'Quản trị viên', 1),
@@ -301,4 +311,11 @@ INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (31, 17, N'Diệu Linh', 5, N'Bánh mịn, không bị rỗ, caramel đắng nhẹ vừa miệng.', N'2025-10-14T00:00:00');
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (32, 17, N'Minh Nhật', 4, NULL, N'2025-10-15T00:00:00');
 SET IDENTITY_INSERT Ratings OFF;
+GO
+
+/* ===== Dữ liệu mẫu: món yêu thích của user1 (Minh Anh) ===== */
+INSERT INTO Favorites (UserID, RecipeID, CreatedAt) VALUES
+    (2, 1, N'2025-10-20T00:00:00'),
+    (2, 3, N'2025-10-21T00:00:00'),
+    (2, 17, N'2025-10-22T00:00:00');
 GO

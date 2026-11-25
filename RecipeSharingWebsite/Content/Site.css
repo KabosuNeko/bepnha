@@ -175,12 +175,9 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     text-decoration: underline;
 }
 
-/* gạch chỉ slide dồn sang phải để không đè nút dừng bên trái */
 .hero-slider .carousel-indicators {
     z-index: 3;
-    left: auto;
-    right: 24px;
-    margin: 0 0 4px 0;
+    margin-bottom: 4px;
 }
 
 /* gạch chỉ slide: nhìn vẫn mảnh nhưng vùng bấm cao 44px */
@@ -188,23 +185,6 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     width: 44px;
     border-top-width: 21px;
     border-bottom-width: 21px;
-}
-
-/* nút dừng / chạy slideshow ở góc dưới bên trái */
-.hero-pause {
-    position: absolute;
-    left: 24px;
-    bottom: 12px;
-    z-index: 3;
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, .6);
-    background: rgba(0, 0, 0, .35);
-}
-
-.hero-pause:hover,
-.hero-pause:focus-visible {
-    color: #2B2B2B;
-    background: #fff;
 }
 
 .hero-search .tag {
@@ -266,6 +246,23 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     background: rgba(255, 255, 255, .92);
     font-size: 12px;
     font-weight: 600;
+}
+
+/* lời người nấu trên thẻ: chữ nghiêng như câu trích ở trang chi tiết, tối đa 2 dòng */
+.card-quote {
+    font-style: italic;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-quote::before {
+    content: "\201C";
+    color: #B4552D;
+    font-weight: 700;
+    font-style: normal;
+    margin-right: 2px;
 }
 
 /* Danh sách công thức (kiểu Cookpad: ảnh trái, chữ phải) */
@@ -386,5 +383,38 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
 
     .recipe-card:hover .card-img-top {
         transform: none;
+    }
+}
+
+/* Phân trang: màu nhấn thay cho xanh, ô bấm 44px */
+.pagination {
+    --bs-pagination-color: #2B2B2B;
+    --bs-pagination-hover-color: #B4552D;
+    --bs-pagination-focus-color: #B4552D;
+    --bs-pagination-focus-box-shadow: 0 0 0 .25rem rgba(180, 85, 45, .25);
+    --bs-pagination-active-bg: #B4552D;
+    --bs-pagination-active-border-color: #B4552D;
+}
+
+.page-link {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Khi in công thức: chỉ giữ tên món, ảnh, nguyên liệu và các bước */
+@media print {
+    .site-head, .site-foot, .breadcrumb, .no-print, .alert, .ingredient-list input {
+        display: none !important;
+    }
+
+    .sticky-lg-top {
+        position: static !important;
+    }
+
+    .detail-img {
+        max-height: 260px;
     }
 }

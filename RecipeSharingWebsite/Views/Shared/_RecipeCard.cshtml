@@ -16,13 +16,19 @@
             <h5 class="card-title mb-1">
                 <a href="@Url.Action("Details", "Recipes", new { id = Model.RecipeID })" class="stretched-link">@Model.Title</a>
             </h5>
-            <div class="text-muted small">
-                @Html.Partial("_Avatar", Model.Author) @Model.Author · @Model.TotalTimeMinutes phút
+            @* lời người nấu: tối đa 2 dòng, dài hơn thì cắt bằng "..." *@
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <p class="card-quote small mb-2">@Model.Description</p>
+            }
+            <div class="text-muted small mb-1">
+                @Model.TotalTimeMinutes phút · @Model.Difficulty
                 @if (soDanhGia > 0)
                 {
-                    <span class="ms-1"><span class="stars">★</span> @diemTB.ToString("0.0") (@soDanhGia)</span>
+                    <span> · <span class="stars">★</span> @diemTB.ToString("0.0") (@soDanhGia)</span>
                 }
             </div>
+            <div class="small">@Html.Partial("_Avatar", Model.Author) @Model.Author</div>
         </div>
     </div>
 </div>

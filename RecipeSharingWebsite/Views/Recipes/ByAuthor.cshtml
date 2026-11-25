@@ -1,0 +1,39 @@
+﻿@model IEnumerable<RecipeSharingWebsite.Models.Recipe>
+
+@{
+    string ten = ViewBag.Name;
+    ViewBag.Title = "Món của " + ten;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Index")">Công thức</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ten</li>
+    </ol>
+</nav>
+
+@* thông tin người đăng *@
+<div class="d-flex align-items-center gap-3 mb-4">
+    @Html.Partial("_Avatar", ten, new ViewDataDictionary { { "size", "avatar-lg" } })
+    <div>
+        <h1 class="h3 mb-0">Món của @ten</h1>
+        <div class="text-muted small">@Model.Count() công thức đã đăng</div>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="bg-cream rounded-3 p-4">
+        <p class="mb-0">@ten chưa có công thức nào được đăng.</p>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var recipe in Model)
+        {
+            @Html.Partial("_RecipeCard", recipe)
+        }
+    </div>
+}

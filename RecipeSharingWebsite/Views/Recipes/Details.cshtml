@@ -33,9 +33,24 @@ else if (Model.Status == Recipe.BiXoa)
         <div class="d-flex align-items-center gap-3 mb-3">
             @Html.Partial("_Avatar", Model.Author, new ViewDataDictionary { { "size", "avatar-lg" } })
             <div>
-                <div class="fw-semibold">@Model.Author</div>
+                <a class="fw-semibold" href="@Url.Action("ByAuthor", new { name = Model.Author })">@Model.Author</a>
                 <div class="text-muted small">Đăng ngày @Model.CreatedAt.ToString("dd/MM/yyyy")</div>
             </div>
+        </div>
+
+        @* lưu món và in công thức (ẩn khi in) *@
+        <div class="d-flex flex-wrap gap-2 mb-4 no-print">
+            @if (Model.Status == Recipe.DaDuyet)
+            {
+                using (Html.BeginForm("ToggleFavorite", "Recipes", new { id = Model.RecipeID }, FormMethod.Post, null))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn @(ViewBag.DaLuu ? "btn-primary" : "btn-outline-primary")" aria-pressed="@(ViewBag.DaLuu ? "true" : "false")">
+                        @(ViewBag.DaLuu ? "Đã lưu món" : "Lưu món")
+                    </button>
+                }
+            }
+            <button type="button" class="btn btn-outline-secondary" onclick="window.print()">In công thức</button>
         </div>
 
         <img src="@Url.Content(Model.ImagePath ?? "~/Content/Images/placeholder.svg")" class="w-100 rounded-3 detail-img mb-4" width="1280" height="720" fetchpriority="high" alt="@Model.Title" />
@@ -67,7 +82,7 @@ else if (Model.Status == Recipe.BiXoa)
 
         @if (ViewBag.DuocSua || ViewBag.LaChuBai)
         {
-            <div class="d-flex gap-2 mt-4">
+            <div class="d-flex gap-2 mt-4 no-print">
                 @if (ViewBag.DuocSua)
                 {
                     <a class="btn btn-outline-secondary" href="@Url.Action("Edit", new { id = Model.RecipeID })">Sửa bài</a>
@@ -101,7 +116,7 @@ else if (Model.Status == Recipe.BiXoa)
 </div>
 
 @* ===== Đánh giá ===== *@
-<section class="mt-5 col-lg-8" id="danh-gia">
+<section class="mt-5 col-lg-8 no-print" id="danh-gia">
     <h2 class="h4 mb-3">Đánh giá (@ratings.Count)</h2>
 
     @if (Model.Status == Recipe.DaDuyet)
@@ -159,6 +174,21 @@ else if (Model.Status == Recipe.BiXoa)
         </div>
     }
 </section>
+
+@* ===== Món liên quan: cùng danh mục ===== *@
+@{ var related = (List<Recipe>)ViewBag.Related; }
+@if (related.Any())
+{
+    <section class="mt-5 no-print">
+        <h2 class="h4 mb-3">Món khác trong mục @Model.Category.CategoryName</h2>
+        <div class="row g-4">
+            @foreach (var r in related)
+            {
+                @Html.Partial("_RecipeCard", r)
+            }
+        </div>
+    </section>
+}
 
 @section scripts {
     <script>

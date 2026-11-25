@@ -1,0 +1,25 @@
+﻿@model IEnumerable<RecipeSharingWebsite.Models.Recipe>
+
+@{
+    ViewBag.Title = "Món đã lưu";
+}
+
+<h1 class="mb-1">Món đã lưu</h1>
+<p class="text-muted mb-4">Bấm "Lưu món" ở trang công thức để thêm món vào đây.</p>
+
+@if (!Model.Any())
+{
+    <div class="bg-cream rounded-3 p-4">
+        <p class="mb-2">Bạn chưa lưu món nào.</p>
+        <a class="btn btn-primary" href="@Url.Action("Index", "Recipes")">Xem các công thức</a>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var recipe in Model)
+        {
+            @Html.Partial("_RecipeCard", recipe)
+        }
+    </div>
+}

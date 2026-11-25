@@ -56,6 +56,8 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="@Url.Action("MyRecipes", "Account")">Bài của tôi</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("Favorites", "Account")">Món đã lưu</a></li>
+                            <li><a class="dropdown-item" href="@Url.Action("ChangePassword", "Account")">Đổi mật khẩu</a></li>
                             <li><hr class="dropdown-divider" /></li>
                             <li>
                                 @using (Html.BeginForm("Logout", "Account", FormMethod.Post))

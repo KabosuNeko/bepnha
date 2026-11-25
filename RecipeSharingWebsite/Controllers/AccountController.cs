@@ -98,6 +98,54 @@ namespace RecipeSharingWebsite.Controllers
             return View(recipes);
         }
 
+        // GET: Account/Favorites - món đã lưu
+        public ActionResult Favorites()
+        {
+            if (Session["UserID"] == null)
+                return RedirectToAction("Login", new { returnUrl = Url.Action("Favorites") });
+
+            int userId = (int)Session["UserID"];
+            var recipes = db.Favorites.Where(f => f.UserID == userId && f.Recipe.Status == Recipe.DaDuyet)
+                                      .OrderByDescending(f => f.CreatedAt)
+                                      .Select(f => f.Recipe)
+                                      .ToList();
+            return View(recipes);
+        }
+
+        // GET: Account/ChangePassword
+        [HttpGet]
+        public ActionResult ChangePassword()
+        {
+            if (Session["UserID"] == null)
+                return RedirectToAction("Login", new { returnUrl = Url.Action("ChangePassword") });
+            return View();
+        }
+
+        // POST: Account/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            if (Session["UserID"] == null)
+                return RedirectToAction("Login", new { returnUrl = Url.Action("ChangePassword") });
+
+            var user = db.Users.Find((int)Session["UserID"]);
+            if (user == null)
+                return HttpNotFound();
+
+            // phải nhập đúng mật khẩu hiện tại mới được đổi
+            if (!string.IsNullOrEmpty(model.OldPassword) && !Crypto.VerifyHashedPassword(user.PasswordHash, model.OldPassword))
+                ModelState.AddModelError("OldPassword", "Mật khẩu hiện tại không đúng");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            user.PasswordHash = Crypto.HashPassword(model.NewPassword);
+            db.SaveChanges();
+            TempData["Msg"] = "Đã đổi mật khẩu.";
+            return RedirectToAction("Index", "Home");
+        }
+
         // lưu người dùng vào Session
         private void DangNhap(User user)
         {

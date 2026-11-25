@@ -1,10 +1,27 @@
 ﻿@model IEnumerable<RecipeSharingWebsite.Models.Recipe>
+@using System.Web.Routing
 
 @{
     ViewBag.Title = "Công thức";
     string catID = Request.QueryString["categoryID"];
     string sort = Request.QueryString["sortStyle"];
+    string doKho = Request.QueryString["difficulty"];
+    string thoiGian = Request.QueryString["maxTime"];
     string search = ViewBag.SearchString;
+    int trang = ViewBag.Page;
+    int soTrang = ViewBag.TotalPages;
+
+    // tạo link giữ nguyên các bộ lọc đang chọn, chỉ đổi một giá trị; đổi bộ lọc thì quay về trang 1
+    Func<string, object, string> Link = (key, value) =>
+    {
+        var rv = new RouteValueDictionary {
+            { "searchString", search }, { "categoryID", catID }, { "difficulty", doKho },
+            { "maxTime", thoiGian }, { "sortStyle", sort }
+        };
+        rv[key] = value;
+        if (key == "page" && (int)value <= 1) { rv.Remove("page"); } // trang 1 thì không cần ghi ?page=1
+        return Url.Action("Index", rv);
+    };
 }
 
 <div class="row g-4 g-lg-5">
@@ -22,15 +39,12 @@
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
             <h1 class="h4 mb-0">
                 @(string.IsNullOrEmpty(search) ? "Tất cả công thức" : "Kết quả cho \"" + search + "\"")
-                <span class="text-muted fw-normal">(@Model.Count())</span>
+                <span class="text-muted fw-normal">(@ViewBag.Total)</span>
             </h1>
             <div class="btn-group" role="group" aria-label="Sắp xếp">
-                <a class="btn btn-outline-secondary @(string.IsNullOrEmpty(sort) ? "active" : "")"
-                   href="@Url.Action("Index", new { searchString = search, categoryID = catID })">Mới nhất</a>
-                <a class="btn btn-outline-secondary @(sort == "name" || sort == "name_desc" ? "active" : "")"
-                   href="@Url.Action("Index", new { sortStyle = ViewBag.NameSort, searchString = search, categoryID = catID })">Tên món</a>
-                <a class="btn btn-outline-secondary @(sort == "time" || sort == "time_desc" ? "active" : "")"
-                   href="@Url.Action("Index", new { sortStyle = ViewBag.TimeSort, searchString = search, categoryID = catID })">Thời gian nấu</a>
+                <a class="btn btn-outline-secondary @(string.IsNullOrEmpty(sort) ? "active" : "")" href="@Link("sortStyle", null)">Mới nhất</a>
+                <a class="btn btn-outline-secondary @(sort == "name" || sort == "name_desc" ? "active" : "")" href="@Link("sortStyle", (string)ViewBag.NameSort)">Tên món</a>
+                <a class="btn btn-outline-secondary @(sort == "time" || sort == "time_desc" ? "active" : "")" href="@Link("sortStyle", (string)ViewBag.TimeSort)">Thời gian nấu</a>
             </div>
         </div>
 
@@ -50,25 +64,61 @@
                     <h2 class="h5 mb-1">@item.Title</h2>
                     <p class="text-muted small mb-2 ingredients-line">@item.Ingredients.Replace("\n", ", ")</p>
                     <div class="small text-muted">
-                        @item.TotalTimeMinutes phút · @item.Servings người · @item.Category.CategoryName
+                        @item.TotalTimeMinutes phút · @item.Difficulty · @item.Servings người · @item.Category.CategoryName
                     </div>
                     <div class="small mt-1">@Html.Partial("_Avatar", item.Author) @item.Author</div>
                 </div>
             </a>
         }
+
+        @* ===== Phân trang ===== *@
+        @if (soTrang > 1)
+        {
+            <nav class="mt-4" aria-label="Chuyển trang">
+                <ul class="pagination flex-wrap">
+                    <li class="page-item @(trang == 1 ? "disabled" : "")">
+                        <a class="page-link" href="@Link("page", trang - 1)">Trước</a>
+                    </li>
+                    @for (int i = 1; i <= soTrang; i++)
+                    {
+                        <li class="page-item @(i == trang ? "active" : "")">
+                            <a class="page-link" href="@Link("page", i)" @(i == trang ? "aria-current=page" : "")>@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(trang == soTrang ? "disabled" : "")">
+                        <a class="page-link" href="@Link("page", trang + 1)">Sau</a>
+                    </li>
+                </ul>
+            </nav>
+        }
     </div>
 
-    @* ===== Cột phải: lọc theo danh mục ===== *@
+    @* ===== Cột phải: lọc theo danh mục, độ khó, thời gian ===== *@
     <div class="col-lg-4">
         <h2 class="h6 fw-bold mb-3">Danh mục</h2>
-        <div class="list-group">
-            <a class="list-group-item list-group-item-action @(string.IsNullOrEmpty(catID) ? "active" : "")"
-               href="@Url.Action("Index", new { searchString = search })">Tất cả</a>
+        <div class="list-group mb-4">
+            <a class="list-group-item list-group-item-action @(string.IsNullOrEmpty(catID) ? "active" : "")" href="@Link("categoryID", null)">Tất cả</a>
             @foreach (var c in (List<RecipeSharingWebsite.Models.Category>)ViewBag.Categories)
             {
                 <a class="list-group-item list-group-item-action @(catID == c.CategoryID.ToString() ? "active" : "")"
-                   href="@Url.Action("Index", new { categoryID = c.CategoryID, searchString = search })">@c.CategoryName</a>
+                   href="@Link("categoryID", c.CategoryID)">@c.CategoryName</a>
             }
+        </div>
+
+        <h2 class="h6 fw-bold mb-2">Độ khó</h2>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            <a class="btn btn-outline-secondary @(string.IsNullOrEmpty(doKho) ? "active" : "")" href="@Link("difficulty", null)">Tất cả</a>
+            @foreach (var d in new[] { "Dễ", "Trung bình", "Khó" })
+            {
+                <a class="btn btn-outline-secondary @(doKho == d ? "active" : "")" href="@Link("difficulty", d)">@d</a>
+            }
+        </div>
+
+        <h2 class="h6 fw-bold mb-2">Thời gian nấu</h2>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-outline-secondary @(string.IsNullOrEmpty(thoiGian) ? "active" : "")" href="@Link("maxTime", null)">Tất cả</a>
+            <a class="btn btn-outline-secondary @(thoiGian == "30" ? "active" : "")" href="@Link("maxTime", 30)">Tối đa 30 phút</a>
+            <a class="btn btn-outline-secondary @(thoiGian == "60" ? "active" : "")" href="@Link("maxTime", 60)">Tối đa 1 giờ</a>
         </div>
     </div>
 </div>
