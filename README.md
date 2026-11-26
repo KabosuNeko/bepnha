@@ -1,48 +1,62 @@
-# Bếp Nhà
+# Bếp Nhà - Website chia sẻ công thức nấu ăn
 
-A recipe sharing website: people post home-cooked recipes, search them and rate them.
-Course project for Basic Web Programming, built by Nguyễn Hoàng Long (25DH110432).
+Đồ án môn Lập trình Web cơ bản (đề 9: đăng, tìm kiếm và đánh giá công thức nấu ăn).
 
-Live site: https://bepnha.somee.com
+- Sinh viên: Nguyễn Hoàng Long - MSSV 25DH110432
+- Web chạy thật: https://bepnha.somee.com
 
-## What it does
+## 1. Chức năng
 
-- Browse recipes by category, search by dish name or ingredient, filter by difficulty and cooking time.
-- Sign up and log in; post a recipe with a photo; edit or delete your own recipes.
-- Rate a recipe once (1 to 5 stars, with a comment) and save recipes to "Món đã lưu".
-- Admins approve or reject new posts and manage categories.
+| Người dùng | Chức năng |
+|---|---|
+| Khách | Xem món theo danh mục, tìm theo tên món hoặc nguyên liệu, lọc theo độ khó và thời gian nấu, sắp xếp, phân trang |
+| Thành viên | Đăng ký, đăng nhập, đổi mật khẩu; đăng món kèm ảnh (chờ duyệt); sửa, xóa món của mình; chấm sao (mỗi món một lần); lưu món yêu thích |
+| Admin | Duyệt hoặc xóa bài kèm lý do; thêm, sửa, xóa danh mục; xem thống kê nhanh |
 
-## Built with
+## 2. Công nghệ
 
-- ASP.NET MVC 5 on .NET Framework 4.8
-- SQL Server with Entity Framework 6 (Database First, `Models/BepNhaModel.edmx`)
+- ASP.NET MVC 5, .NET Framework 4.8
+- SQL Server, Entity Framework 6 (Database First)
 - Bootstrap 5, jQuery Validation
+- Hosting: Somee.com (IIS + SQL Server 2022 Express)
 
-## Run it locally
+## 3. Cơ sở dữ liệu
 
-1. Open `BepNhaDB.sql` in SSMS (server `.\SQLEXPRESS`) and run it. It creates the `BepNhaDB` database with sample data.
-2. Open `RecipeSharingWebsite.sln` in Visual Studio 2022 and press F5.
-3. If your SQL Server has a different name, change `data source` in the `BepNhaDBEntities` connection string in `RecipeSharingWebsite/Web.config`.
+5 bảng, tạo bằng file `BepNhaDB.sql`:
 
-Sample admin and user accounts are listed at the top of `BepNhaDB.sql`.
+| Bảng | Lưu gì | Liên kết |
+|---|---|---|
+| Categories | Danh mục món | |
+| Users | Tài khoản, mật khẩu đã mã hóa, quyền admin | |
+| Recipes | Công thức, ảnh, trạng thái duyệt | thuộc 1 Category, 1 User |
+| Ratings | Số sao và nhận xét | thuộc 1 Recipe, mỗi người chấm 1 lần |
+| Favorites | Món đã lưu | nối User với Recipe, không lưu trùng |
 
-## Project layout
+## 4. Cấu trúc project
 
 ```
 RecipeSharingWebsite/
-  Controllers/     Home, Recipes, Account, Admin, Categories
-  Models/          EF model, validation rules, upload and permission rules
-  Views/           one folder per controller, shared layout and partials
-  Content/         Site.css (shared), pages/ (CSS for one page each), Images/
-  Scripts/pages/   JavaScript for the recipe form and recipe page
-RecipeSharingWebsite.Tests/   unit tests for upload and permission rules
-BepNhaDB.sql                  database script with sample data
+  Controllers/    Home, Recipes, Account, Admin, Categories
+  Models/         Model EF (.edmx), ràng buộc validate, quy tắc upload ảnh và phân quyền
+  Views/          mỗi controller một thư mục; Shared chứa _Layout và partial dùng chung
+  Content/        Site.css dùng chung, pages/ là CSS riêng từng trang, Images/
+  Scripts/pages/  JS riêng của trang đăng món và trang chi tiết
+RecipeSharingWebsite.Tests/   unit test cho quy tắc upload ảnh và phân quyền
+BepNhaDB.sql                  script tạo database và dữ liệu mẫu
 ```
 
-## Tests
+## 5. Chạy trên máy
 
-Open Test Explorer in Visual Studio and run all tests.
+1. Mở `BepNhaDB.sql` trong SSMS (server `.\SQLEXPRESS`) và chạy để tạo database `BepNhaDB`.
+2. Mở `RecipeSharingWebsite.sln` bằng Visual Studio 2022, bấm F5.
+3. Nếu SQL Server có tên khác, sửa `data source` trong chuỗi kết nối `BepNhaDBEntities` ở `RecipeSharingWebsite/Web.config`.
 
-## Credits
+Tài khoản mẫu (admin và người dùng) ghi ở đầu file `BepNhaDB.sql`.
 
-Food photos come from Wikimedia Commons under free licenses. Authors and licenses are listed in `RecipeSharingWebsite/Content/Images/NGUON-ANH.txt`.
+## 6. Kiểm thử
+
+Mở Test > Test Explorer trong Visual Studio, chạy tất cả (8 test).
+
+## 7. Nguồn ảnh
+
+Ảnh món ăn lấy từ Wikimedia Commons, giấy phép tự do. Tác giả và giấy phép từng ảnh ghi trong `RecipeSharingWebsite/Content/Images/NGUON-ANH.txt`.
