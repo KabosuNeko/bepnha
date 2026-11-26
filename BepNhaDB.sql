@@ -2,6 +2,12 @@
   BepNhaDB.sql - Database cho website chia sẻ công thức "Bếp Nhà"
   Cách dùng: mở file này trong SSMS (kết nối .\SQLEXPRESS) rồi bấm Execute (F5).
   Sau đó vào Visual Studio: Add > New Item > ADO.NET Entity Data Model > EF Designer from database.
+
+  Chạy trên hosting (MonsterASP.NET): host đã tạo sẵn database và không cho tạo thêm, nên
+    1. Kết nối SSMS tới server của host, chọn database host cấp ở ô "Available Databases".
+    2. Bôi đen từ dòng "CREATE TABLE Categories" tới hết file rồi bấm Execute
+       (bỏ qua 4 dòng CREATE DATABASE / USE ngay bên dưới).
+
   Tài khoản mẫu (quản trị):   admin / admin123   -   admin2 / admin456
   Tài khoản mẫu (người dùng): user1 / user123   -   user2 / user456   -   user3 / user789
 */

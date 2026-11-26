@@ -197,6 +197,13 @@
     <Content Include="Content\Images\rau-muong-xao-toi.jpg" />
     <Content Include="Content\Images\sinh-to-bo.jpg" />
     <Content Include="Content\Images\banh-mi.jpg" />
+    <Content Include="Content\Images\banh-xeo.jpg" />
+    <Content Include="Content\Images\canh-kho-qua.jpg" />
+    <Content Include="Content\Images\che-thung.jpg" />
+    <Content Include="Content\Images\ga-kho-sa.jpg" />
+    <Content Include="Content\Images\nam-xao.jpg" />
+    <Content Include="Content\Images\sinh-to-kiwi.jpg" />
+    <Content Include="Content\Images\xoi-gac.jpg" />
     <Content Include="Content\Images\bun-bo-hue.jpg" />
     <Content Include="Content\Images\bun-cha.jpg" />
     <Content Include="Content\Images\canh-chua.jpg" />
