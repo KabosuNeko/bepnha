@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RecipeSharingWebsite.Models;
 
-namespace RecipeSharingWebsite.Tests
+namespace RecipeSharingWebsite.Tests.Models
 {
     // Kiểm tra quy tắc ai được sửa / xóa bài
     [TestClass]

@@ -1,4 +1,5 @@
 /* Bảng màu: chữ #2B2B2B - chữ phụ #6B6B6B - nền kem #FAF7F2 - đường kẻ #E7E2DA - màu nhấn #B4552D
+   CSS dùng chung cho mọi trang (nạp từ _Layout). CSS riêng từng trang nằm trong Content/pages.
    Lý do chọn màu, font: xem DESIGN.md ở thư mục gốc */
 
 /* Đổi màu xanh mặc định của Bootstrap sang màu nhấn của trang (link, tab, focus) */
@@ -152,98 +153,7 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     background: #B4552D;
 }
 
-/* Mục danh mục đang chọn ở trang Công thức */
-.list-group-item.active {
-    background: #2B2B2B;
-    border-color: #2B2B2B;
-}
-
-/* Trang chủ: slideshow làm nền, khối tìm kiếm nằm đè lên trên */
-.hero-slider {
-    position: relative;
-    min-height: 460px; /* chưa có món nào thì vẫn đủ chỗ cho ô tìm */
-    background: #4A3A2E;
-}
-
-.hero-img {
-    height: 460px;
-    object-fit: cover;
-    /* .45: điểm trắng nhất của ảnh còn khoảng #737373, chữ trắng vẫn đạt 4.7:1 */
-    filter: brightness(.45);
-}
-
-.hero-search {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    pointer-events: none; /* bấm xuyên qua phần trống xuống ảnh */
-}
-
-.hero-search .container {
-    pointer-events: auto; /* nhưng ô tìm và từ khóa vẫn bấm được */
-}
-
-.hero-dish {
-    position: absolute;
-    right: 24px;
-    bottom: 56px; /* nằm trên mấy gạch chỉ slide */
-    z-index: 3;
-    color: #fff;
-    font-weight: 600;
-}
-
-.hero-dish:hover {
-    color: #fff;
-    text-decoration: underline;
-}
-
-.hero-slider .carousel-indicators {
-    z-index: 3;
-    margin-bottom: 4px;
-}
-
-/* gạch chỉ slide: nhìn vẫn mảnh nhưng vùng bấm cao 44px */
-.hero-slider .carousel-indicators [data-bs-target] {
-    width: 44px;
-    border-top-width: 21px;
-    border-bottom-width: 21px;
-}
-
-.hero-search .tag {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: 0 16px;
-    margin: 0 6px 8px 0;
-    border: 1px solid #E7E2DA;
-    border-radius: 999px;
-    background: #fff;
-    font-size: 14px;
-}
-
-/* Danh mục: ảnh tròn, máy tính xếp nhiều hàng (điện thoại vuốt ngang, xem cuối file) */
-.cat-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-}
-
-.cat-tile img {
-    width: 88px;
-    height: 88px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #fff;
-    box-shadow: 0 0 0 1px #E7E2DA;
-}
-
-.cat-tile:hover img {
-    box-shadow: 0 0 0 2px #B4552D;
-}
-
-/* Thẻ món ăn (trang chủ) */
+/* Thẻ món ăn: dùng chung ở Trang chủ, Món đã lưu, trang người đăng, món liên quan */
 .recipe-card {
     border: 0;
 }
@@ -295,29 +205,6 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     margin-right: 2px;
 }
 
-/* Danh sách công thức (kiểu Cookpad: ảnh trái, chữ phải) */
-.recipe-row {
-    display: flex;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid #E7E2DA;
-}
-
-.recipe-row img {
-    width: 160px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 8px;
-    flex-shrink: 0;
-}
-
-.recipe-row .ingredients-line {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
 /* Avatar chữ cái đầu tên */
 .avatar {
     display: inline-flex;
@@ -337,77 +224,6 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     width: 48px;
     height: 48px;
     font-size: 20px;
-}
-
-/* Món ngon của tuần */
-.featured img {
-    height: 360px;
-    object-fit: cover;
-}
-
-/* Trang chi tiết */
-.detail-img {
-    height: auto;
-    aspect-ratio: 16 / 9;
-    max-height: 440px;
-    object-fit: cover;
-}
-
-/* 3 phần của trang chi tiết: điện thoại xếp dọc đầu bài > nguyên liệu > các bước,
-   máy tính chia 2 cột, nguyên liệu bên phải dính theo khi cuộn */
-.detail-layout {
-    display: grid;
-    gap: 32px;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "head" "side" "steps";
-}
-
-.detail-head { grid-area: head; }
-.detail-side { grid-area: side; }
-.detail-steps { grid-area: steps; }
-
-@media (min-width: 992px) {
-    .detail-layout {
-        column-gap: 48px;
-        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-        grid-template-rows: auto 1fr;
-        grid-template-areas: "head side" "steps side";
-    }
-
-    .detail-side {
-        align-self: start;
-        position: sticky;
-        top: 80px;
-        z-index: 1; /* thấp hơn menu (1020) để không đè lên menu */
-    }
-}
-
-/* Thông tin nhanh của món: 2 cột trên điện thoại, 4 cột từ 576px */
-.recipe-facts {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    padding: 12px 0;
-    margin-bottom: 12px;
-    border-top: 1px solid #E7E2DA;
-    border-bottom: 1px solid #E7E2DA;
-}
-
-.recipe-facts dt {
-    font-weight: 400;
-    font-size: 14px;
-    color: #6B6B6B;
-}
-
-.recipe-facts dd {
-    margin: 0;
-    font-weight: 600;
-}
-
-@media (min-width: 576px) {
-    .recipe-facts {
-        grid-template-columns: repeat(4, 1fr);
-    }
 }
 
 /* Lời người nấu: dấu ngoặc kép lớn màu cam, dùng ở trang chi tiết và mục Món ngon của tuần */
@@ -431,25 +247,6 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     font-style: italic;
 }
 
-/* Nguyên liệu có ô tick: tick rồi thì gạch ngang */
-.ingredient-list label {
-    cursor: pointer;
-}
-
-.ingredient-list input:checked + span {
-    text-decoration: line-through;
-    color: #6B6B6B;
-}
-
-.step-num {
-    width: 28px;
-    height: 28px;
-    flex-shrink: 0;
-    background: #2B2B2B;
-    color: #fff;
-    font-size: 14px;
-}
-
 /* Sao đánh giá: màu mật ong đậm, đạt 4.67:1 trên nền trắng */
 .stars {
     color: #A86412;
@@ -463,7 +260,6 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
 
 /* Người dùng bật giảm chuyển động trong hệ điều hành thì tắt hiệu ứng */
 @media (prefers-reduced-motion: reduce) {
-    .carousel-item,
     .recipe-card .card-img-top {
         transition: none !important;
     }
@@ -471,78 +267,6 @@ button:disabled, .btn.disabled, select:disabled, input:disabled {
     .recipe-card:hover .card-img-top {
         transform: none;
     }
-}
-
-/* Phân trang: màu nhấn thay cho xanh, ô bấm 44px */
-.pagination {
-    --bs-pagination-color: #2B2B2B;
-    --bs-pagination-hover-color: #B4552D;
-    --bs-pagination-focus-color: #B4552D;
-    --bs-pagination-focus-box-shadow: 0 0 0 .25rem rgba(180, 85, 45, .25);
-    --bs-pagination-active-bg: #B4552D;
-    --bs-pagination-active-border-color: #B4552D;
-}
-
-.page-link {
-    min-width: 44px;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Khi in công thức: chỉ giữ tên món, ảnh, nguyên liệu và các bước */
-@media print {
-    .site-head, .site-foot, .breadcrumb, .no-print, .alert, .ingredient-list input {
-        display: none !important;
-    }
-
-    .detail-side {
-        position: static !important;
-    }
-
-    .detail-img {
-        max-height: 260px;
-    }
-}
-
-/* ===== Điện thoại (dưới 768px) ===== */
-@media (max-width: 767.98px) {
-    /* slideshow thấp lại để thấy được phần bên dưới */
-    .hero-slider { min-height: 400px; }
-    .hero-img { height: 400px; }
-    .hero-search h1 { font-size: 28px; }
-
-    /* từ khóa "Hay tìm" thành một hàng vuốt ngang thay vì xuống 2 dòng */
-    .hero-tags {
-        display: flex;
-        align-items: center;
-        overflow-x: auto;
-        scrollbar-width: none;
-        margin-right: -12px;
-    }
-
-    .hero-tags .tag { flex-shrink: 0; margin-bottom: 0; }
-
-    .hero-dish { left: 12px; right: 12px; bottom: 52px; font-size: 14px; }
-
-    /* danh mục thành một hàng vuốt ngang */
-    .cat-strip {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        gap: 12px;
-        margin: 0 -12px;
-        padding: 0 12px 8px;
-        scrollbar-width: none;
-    }
-
-    .cat-tile { flex: 0 0 76px; }
-    .cat-tile img { width: 72px; height: 72px; }
-
-    .featured img { height: 220px; }
-
-    /* danh sách công thức: ảnh nhỏ lại cho chữ có chỗ */
-    .recipe-row img { width: 104px; height: 104px; }
 }
 
 /* ===== Thẻ món trên điện thoại nhỏ (dưới 576px): ảnh trái, chữ phải cho gọn ===== */

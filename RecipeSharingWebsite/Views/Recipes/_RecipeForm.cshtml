@@ -66,16 +66,18 @@
         @Html.ValidationMessageFor(model => model.Difficulty, "", new { @class = "text-danger small" })
     </div>
 
-    @* ảnh món ăn: không bắt buộc; khi sửa bài thì hiện ảnh đang dùng *@
+    @* ảnh món ăn: không bắt buộc; khi sửa bài thì hiện ảnh đang dùng.
+       Chọn ảnh mới thì khung xem trước đổi theo (JS trong Scripts/pages/recipe-form.js) *@
+    @{ bool coAnh = !string.IsNullOrEmpty(Model?.ImagePath); }
     <div class="col-12">
         <label for="anhMon" class="form-label fw-semibold">Ảnh món ăn</label>
         <div class="d-flex flex-wrap align-items-center gap-3">
-            @if (!string.IsNullOrEmpty(Model?.ImagePath))
-            {
-                <img src="@Url.Content(Model.ImagePath)" width="120" height="80" class="rounded object-fit-cover" alt="Ảnh đang dùng" />
-            }
+            <img id="xemTruoc" src="@Url.Content(coAnh ? Model.ImagePath : "~/Content/Images/placeholder.svg")"
+                 width="120" height="80" class="rounded object-fit-cover @(coAnh ? "" : "d-none")"
+                 alt="@(coAnh ? "Ảnh đang dùng" : "Ảnh xem trước")" />
             <div class="flex-grow-1">
-                <input type="file" name="anhMon" id="anhMon" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                <input type="file" name="anhMon" id="anhMon" class="form-control" accept=".jpg,.jpeg,.png,.webp"
+                       data-toi-da="@RecipeSharingWebsite.Models.AnhMon.DungLuongToiDa" />
                 <div class="text-muted small mt-1">
                     @(string.IsNullOrEmpty(Model?.ImagePath) ? "Ảnh .jpg, .png hoặc .webp, tối đa 8 MB. Không chọn thì dùng ảnh mặc định." : "Chọn ảnh mới nếu muốn thay, tối đa 8 MB.")
                 </div>
@@ -85,17 +87,3 @@
         <div class="text-danger small" id="loiAnh" role="alert"></div>
     </div>
 </div>
-
-<script>
-    // Báo ngay khi chọn ảnh quá lớn và bỏ file đó, để form không gửi lên server rồi ra trang lỗi
-    document.getElementById('anhMon').addEventListener('change', function () {
-        var toiDa = @RecipeSharingWebsite.Models.AnhMon.DungLuongToiDa;
-        var loi = document.getElementById('loiAnh');
-        if (this.files[0] && this.files[0].size > toiDa) {
-            loi.textContent = 'Ảnh này nặng ' + (this.files[0].size / 1048576).toFixed(1) + ' MB, chỉ nhận ảnh tối đa 8 MB. Bạn chọn ảnh khác nhé.';
-            this.value = '';
-        } else {
-            loi.textContent = '';
-        }
-    });
-</script>

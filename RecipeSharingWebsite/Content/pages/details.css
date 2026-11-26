@@ -1,0 +1,100 @@
+/* CSS riêng của trang Chi tiết món (Views/Recipes/Details.cshtml), nạp qua @section styles */
+
+.detail-img {
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-height: 440px;
+    object-fit: cover;
+}
+
+/* 3 phần của trang: điện thoại xếp dọc đầu bài > nguyên liệu > các bước,
+   máy tính chia 2 cột, nguyên liệu bên phải dính theo khi cuộn */
+.detail-layout {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "side" "steps";
+}
+
+.detail-head { grid-area: head; }
+.detail-side { grid-area: side; }
+.detail-steps { grid-area: steps; }
+
+@media (min-width: 992px) {
+    .detail-layout {
+        column-gap: 48px;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+        grid-template-areas: "head side" "steps side";
+    }
+
+    .detail-side {
+        align-self: start;
+        position: sticky;
+        top: 80px;
+        z-index: 1; /* thấp hơn menu (1020) để không đè lên menu */
+    }
+}
+
+/* Thông tin nhanh của món: 2 cột trên điện thoại, 4 cột từ 576px */
+.recipe-facts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px 0;
+    margin-bottom: 12px;
+    border-top: 1px solid #E7E2DA;
+    border-bottom: 1px solid #E7E2DA;
+}
+
+.recipe-facts dt {
+    font-weight: 400;
+    font-size: 14px;
+    color: #6B6B6B;
+}
+
+.recipe-facts dd {
+    margin: 0;
+    font-weight: 600;
+}
+
+@media (min-width: 576px) {
+    .recipe-facts {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Nguyên liệu có ô tick: tick rồi thì gạch ngang */
+.ingredient-list label {
+    cursor: pointer;
+}
+
+.ingredient-list input:checked + span {
+    text-decoration: line-through;
+    color: #6B6B6B;
+}
+
+/* vòng tròn đánh số các bước */
+.step-num {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    background: #2B2B2B;
+    color: #fff;
+    font-size: 14px;
+}
+
+/* Khi in công thức: chỉ giữ tên món, ảnh, nguyên liệu và các bước */
+@media print {
+    .site-head, .site-foot, .breadcrumb, .no-print, .alert, .ingredient-list input {
+        display: none !important;
+    }
+
+    .detail-side {
+        position: static !important;
+    }
+
+    .detail-img {
+        max-height: 260px;
+    }
+}

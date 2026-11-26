@@ -1,0 +1,165 @@
+/* CSS riêng của Trang chủ (Views/Home/Index.cshtml), nạp qua @section styles */
+
+/* Slideshow làm nền, khối tìm kiếm nằm đè lên trên */
+.hero-slider {
+    position: relative;
+    min-height: 460px; /* chưa có món nào thì vẫn đủ chỗ cho ô tìm */
+    background: #4A3A2E;
+}
+
+.hero-img {
+    height: 460px;
+    object-fit: cover;
+    /* .45: điểm trắng nhất của ảnh còn khoảng #737373, chữ trắng vẫn đạt 4.7:1 */
+    filter: brightness(.45);
+}
+
+.hero-search {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    pointer-events: none; /* bấm xuyên qua phần trống xuống ảnh */
+}
+
+.hero-search .container {
+    pointer-events: auto; /* nhưng ô tìm và từ khóa vẫn bấm được */
+}
+
+.hero-dish {
+    position: absolute;
+    right: 24px;
+    bottom: 56px; /* nằm trên mấy gạch chỉ slide */
+    z-index: 3;
+    color: #fff;
+    font-weight: 600;
+}
+
+.hero-dish:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.hero-slider .carousel-indicators {
+    z-index: 3;
+    margin-bottom: 4px;
+}
+
+/* gạch chỉ slide: nhìn vẫn mảnh nhưng vùng bấm cao 44px */
+.hero-slider .carousel-indicators [data-bs-target] {
+    width: 44px;
+    border-top-width: 21px;
+    border-bottom-width: 21px;
+}
+
+.hero-search .tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    margin: 0 6px 8px 0;
+    border: 1px solid #E7E2DA;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 14px;
+}
+
+/* Danh mục: ô ảnh vuông bo góc 8px giống thẻ món, tên nằm đè lên đáy ảnh.
+   Chia đều theo lưới: 4 cột (máy tính bảng), 8 cột (máy tính); điện thoại vuốt ngang (xem cuối file) */
+.cat-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+@media (min-width: 992px) {
+    .cat-strip { grid-template-columns: repeat(8, 1fr); }
+}
+
+.cat-tile {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden; /* để ảnh phóng to không tràn ra ngoài ô */
+}
+
+.cat-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .3s;
+}
+
+/* rê chuột thì ảnh phóng nhẹ, giống thẻ món */
+.cat-tile:hover img {
+    transform: scale(1.05);
+}
+
+/* tên danh mục trên nền tối dần ở đáy ảnh: phần sau chữ tối ít nhất 70% nên chữ trắng luôn đọc được */
+.cat-name {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 28px 8px 8px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, .7) 45%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* Món ngon của tuần */
+.featured img {
+    height: 360px;
+    object-fit: cover;
+}
+
+/* Người dùng bật giảm chuyển động thì slideshow đổi ảnh không có hiệu ứng mờ dần */
+@media (prefers-reduced-motion: reduce) {
+    .carousel-item,
+    .cat-tile img {
+        transition: none !important;
+    }
+
+    .cat-tile:hover img {
+        transform: none;
+    }
+}
+
+/* ===== Điện thoại (dưới 768px) ===== */
+@media (max-width: 767.98px) {
+    /* slideshow thấp lại để thấy được phần bên dưới */
+    .hero-slider { min-height: 400px; }
+    .hero-img { height: 400px; }
+    .hero-search h1 { font-size: 28px; }
+
+    /* từ khóa "Hay tìm" thành một hàng vuốt ngang thay vì xuống 2 dòng */
+    .hero-tags {
+        display: flex;
+        align-items: center;
+        overflow-x: auto;
+        scrollbar-width: none;
+        margin-right: -12px;
+    }
+
+    .hero-tags .tag { flex-shrink: 0; margin-bottom: 0; }
+
+    .hero-dish { left: 12px; right: 12px; bottom: 52px; font-size: 14px; }
+
+    /* danh mục thành một hàng vuốt ngang, mỗi ô rộng 120px */
+    .cat-strip {
+        grid-template-columns: none;
+        grid-auto-flow: column;
+        grid-auto-columns: 120px;
+        overflow-x: auto;
+        gap: 12px;
+        margin: 0 -12px;
+        padding: 0 12px 8px;
+        scrollbar-width: none;
+    }
+
+    .featured img { height: 220px; }
+}

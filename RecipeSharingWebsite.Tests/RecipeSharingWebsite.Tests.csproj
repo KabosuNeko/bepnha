@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <!-- Project test: chạy bằng Test Explorer trong Visual Studio hoặc lệnh "dotnet test" -->
+  <!-- Project test: chạy bằng Test > Test Explorer trong Visual Studio -->
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <IsPackable>false</IsPackable>
@@ -12,8 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- dùng chung file với web, không cần tham chiếu cả project web -->
-    <Compile Include="..\RecipeSharingWebsite\Models\AnhMon.cs" Link="AnhMon.cs" />
-    <Compile Include="..\RecipeSharingWebsite\Models\Quyen.cs" Link="Quyen.cs" />
+    <!-- tham chiếu project web để test dùng được các lớp trong Models -->
+    <ProjectReference Include="..\RecipeSharingWebsite\RecipeSharingWebsite.csproj" />
   </ItemGroup>
 </Project>

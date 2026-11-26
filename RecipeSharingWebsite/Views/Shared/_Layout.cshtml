@@ -14,7 +14,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" />
+    @* CSS dùng chung (Bootstrap + Site.css) *@
     @Styles.Render("~/Content/css")
+    @* CSS riêng của trang con (nếu có), đặt sau để được ưu tiên hơn CSS chung *@
+    @RenderSection("styles", required: false)
 </head>
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-light bg-white site-head sticky-top">

@@ -7,6 +7,11 @@
     var slides = Model.Take(4).ToList();
 }
 
+@* CSS riêng của trang này *@
+@section styles {
+    <link rel="stylesheet" href="~/Content/pages/home.css" />
+}
+
 @section hero {
     @* Slideshow làm nền, khối tìm kiếm "Hôm nay nấu gì?" nằm đè lên trên *@
     <section id="heroCarousel" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-interval="5000">
@@ -60,7 +65,7 @@
     </section>
 }
 
-@* ===== Danh mục: ảnh tròn lấy từ món đầu tiên của danh mục ===== *@
+@* ===== Danh mục: ô ảnh vuông bo góc (cùng kiểu thẻ món), tên danh mục nằm trên ảnh ===== *@
 <section class="mb-5">
     <h2 class="h3 mb-3">Danh mục</h2>
     <div class="cat-strip">
@@ -69,9 +74,9 @@
         {
             // danh mục chưa có món nào thì dùng ảnh mặc định
             var anh = anhDanhMuc.ContainsKey(c.CategoryID) ? anhDanhMuc[c.CategoryID] : "~/Content/Images/placeholder.svg";
-            <a class="cat-tile text-center" href="@Url.Action("Index", "Recipes", new { categoryID = c.CategoryID })">
-                <img src="@Url.Content(anh)" width="88" height="88" alt="" />
-                <div class="small fw-semibold mt-2">@c.CategoryName</div>
+            <a class="cat-tile" href="@Url.Action("Index", "Recipes", new { categoryID = c.CategoryID })">
+                <img src="@Url.Content(anh)" width="160" height="160" loading="lazy" alt="" />
+                <span class="cat-name">@c.CategoryName</span>
             </a>
         }
     </div>

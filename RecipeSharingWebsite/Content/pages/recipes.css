@@ -1,0 +1,54 @@
+/* CSS riêng của trang Công thức (Views/Recipes/Index.cshtml), nạp qua @section styles */
+
+/* Danh sách công thức (kiểu Cookpad: ảnh trái, chữ phải) */
+.recipe-row {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #E7E2DA;
+}
+
+.recipe-row img {
+    width: 160px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+/* dòng nguyên liệu tối đa 2 dòng, dài hơn thì cắt bằng "..." */
+.recipe-row .ingredients-line {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Mục danh mục đang chọn ở cột lọc */
+.list-group-item.active {
+    background: #2B2B2B;
+    border-color: #2B2B2B;
+}
+
+/* Phân trang: màu nhấn thay cho xanh, ô bấm 44px */
+.pagination {
+    --bs-pagination-color: #2B2B2B;
+    --bs-pagination-hover-color: #B4552D;
+    --bs-pagination-focus-color: #B4552D;
+    --bs-pagination-focus-box-shadow: 0 0 0 .25rem rgba(180, 85, 45, .25);
+    --bs-pagination-active-bg: #B4552D;
+    --bs-pagination-active-border-color: #B4552D;
+}
+
+.page-link {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Điện thoại: ảnh nhỏ lại cho chữ có chỗ */
+@media (max-width: 767.98px) {
+    .recipe-row img { width: 104px; height: 104px; }
+}

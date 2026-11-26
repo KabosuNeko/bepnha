@@ -184,6 +184,11 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\pages\home.css" />
+    <Content Include="Content\pages\recipes.css" />
+    <Content Include="Content\pages\details.css" />
+    <Content Include="Scripts\pages\recipe-form.js" />
+    <Content Include="Scripts\pages\details.js" />
     <Content Include="Content\Images\banh-flan.jpg" />
     <Content Include="Content\Images\ca-kho-to.jpg" />
     <Content Include="Content\Images\ca-phe-sua-da.jpg" />

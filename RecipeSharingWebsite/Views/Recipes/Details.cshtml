@@ -7,6 +7,11 @@
     double diemTB = ratings.Any() ? ratings.Average(r => r.Stars) : 0;
 }
 
+@* CSS riêng của trang này *@
+@section styles {
+    <link rel="stylesheet" href="~/Content/pages/details.css" />
+}
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb small">
         <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
@@ -209,21 +214,7 @@ else if (Model.Status == Recipe.BiXoa)
     </section>
 }
 
+@* JS riêng của trang: nhớ nguyên liệu đã tick *@
 @section scripts {
-    <script>
-        // Tick nguyên liệu đã chuẩn bị; lưu vào localStorage để mở lại trang vẫn còn
-        var khung = document.querySelector('.ingredient-list');
-        var khoa = 'nguyenlieu-' + khung.dataset.recipe;
-        var daTick = JSON.parse(localStorage.getItem(khoa) || '[]');
-        var oTick = khung.querySelectorAll('input[type=checkbox]');
-
-        oTick.forEach(function (o, i) {
-            o.checked = daTick.indexOf(i) >= 0;
-            o.addEventListener('change', function () {
-                var ds = [];
-                oTick.forEach(function (x, j) { if (x.checked) ds.push(j); });
-                localStorage.setItem(khoa, JSON.stringify(ds));
-            });
-        });
-    </script>
+    <script src="~/Scripts/pages/details.js"></script>
 }
