@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -20,7 +21,8 @@ namespace RecipeSharingWebsite.Controllers
             ViewBag.NameSort = sortStyle == "name" ? "name_desc" : "name";
             ViewBag.TimeSort = sortStyle == "time" ? "time_desc" : "time";
 
-            var recipes = from r in db.Recipes
+            // Include: lấy luôn danh mục trong cùng câu truy vấn, không phải hỏi database lại cho từng món
+            var recipes = from r in db.Recipes.Include(r => r.Category)
                           where r.Status == Recipe.DaDuyet
                           select r;
 
@@ -67,7 +69,8 @@ namespace RecipeSharingWebsite.Controllers
                 return RedirectToAction("Index");
 
             // Lưu ý: tìm theo tên người đăng vì món mẫu chưa gắn tài khoản; hai người trùng tên sẽ gộp chung
-            var recipes = db.Recipes.Where(r => r.Status == Recipe.DaDuyet && r.Author == name)
+            var recipes = db.Recipes.Include(r => r.Category).Include(r => r.Ratings)
+                                    .Where(r => r.Status == Recipe.DaDuyet && r.Author == name)
                                     .OrderByDescending(r => r.CreatedAt)
                                     .ToList();
             ViewBag.Name = name;
@@ -86,21 +89,24 @@ namespace RecipeSharingWebsite.Controllers
             ViewBag.LaChuBai = LaChuBai(recipe);
 
             // món liên quan: 3 món mới nhất cùng danh mục
-            ViewBag.Related = db.Recipes.Where(r => r.CategoryID == recipe.CategoryID && r.RecipeID != recipe.RecipeID && r.Status == Recipe.DaDuyet)
+            ViewBag.Related = db.Recipes.Include(r => r.Category).Include(r => r.Ratings)
+                                        .Where(r => r.CategoryID == recipe.CategoryID && r.RecipeID != recipe.RecipeID && r.Status == Recipe.DaDuyet)
                                         .OrderByDescending(r => r.CreatedAt)
                                         .Take(3)
                                         .ToList();
 
-            // người đang xem đã lưu món này chưa
+            // người đang xem đã lưu món này chưa, đã đánh giá món này chưa
             int? userId = (int?)Session["UserID"];
             ViewBag.DaLuu = userId != null && db.Favorites.Any(f => f.UserID == userId && f.RecipeID == id);
+            ViewBag.DaDanhGia = DaDanhGia(id);
             return View(recipe);
         }
 
-        // POST: Recipes/ToggleFavorite/5 - lưu món / bỏ lưu
+        // POST: Recipes/ToggleFavorite/5 - luu = true thì lưu món, false thì bỏ lưu.
+        // Nút gửi sẵn việc cần làm nên bấm đúp vẫn ra đúng kết quả, không bị lưu rồi bỏ lưu ngay.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ToggleFavorite(int id)
+        public ActionResult ToggleFavorite(int id, bool luu)
         {
             if (Session["UserID"] == null)
                 return RedirectToAction("Login", "Account", new { returnUrl = Url.Action("Details", new { id }) });
@@ -111,17 +117,24 @@ namespace RecipeSharingWebsite.Controllers
 
             int userId = (int)Session["UserID"];
             var fav = db.Favorites.FirstOrDefault(f => f.UserID == userId && f.RecipeID == id);
-            if (fav == null)
+            if (luu && fav == null)
             {
                 db.Favorites.Add(new Favorite { UserID = userId, RecipeID = id, CreatedAt = DateTime.Now });
-                TempData["Msg"] = "Đã lưu món vào Món đã lưu.";
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException)
+                {
+                    // hai lần bấm đến cùng lúc: lần kia đã lưu rồi (bảng có ràng buộc không cho trùng), coi như đã lưu
+                }
             }
-            else
+            else if (!luu && fav != null)
             {
                 db.Favorites.Remove(fav);
-                TempData["Msg"] = "Đã bỏ lưu món.";
+                db.SaveChanges();
             }
-            db.SaveChanges();
+            TempData["Msg"] = luu ? "Đã lưu món vào Món đã lưu." : "Đã bỏ lưu món.";
             return RedirectToAction("Details", new { id });
         }
 
@@ -137,13 +150,33 @@ namespace RecipeSharingWebsite.Controllers
             if (recipe == null || recipe.Status != Recipe.DaDuyet)
                 return HttpNotFound();
 
+            // mỗi người chỉ chấm một món một lần, chủ bài không tự chấm món mình
+            if (LaChuBai(recipe))
+            {
+                TempData["Err"] = "Bạn không thể tự đánh giá món của mình.";
+                return RedirectToAction("Details", new { id = rating.RecipeID });
+            }
+            if (DaDanhGia(rating.RecipeID))
+            {
+                TempData["Err"] = "Bạn đã đánh giá món này rồi.";
+                return RedirectToAction("Details", new { id = rating.RecipeID });
+            }
+
             if (ModelState.IsValid)
             {
                 rating.ReviewerName = (string)Session["FullName"];
                 rating.CreatedAt = DateTime.Now;
                 db.Ratings.Add(rating);
-                db.SaveChanges();
-                TempData["Msg"] = "Cảm ơn bạn đã đánh giá món này!";
+                try
+                {
+                    db.SaveChanges();
+                    TempData["Msg"] = "Cảm ơn bạn đã đánh giá món này!";
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException)
+                {
+                    // bấm đúp "Gửi": lần kia đã lưu rồi, bảng có ràng buộc UQ_Ratings nên lần này bị chặn
+                    TempData["Err"] = "Bạn đã đánh giá món này rồi.";
+                }
             }
             else
             {
@@ -231,6 +264,7 @@ namespace RecipeSharingWebsite.Controllers
             }
 
             // có chọn ảnh mới thì thay, không chọn thì giữ ảnh cũ
+            string anhCu = r2.ImagePath;
             if (duongDanAnh != null)
                 r2.ImagePath = duongDanAnh;
 
@@ -250,6 +284,8 @@ namespace RecipeSharingWebsite.Controllers
                 r2.RejectReason = null;
             }
             db.SaveChanges();
+            if (duongDanAnh != null)
+                XoaAnhUpload(anhCu); // lưu xong mới xóa ảnh cũ, lỡ lưu lỗi thì vẫn còn ảnh
             return RedirectToAction("Details", new { id = recipe.RecipeID });
         }
 
@@ -275,56 +311,78 @@ namespace RecipeSharingWebsite.Controllers
             if (!LaChuBai(recipe))
                 return KhongCoQuyen();
 
+            string anh = recipe.ImagePath;
             db.Recipes.Remove(recipe);
             db.SaveChanges();
+            XoaAnhUpload(anh);
             return RedirectToAction("MyRecipes", "Account");
         }
 
         // ===== upload ảnh món ăn =====
         // Lưu ảnh vào Content/Images/Uploads, trả về đường dẫn "~/..."; không chọn ảnh thì trả null.
-        // Ảnh sai định dạng hoặc quá 2 MB thì thêm lỗi vào ModelState để form báo lại.
+        // Ảnh sai định dạng hoặc quá lớn thì thêm lỗi vào ModelState để form báo lại.
         private string LuuAnh(HttpPostedFileBase file)
         {
             if (file == null || file.ContentLength == 0)
                 return null;
 
-            string duoi = System.IO.Path.GetExtension(file.FileName).ToLower();
-            string[] duocPhep = { ".jpg", ".jpeg", ".png", ".webp" };
-            if (!duocPhep.Contains(duoi))
+            string loi = AnhMon.KiemTra(file.FileName, file.ContentLength);
+            if (loi != null)
             {
-                ModelState.AddModelError("ImagePath", "Chỉ nhận ảnh .jpg, .jpeg, .png hoặc .webp");
-                return null;
-            }
-            if (file.ContentLength > 2 * 1024 * 1024)
-            {
-                ModelState.AddModelError("ImagePath", "Ảnh tối đa 2 MB");
+                ModelState.AddModelError("ImagePath", loi);
                 return null;
             }
             if (!ModelState.IsValid)
                 return null; // form còn lỗi khác thì chưa lưu ảnh, tránh để file thừa
 
             // đặt tên file mới bằng Guid để không trùng và không dùng tên file người dùng gửi lên
-            string tenFile = Guid.NewGuid().ToString("N") + duoi;
+            string tenFile = Guid.NewGuid().ToString("N") + System.IO.Path.GetExtension(file.FileName).ToLower();
             string thuMuc = Server.MapPath("~/Content/Images/Uploads");
             System.IO.Directory.CreateDirectory(thuMuc);
             file.SaveAs(System.IO.Path.Combine(thuMuc, tenFile));
             return "~/Content/Images/Uploads/" + tenFile;
         }
 
+        // Xóa file ảnh người dùng đã upload. Ảnh mẫu (không nằm trong Uploads) thì giữ nguyên.
+        private void XoaAnhUpload(string duongDan)
+        {
+            if (duongDan == null || !duongDan.StartsWith("~/Content/Images/Uploads/"))
+                return;
+            string file = Server.MapPath(duongDan);
+            if (System.IO.File.Exists(file))
+                System.IO.File.Delete(file);
+        }
+
+        // người đang đăng nhập đã đánh giá món này chưa
+        // Lưu ý: so theo họ tên vì bảng Ratings chưa có cột UserID; hai người trùng họ tên sẽ chặn nhau, thêm UserID nếu cần chính xác
+        private bool DaDanhGia(int recipeId)
+        {
+            string ten = (string)Session["FullName"];
+            return ten != null && db.Ratings.Any(x => x.RecipeID == recipeId && x.ReviewerName == ten);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                db.Dispose(); // giải phóng kết nối database khi xong mỗi yêu cầu
+            base.Dispose(disposing);
+        }
+
         // ===== kiểm tra quyền =====
+        // quy tắc nằm ở Models/Quyen.cs (có test), ở đây chỉ lấy thông tin từ Session
         private bool LaAdmin()
         {
-            return Session["IsAdmin"] != null && (bool)Session["IsAdmin"];
+            return Quyen.LaAdmin(Session["IsAdmin"]);
         }
 
         private bool LaChuBai(Recipe recipe)
         {
-            return Session["UserID"] != null && recipe.UserID == (int)Session["UserID"];
+            return Quyen.LaChuBai((int?)Session["UserID"], recipe.UserID);
         }
 
         private bool DuocSua(Recipe recipe)
         {
-            return LaAdmin() || LaChuBai(recipe);
+            return Quyen.DuocSua((int?)Session["UserID"], LaAdmin(), recipe.UserID);
         }
 
         // chưa đăng nhập thì chuyển sang đăng nhập, đã đăng nhập mà không có quyền thì báo lỗi 403

@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Đăng công thức";
-    bool laAdmin = Session["IsAdmin"] != null && (bool)Session["IsAdmin"];
+    bool laAdmin = RecipeSharingWebsite.Models.Quyen.LaAdmin(Session["IsAdmin"]);
 }
 
 <nav aria-label="breadcrumb">

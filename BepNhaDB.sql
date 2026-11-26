@@ -57,7 +57,8 @@ CREATE TABLE Ratings (
     ReviewerName NVARCHAR(50)  NOT NULL,
     Stars        INT           NOT NULL,
     Comment      NVARCHAR(500) NULL,
-    CreatedAt    DATETIME      NOT NULL
+    CreatedAt    DATETIME      NOT NULL,
+    CONSTRAINT UQ_Ratings UNIQUE (RecipeID, ReviewerName)   -- mỗi người chỉ chấm một món một lần
 );
 GO
 
@@ -273,6 +274,77 @@ INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Inst
 4. Lọc hỗn hợp qua rây rồi rót vào khuôn.
 5. Hấp lửa nhỏ khoảng 25 phút đến khi bánh đông.
 6. Để nguội rồi cho vào tủ lạnh, khi ăn úp bánh ra đĩa.', 20, 25, 6, N'Trung bình', N'Minh Anh', N'~/Content/Images/banh-flan.jpg', '2025-10-13');
+INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Instructions, PrepTimeMinutes, CookTimeMinutes, Servings, Difficulty, Author, ImagePath, CreatedAt) VALUES (18, N'Xôi gấc', 2, N'Xôi nếp đỏ tươi nhờ thịt quả gấc, dẻo bùi và thơm mùi nước cốt dừa.', N'500 g gạo nếp
+1/2 quả gấc chín
+2 thìa rượu trắng
+3 thìa đường
+100 ml nước cốt dừa
+1/2 thìa muối', N'1. Ngâm gạo nếp 6 tiếng hoặc qua đêm, vớt ra để ráo.
+2. Lấy thịt gấc, trộn với rượu trắng cho lên màu đẹp.
+3. Trộn đều thịt gấc với gạo nếp và muối.
+4. Hấp xôi 25 phút, đảo đều rồi hấp thêm 10 phút.
+5. Rưới nước cốt dừa và đường, trộn nhẹ rồi hấp thêm 5 phút.', 20, 40, 4, N'Dễ', N'Bích Ngọc', N'~/Content/Images/xoi-gac.jpg', '2025-10-16');
+INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Instructions, PrepTimeMinutes, CookTimeMinutes, Servings, Difficulty, Author, ImagePath, CreatedAt) VALUES (19, N'Bánh xèo', 3, N'Bánh xèo vỏ vàng giòn, nhân tôm thịt và giá, cuốn cùng rau sống chấm nước mắm chua ngọt.', N'300 g bột bánh xèo
+400 ml nước cốt dừa
+1 thìa bột nghệ
+200 g tôm
+200 g thịt ba chỉ
+200 g giá đỗ
+Hành lá, rau sống, nước mắm chua ngọt', N'1. Pha bột với nước cốt dừa, bột nghệ, hành lá thái nhỏ và 300 ml nước, để nghỉ 30 phút.
+2. Thịt ba chỉ thái mỏng, tôm bóc vỏ, ướp chút muối và tiêu.
+3. Làm nóng chảo với ít dầu, cho thịt và tôm vào xào sơ.
+4. Đổ một vá bột, nghiêng chảo cho bột láng đều, cho giá lên trên rồi đậy nắp 2 phút.
+5. Mở nắp cho bánh giòn, gập đôi rồi lấy ra đĩa.
+6. Cuốn bánh với rau sống, chấm nước mắm chua ngọt.', 30, 30, 4, N'Trung bình', N'Thanh Hà', N'~/Content/Images/banh-xeo.jpg', '2025-10-18');
+INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Instructions, PrepTimeMinutes, CookTimeMinutes, Servings, Difficulty, Author, ImagePath, CreatedAt) VALUES (20, N'Canh khổ qua nhồi thịt', 4, N'Khổ qua nhồi thịt nấu canh trong, vị đắng nhẹ và thanh mát cho ngày nóng.', N'3 quả khổ qua
+300 g thịt heo xay
+1 nắm mộc nhĩ ngâm nở
+1 củ hành tím
+Hành lá, ngò
+Nước mắm, tiêu', N'1. Khổ qua bổ dọc một đường, bỏ ruột, ngâm nước muối 10 phút cho bớt đắng.
+2. Trộn thịt xay với mộc nhĩ băm, hành tím, nước mắm và tiêu.
+3. Nhồi chặt nhân thịt vào khổ qua.
+4. Đun sôi 1,5 lít nước, thả khổ qua vào nấu lửa vừa 25 phút.
+5. Nêm lại cho vừa, rắc hành ngò rồi tắt bếp.', 25, 30, 4, N'Trung bình', N'Quốc Huy', N'~/Content/Images/canh-kho-qua.jpg', '2025-10-20');
+INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Instructions, PrepTimeMinutes, CookTimeMinutes, Servings, Difficulty, Author, ImagePath, CreatedAt) VALUES (21, N'Gà kho sả ớt', 5, N'Gà chặt miếng kho cùng sả và ớt đến khi săn lại, thơm cay và rất đưa cơm.', N'600 g thịt gà
+4 cây sả
+2 quả ớt
+3 tép tỏi
+2 thìa nước mắm
+1 thìa đường
+1 thìa nước màu', N'1. Gà chặt miếng vừa ăn, ướp nước mắm, đường, tỏi băm và nửa phần sả băm trong 20 phút.
+2. Phi thơm phần sả còn lại với ớt.
+3. Cho gà vào đảo đến khi thịt săn lại.
+4. Thêm nước màu và nửa chén nước, kho lửa nhỏ 20 phút.
+5. Kho đến khi nước sệt lại thì tắt bếp.', 20, 30, 4, N'Dễ', N'Hoàng Nam', N'~/Content/Images/ga-kho-sa.jpg', '2025-10-22');
+INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Instructions, PrepTimeMinutes, CookTimeMinutes, Servings, Difficulty, Author, ImagePath, CreatedAt) VALUES (22, N'Nấm đông cô xào', 6, N'Nấm đông cô xào tỏi ớt, dai thơm, món chay đơn giản cho ngày rằm.', N'200 g nấm đông cô khô
+3 tép tỏi
+1 quả ớt
+2 thìa nước tương
+1 thìa dầu hào chay
+1 thìa đường', N'1. Ngâm nấm đông cô trong nước ấm 30 phút cho nở, cắt bỏ chân nấm.
+2. Vắt ráo nấm, ướp nước tương, dầu hào chay và đường trong 10 phút.
+3. Phi thơm tỏi, cho nấm vào xào lửa lớn.
+4. Thêm ớt cắt lát, đảo đến khi nấm thấm gia vị thì tắt bếp.', 15, 10, 3, N'Dễ', N'Bích Ngọc', N'~/Content/Images/nam-xao.jpg', '2025-10-24');
+INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Instructions, PrepTimeMinutes, CookTimeMinutes, Servings, Difficulty, Author, ImagePath, CreatedAt) VALUES (23, N'Chè thưng', 7, N'Chè thưng miền Nam với khoai môn, đậu xanh, bột báng và nước cốt dừa béo ngậy.', N'100 g đậu xanh cà vỏ
+200 g khoai môn
+50 g bột báng
+50 g đậu phộng rang
+200 ml nước cốt dừa
+150 g đường
+Vài lá dứa', N'1. Ngâm đậu xanh 2 tiếng rồi nấu chín mềm.
+2. Khoai môn cắt hạt lựu, nấu chín.
+3. Cho đậu xanh, khoai môn, bột báng, đường và lá dứa vào nồi nước, nấu đến khi bột báng trong.
+4. Nấu sôi nước cốt dừa với chút muối.
+5. Múc chè ra chén, rưới nước cốt dừa và rắc đậu phộng rang.', 20, 40, 5, N'Dễ', N'Lan Phương', N'~/Content/Images/che-thung.jpg', '2025-10-26');
+INSERT INTO Recipes (RecipeID, Title, CategoryID, Description, Ingredients, Instructions, PrepTimeMinutes, CookTimeMinutes, Servings, Difficulty, Author, ImagePath, CreatedAt) VALUES (24, N'Sinh tố kiwi', 8, N'Sinh tố kiwi chua ngọt, màu xanh mát, làm nhanh trong vài phút.', N'3 quả kiwi
+1 quả chuối
+100 ml sữa chua
+50 ml sữa đặc
+1 cốc đá', N'1. Gọt vỏ kiwi và chuối, cắt khúc.
+2. Cho kiwi, chuối, sữa chua, sữa đặc và đá vào máy xay.
+3. Xay nhuyễn khoảng 1 phút.
+4. Rót ra ly, trang trí bằng vài lát kiwi.', 5, 2, 2, N'Dễ', N'Thanh Hà', N'~/Content/Images/sinh-to-kiwi.jpg', '2025-10-28');
 SET IDENTITY_INSERT Recipes OFF;
 GO
 
@@ -310,6 +382,11 @@ INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (30, 16, N'Bảo Trân', 5, N'Cuốn chặt tay, chiên lửa vừa nên vỏ giòn lâu.', N'2025-10-12T00:00:00');
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (31, 17, N'Diệu Linh', 5, N'Bánh mịn, không bị rỗ, caramel đắng nhẹ vừa miệng.', N'2025-10-14T00:00:00');
 INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (32, 17, N'Minh Nhật', 4, NULL, N'2025-10-15T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (33, 19, N'Ngọc Mai', 5, N'Vỏ bánh giòn rụm, nhớ để chảo thật nóng.', N'2025-10-19T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (34, 19, N'Tuấn Kiệt', 4, N'Mình thay bột nghệ bằng chút bột cà ri, cũng thơm.', N'2025-10-20T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (35, 21, N'Hồng Nhung', 5, N'Gà săn thịt, sả thơm, cả nhà ăn hết nồi cơm.', N'2025-10-23T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (36, 23, N'Bảo Trân', 5, N'Chè thưng béo vừa phải, không bị ngọt gắt.', N'2025-10-27T00:00:00');
+INSERT INTO Ratings (RatingID, RecipeID, ReviewerName, Stars, Comment, CreatedAt) VALUES (37, 24, N'Diệu Linh', 4, N'Thêm chuối nên sinh tố sánh và bớt chua.', N'2025-10-29T00:00:00');
 SET IDENTITY_INSERT Ratings OFF;
 GO
 

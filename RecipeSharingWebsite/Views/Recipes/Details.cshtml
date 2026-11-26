@@ -48,6 +48,8 @@ else if (Model.Status == Recipe.BiXoa)
                 using (Html.BeginForm("ToggleFavorite", "Recipes", new { id = Model.RecipeID }, FormMethod.Post, null))
                 {
                     @Html.AntiForgeryToken()
+                    @* gửi sẵn việc cần làm: chưa lưu thì gửi luu=true, đã lưu thì gửi luu=false *@
+                    <input type="hidden" name="luu" value="@(ViewBag.DaLuu ? "false" : "true")" />
                     <button type="submit" class="btn @(ViewBag.DaLuu ? "btn-primary" : "btn-outline-primary")" aria-pressed="@(ViewBag.DaLuu ? "true" : "false")">
                         @(ViewBag.DaLuu ? "Đã lưu món" : "Lưu món")
                     </button>
@@ -84,7 +86,8 @@ else if (Model.Status == Recipe.BiXoa)
         <h2 class="h5 mb-1">Nguyên liệu</h2>
         <p class="text-muted small mb-3">Cho @Model.Servings người · tick vào món đã chuẩn bị</p>
         <div class="ingredient-list" data-recipe="@Model.RecipeID">
-            @foreach (var item in Model.Ingredients.Split('\n'))
+            @* tách theo dòng, bỏ dòng trống (người đăng hay bấm Enter thừa ở cuối) *@
+            @foreach (var item in Model.Ingredients.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 <label class="d-flex gap-2 py-2 border-bottom">
                     <input type="checkbox" class="form-check-input mt-1" />
@@ -97,7 +100,7 @@ else if (Model.Status == Recipe.BiXoa)
     <div class="detail-steps">
         <h2 class="h4 mb-3">Các bước làm</h2>
         @{ int buoc = 1; }
-        @foreach (var step in Model.Instructions.Split('\n'))
+        @foreach (var step in Model.Instructions.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
         {
             <div class="d-flex gap-3 mb-3">
                 <span class="step-num rounded-circle d-flex align-items-center justify-content-center fw-bold">@buoc</span>
@@ -129,7 +132,15 @@ else if (Model.Status == Recipe.BiXoa)
 
     @if (Model.Status == Recipe.DaDuyet)
     {
-        if (Session["UserID"] != null)
+        if (ViewBag.LaChuBai)
+        {
+            <p class="text-muted mb-4">Đây là món của bạn nên bạn không tự đánh giá được.</p>
+        }
+        else if (ViewBag.DaDanhGia)
+        {
+            <p class="text-muted mb-4">Bạn đã đánh giá món này. Cảm ơn bạn!</p>
+        }
+        else if (Session["UserID"] != null)
         {
             using (Html.BeginForm("Rate", "Recipes", FormMethod.Post, new { @class = "mb-4" }))
             {

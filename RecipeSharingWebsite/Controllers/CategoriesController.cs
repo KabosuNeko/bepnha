@@ -14,13 +14,17 @@ namespace RecipeSharingWebsite.Controllers
         // quản lý danh mục chỉ dành cho admin
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Session["IsAdmin"] == null || !(bool)Session["IsAdmin"])
+            if (!Quyen.LaAdmin(Session["IsAdmin"]))
                 filterContext.Result = RedirectToAction("Login", "Account", new { returnUrl = Request.RawUrl });
         }
 
         // GET: Categories
         public ActionResult Index()
         {
+            // đếm số món của mọi danh mục trong 1 câu truy vấn, không tải cả nội dung món
+            ViewBag.SoMon = db.Recipes.GroupBy(r => r.CategoryID)
+                                      .Select(g => new { g.Key, SoMon = g.Count() })
+                                      .ToDictionary(x => x.Key, x => x.SoMon);
             return View(db.Categories.ToList());
         }
 
@@ -93,6 +97,8 @@ namespace RecipeSharingWebsite.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var category = db.Categories.Find(id);
+            if (category == null)
+                return HttpNotFound(); // đã bị xóa ở tab khác
             // danh mục còn công thức thì không cho xóa
             if (category.Recipes.Count > 0)
             {
@@ -102,6 +108,13 @@ namespace RecipeSharingWebsite.Controllers
             db.Categories.Remove(category);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                db.Dispose(); // giải phóng kết nối database khi xong mỗi yêu cầu
+            base.Dispose(disposing);
         }
     }
 }

@@ -3,7 +3,7 @@
     string ctrl = ViewContext.RouteData.Values["controller"].ToString();
     string act = ViewContext.RouteData.Values["action"].ToString();
     bool daDangNhap = Session["UserID"] != null;
-    bool laAdmin = Session["IsAdmin"] != null && (bool)Session["IsAdmin"];
+    bool laAdmin = RecipeSharingWebsite.Models.Quyen.LaAdmin(Session["IsAdmin"]);
 }
 <!DOCTYPE html>
 <html lang="vi">
@@ -15,7 +15,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" />
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
 </head>
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-light bg-white site-head sticky-top">

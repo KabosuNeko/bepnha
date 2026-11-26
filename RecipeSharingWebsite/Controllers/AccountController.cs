@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Helpers;
@@ -105,10 +106,11 @@ namespace RecipeSharingWebsite.Controllers
                 return RedirectToAction("Login", new { returnUrl = Url.Action("Favorites") });
 
             int userId = (int)Session["UserID"];
-            var recipes = db.Favorites.Where(f => f.UserID == userId && f.Recipe.Status == Recipe.DaDuyet)
-                                      .OrderByDescending(f => f.CreatedAt)
-                                      .Select(f => f.Recipe)
-                                      .ToList();
+            // món đã lưu (đã duyệt), món lưu sau cùng lên đầu; Include để thẻ món không hỏi database lại
+            var recipes = db.Recipes.Include(r => r.Category).Include(r => r.Ratings)
+                                    .Where(r => r.Status == Recipe.DaDuyet && r.Favorites.Any(f => f.UserID == userId))
+                                    .OrderByDescending(r => r.Favorites.Where(f => f.UserID == userId).Max(f => f.CreatedAt))
+                                    .ToList();
             return View(recipes);
         }
 
@@ -152,6 +154,13 @@ namespace RecipeSharingWebsite.Controllers
             Session["UserID"] = user.UserID;
             Session["FullName"] = user.FullName;
             Session["IsAdmin"] = user.IsAdmin;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                db.Dispose(); // giải phóng kết nối database khi xong mỗi yêu cầu
+            base.Dispose(disposing);
         }
     }
 }

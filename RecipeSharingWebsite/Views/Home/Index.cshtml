@@ -64,10 +64,11 @@
 <section class="mb-5">
     <h2 class="h3 mb-3">Danh mục</h2>
     <div class="cat-strip">
+        @{ var anhDanhMuc = (Dictionary<int, string>)ViewBag.AnhDanhMuc; }
         @foreach (var c in (List<Category>)ViewBag.Categories)
         {
-            var anh = c.Recipes.Where(r => r.Status == Recipe.DaDuyet && r.ImagePath != null)
-                               .Select(r => r.ImagePath).FirstOrDefault() ?? "~/Content/Images/placeholder.svg";
+            // danh mục chưa có món nào thì dùng ảnh mặc định
+            var anh = anhDanhMuc.ContainsKey(c.CategoryID) ? anhDanhMuc[c.CategoryID] : "~/Content/Images/placeholder.svg";
             <a class="cat-tile text-center" href="@Url.Action("Index", "Recipes", new { categoryID = c.CategoryID })">
                 <img src="@Url.Content(anh)" width="88" height="88" alt="" />
                 <div class="small fw-semibold mt-2">@c.CategoryName</div>

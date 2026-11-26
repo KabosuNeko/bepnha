@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,7 +15,7 @@ namespace RecipeSharingWebsite.Controllers
         // chạy trước mọi action: không phải admin thì chuyển về trang đăng nhập
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Session["IsAdmin"] == null || !(bool)Session["IsAdmin"])
+            if (!Quyen.LaAdmin(Session["IsAdmin"]))
                 filterContext.Result = RedirectToAction("Login", "Account", new { returnUrl = Request.RawUrl });
         }
 
@@ -37,7 +38,8 @@ namespace RecipeSharingWebsite.Controllers
                                            .OrderByDescending(r => r.Ratings.Average(x => (double)x.Stars))
                                            .ThenByDescending(r => r.Ratings.Count)
                                            .FirstOrDefault();
-            var recipes = db.Recipes.Where(r => r.Status == status)
+            // Include: lấy luôn danh mục, không hỏi database lại cho từng bài
+            var recipes = db.Recipes.Include(r => r.Category).Where(r => r.Status == status)
                                     .OrderByDescending(r => r.CreatedAt)
                                     .ToList();
             return View(recipes);
@@ -79,6 +81,13 @@ namespace RecipeSharingWebsite.Controllers
             db.SaveChanges();
             TempData["Msg"] = "Đã xóa bài \"" + recipe.Title + "\" và gửi lý do cho người đăng.";
             return RedirectToAction("Index", new { status = Recipe.BiXoa });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                db.Dispose(); // giải phóng kết nối database khi xong mỗi yêu cầu
+            base.Dispose(disposing);
         }
     }
 }
